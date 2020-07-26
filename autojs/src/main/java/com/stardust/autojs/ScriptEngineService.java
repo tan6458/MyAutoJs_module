@@ -44,8 +44,7 @@ public class ScriptEngineService {
         @Override
         public void onStart(ScriptExecution execution) {
             if (execution.getEngine() instanceof JavaScriptEngine) {
-                ((JavaScriptEngine) execution.getEngine()).getRuntime()
-                        .console.setTitle(execution.getSource().getName());
+                ((JavaScriptEngine) execution.getEngine()).getRuntime().console.setTitle(execution.getSource().getName());
             }
             EVENT_BUS.post(new ScriptExecutionEvent(ScriptExecutionEvent.ON_START, execution.getSource().toString()));
         }
@@ -67,8 +66,7 @@ public class ScriptEngineService {
             if (!causedByInterrupted(e)) {
                 message = e.getMessage();
                 if (execution.getEngine() instanceof JavaScriptEngine) {
-                    ((JavaScriptEngine) execution.getEngine()).getRuntime()
-                            .console.error(e);
+                    ((JavaScriptEngine) execution.getEngine()).getRuntime().console.error(e);
                 }
             }
             if (execution.getEngine() instanceof JavaScriptEngine) {

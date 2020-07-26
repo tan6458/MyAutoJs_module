@@ -26,7 +26,8 @@ public class MyActivity extends AppCompatActivity {
 
 
     public void onClick1(View view) {
-        runJs("hello");
+        runJs("自动跳过1");
+        runJs("自动跳过2");
     }
 
     public void onClick2(View view) {
@@ -40,7 +41,7 @@ public class MyActivity extends AppCompatActivity {
                 try {
                     try {
                         String path = Environment.getExternalStorageDirectory()+"/脚本/"+name+".js";//脚本文件
-                        JavaScriptFileSource source = new JavaScriptFileSource("我的", new File(path));//脚本别名
+                        JavaScriptFileSource source = new JavaScriptFileSource(name, new File(path));//脚本别名
                         ExecutionConfig config = new ExecutionConfig();
                         ScriptExecution mScriptExecution = App.autoJs.getScriptEngineService().execute(source, config);
                         Log.i("tan6458", "mScriptExecution:"+mScriptExecution);
@@ -61,6 +62,9 @@ public class MyActivity extends AppCompatActivity {
 
 
     private void stopJs() {
-        App.autoJs.getScriptEngineService().stopAllAndToast();
+        if("自动跳过1".equals(App.autoJs.getScriptEngineService().getScriptExecutions().iterator().next().getSource().getName())) {
+            App.autoJs.getScriptEngineService().getScriptExecutions().iterator().next().getEngine().forceStop();
+        }
+//        App.autoJs.getScriptEngineService().stopAllAndToast();
     }
 }
