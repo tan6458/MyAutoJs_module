@@ -18,18 +18,18 @@ public class DialogUtils {
     public static <T extends Dialog> T showDialog(final T dialog) {
         Context context = dialog.getContext();
 
-        if (!isActivityContext(context)) {
+        if(!isActivityContext(context)) {
             Window window = dialog.getWindow();
             int type;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
             } else {
                 type = WindowManager.LayoutParams.TYPE_PHONE;
             }
-            if (window != null)
+            if(window != null)
                 window.setType(type);
         }
-        if (Looper.getMainLooper() == Looper.myLooper()) {
+        if(Looper.getMainLooper() == Looper.myLooper()) {
             dialog.show();
         } else {
             GlobalAppContext.post(new Runnable() {
@@ -44,9 +44,9 @@ public class DialogUtils {
 
 
     public static boolean isActivityContext(Context context) {
-        if (context instanceof Activity)
+        if(context instanceof Activity)
             return true;
-        if (context instanceof ContextWrapper) {
+        if(context instanceof ContextWrapper) {
             return isActivityContext(((ContextWrapper) context).getBaseContext());
         }
         return false;

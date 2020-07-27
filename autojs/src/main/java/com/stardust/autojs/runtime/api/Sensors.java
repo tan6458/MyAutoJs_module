@@ -5,7 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import androidx.annotation.NonNull;
 
 import com.stardust.autojs.core.eventloop.EventEmitter;
 import com.stardust.autojs.core.looper.Loopers;
@@ -17,6 +16,8 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2018/2/5.
@@ -33,10 +34,10 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            Object[] args = new Object[event.values.length + 1];
+            Object[] args = new Object[event.values.length+1];
             args[0] = event;
-            for (int i = 1; i < args.length; i++) {
-                args[i] = event.values[i - 1];
+            for(int i = 1; i < args.length; i++) {
+                args[i] = event.values[i-1];
             }
             emit("change", args);
         }
@@ -99,11 +100,11 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
     }
 
     public SensorEventEmitter register(String sensorName, int delay) {
-        if (sensorName == null)
+        if(sensorName == null)
             throw new NullPointerException("sensorName = null");
         Sensor sensor = getSensor(sensorName);
-        if (sensor == null) {
-            if (ignoresUnsupportedSensor) {
+        if(sensor == null) {
+            if(ignoresUnsupportedSensor) {
                 emit("unsupported_sensor", sensorName);
                 return mNoOpSensorEventEmitter;
             } else {
@@ -125,7 +126,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
 
     @Override
     public boolean shouldQuit() {
-        if (mSensorEventEmitters.isEmpty()) {
+        if(mSensorEventEmitters.isEmpty()) {
             return true;
         }
         return false;
@@ -133,9 +134,9 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
 
     public Sensor getSensor(String sensorName) {
         Integer type = SENSORS.get(sensorName.toUpperCase());
-        if (type == null)
+        if(type == null)
             type = getSensorTypeByReflect(sensorName);
-        if (type == null)
+        if(type == null)
             return null;
         return mSensorManager.getDefaultSensor(type);
     }
@@ -143,15 +144,15 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
     private Integer getSensorTypeByReflect(String sensorName) {
         sensorName = sensorName.toUpperCase();
         try {
-            Field field = Sensor.class.getField("TYPE_" + sensorName);
+            Field field = Sensor.class.getField("TYPE_"+sensorName);
             return (Integer) field.get(null);
-        } catch (Exception e) {
+        } catch(Exception e) {
             return null;
         }
     }
 
     public void unregister(SensorEventEmitter emitter) {
-        if (emitter == null)
+        if(emitter == null)
             return;
         synchronized (mSensorEventEmitters) {
             mSensorEventEmitters.remove(emitter);
@@ -161,7 +162,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
 
     public void unregisterAll() {
         synchronized (mSensorEventEmitters) {
-            for (SensorEventEmitter emitter : mSensorEventEmitters) {
+            for(SensorEventEmitter emitter : mSensorEventEmitters) {
                 mSensorManager.unregisterListener(emitter);
             }
             mSensorEventEmitters.clear();

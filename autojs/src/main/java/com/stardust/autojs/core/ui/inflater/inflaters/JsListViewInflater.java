@@ -1,6 +1,5 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import androidx.annotation.Nullable;
 import android.view.ViewGroup;
 
 import com.stardust.autojs.core.ui.inflater.DynamicLayoutInflater;
@@ -14,6 +13,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2018/3/28.
@@ -34,7 +35,7 @@ public class JsListViewInflater<V extends JsListView> extends BaseViewInflater<V
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "orientation":
                 view.setLayoutManager(new WrapContentLinearLayoutManager(view.getContext(), LinearLayoutInflater.ORIENTATIONS.get(value), false));
                 return true;
@@ -51,9 +52,10 @@ public class JsListViewInflater<V extends JsListView> extends BaseViewInflater<V
     @Override
     public boolean inflateChildren(DynamicLayoutInflater inflater, Node node, JsListView parent) {
         NodeList nodeList = node.getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
+        for(int i = 0; i < nodeList.getLength(); i++) {
             Node child = nodeList.item(i);
-            if (child.getNodeType() != Node.ELEMENT_NODE) continue;
+            if(child.getNodeType() != Node.ELEMENT_NODE)
+                continue;
             parent.setItemTemplate(inflater, child);
             return true;
         }

@@ -1,8 +1,6 @@
 package com.stardust.autojs.engine;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.ScriptSource;
@@ -12,6 +10,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/1/27.
@@ -48,7 +49,7 @@ public class ScriptEngineManager {
         engine.setOnDestroyListener(mOnEngineDestroyListener);
         synchronized (mEngines) {
             mEngines.add(engine);
-            if (mEngineLifecycleCallback != null) {
+            if(mEngineLifecycleCallback != null) {
                 mEngineLifecycleCallback.onEngineCreate(engine);
             }
         }
@@ -68,7 +69,7 @@ public class ScriptEngineManager {
 
     public void removeEngine(ScriptEngine engine) {
         synchronized (mEngines) {
-            if (mEngines.remove(engine) && mEngineLifecycleCallback != null) {
+            if(mEngines.remove(engine) && mEngineLifecycleCallback != null) {
                 mEngineLifecycleCallback.onEngineRemove(engine);
             }
         }
@@ -77,7 +78,7 @@ public class ScriptEngineManager {
     public int stopAll() {
         synchronized (mEngines) {
             int n = mEngines.size();
-            for (ScriptEngine engine : mEngines) {
+            for(ScriptEngine engine : mEngines) {
                 engine.forceStop();
             }
             return n;
@@ -90,7 +91,7 @@ public class ScriptEngineManager {
     }
 
     protected void putProperties(ScriptEngine engine) {
-        for (Map.Entry<String, Object> variable : mGlobalVariableMap.entrySet()) {
+        for(Map.Entry<String, Object> variable : mGlobalVariableMap.entrySet()) {
             engine.put(variable.getKey(), variable.getValue());
         }
     }
@@ -99,7 +100,7 @@ public class ScriptEngineManager {
     @Nullable
     public ScriptEngine createEngine(String name, int id) {
         Supplier<ScriptEngine> s = mEngineSuppliers.get(name);
-        if (s == null) {
+        if(s == null) {
             return null;
         }
         ScriptEngine engine = s.get();
@@ -117,14 +118,14 @@ public class ScriptEngineManager {
     @NonNull
     public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source, int id) {
         ScriptEngine engine = createEngineOfSource(source, id);
-        if (engine == null)
-            throw new ScriptEngineFactory.EngineNotFoundException("source: " + source.toString());
+        if(engine == null)
+            throw new ScriptEngineFactory.EngineNotFoundException("source: "+source.toString());
         return engine;
     }
 
     @NonNull
     public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source) {
-       return createEngineOfSourceOrThrow(source, ScriptExecution.NO_ID);
+        return createEngineOfSourceOrThrow(source, ScriptExecution.NO_ID);
     }
 
     public void registerEngine(String name, Supplier<ScriptEngine> supplier) {

@@ -14,7 +14,7 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
 
     @Override
     public Object execute(JavaScriptSource scriptSource) {
-        if ((scriptSource.getExecutionMode() & JavaScriptSource.EXECUTION_MODE_AUTO) != 0) {
+        if((scriptSource.getExecutionMode() & JavaScriptSource.EXECUTION_MODE_AUTO) != 0) {
             getRuntime().ensureAccessibilityServiceEnabled();
         }
         return doExecution(scriptSource);
@@ -27,7 +27,7 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
     }
 
     public void setRuntime(ScriptRuntime runtime) {
-        if (mRuntime != null) {
+        if(mRuntime != null) {
             throw new IllegalStateException("a runtime has been set");
         }
         mRuntime = runtime;
@@ -44,7 +44,7 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
     }
 
     public void setExecArgv(Object execArgv) {
-        if (mExecArgv != null) {
+        if(mExecArgv != null) {
             return;
         }
         mExecArgv = execArgv;
@@ -62,10 +62,10 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
 
     @Override
     public String toString() {
-        return "ScriptEngine@" + Integer.toHexString(hashCode()) + "{" +
-                "id=" + getId() + "," +
-                "source='" + getTag(TAG_SOURCE) + "'," +
-                "cwd='" + cwd() + "'" +
+        return "ScriptEngine@"+Integer.toHexString(hashCode())+"{"+
+                "id="+getId()+","+
+                "source='"+getTag(TAG_SOURCE)+"',"+
+                "cwd='"+cwd()+"'"+
                 "}";
     }
 }

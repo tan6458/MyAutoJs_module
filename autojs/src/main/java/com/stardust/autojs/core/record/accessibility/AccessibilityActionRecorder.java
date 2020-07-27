@@ -62,7 +62,7 @@ public class AccessibilityActionRecorder extends Recorder.AbstractRecorder imple
 
     @Override
     public boolean onAccessibilityEvent(AccessibilityService service, AccessibilityEvent event) {
-        if (getState() == STATE_RECORDING) {
+        if(getState() == STATE_RECORDING) {
             mConverter.record(service, event);
             checkTimeOut();
         }
@@ -75,7 +75,7 @@ public class AccessibilityActionRecorder extends Recorder.AbstractRecorder imple
     }
 
     private void checkTimeOut() {
-        if (System.currentTimeMillis() - mRecordStartMillis > RECORD_TIME_OUT) {
+        if(System.currentTimeMillis()-mRecordStartMillis > RECORD_TIME_OUT) {
             stop();
         }
     }

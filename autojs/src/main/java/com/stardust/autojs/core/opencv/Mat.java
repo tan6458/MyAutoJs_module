@@ -2,7 +2,6 @@ package com.stardust.autojs.core.opencv;
 
 import com.stardust.util.ResourceMonitor;
 
-import org.mozilla.javascript.ScriptRuntime;
 import org.opencv.core.Range;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -19,7 +18,7 @@ public class Mat extends org.opencv.core.Mat implements ResourceMonitor.Resource
         try {
             nClone = org.opencv.core.Mat.class.getDeclaredMethod("n_clone", long.class);
             nClone.setAccessible(true);
-        } catch (NoSuchMethodException e) {
+        } catch(NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
@@ -81,7 +80,7 @@ public class Mat extends org.opencv.core.Mat implements ResourceMonitor.Resource
     protected long n_clone(long addr) {
         try {
             return (long) nClone.invoke(this, addr);
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -95,7 +94,7 @@ public class Mat extends org.opencv.core.Mat implements ResourceMonitor.Resource
 
     @Override
     protected void finalize() throws Throwable {
-        if (!mReleased) {
+        if(!mReleased) {
             ResourceMonitor.onFinalize(this);
             super.release();
             mReleased = true;

@@ -42,7 +42,7 @@ public class MatOfPoint extends org.opencv.core.MatOfPoint implements ResourceMo
 
     @Override
     protected void finalize() throws Throwable {
-        if (!mReleased) {
+        if(!mReleased) {
             ResourceMonitor.onFinalize(this);
             super.release();
         }

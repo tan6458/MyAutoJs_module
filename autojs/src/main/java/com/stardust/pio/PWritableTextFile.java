@@ -39,12 +39,12 @@ public class PWritableTextFile implements Closeable, PFileInterface {
 
     public PWritableTextFile(String path, String encoding, int bufferingSize, boolean append) {
         mPath = path;
-        if (bufferingSize <= 0) {
+        if(bufferingSize <= 0) {
             bufferingSize = DEFAULT_BUFFER_SIZE;
         }
         try {
             mBufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, append), encoding), bufferingSize);
-        } catch (UnsupportedEncodingException | FileNotFoundException e) {
+        } catch(UnsupportedEncodingException | FileNotFoundException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -77,7 +77,7 @@ public class PWritableTextFile implements Closeable, PFileInterface {
     public void write(String str) {
         try {
             mBufferedWriter.write(str);
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -86,7 +86,7 @@ public class PWritableTextFile implements Closeable, PFileInterface {
         try {
             mBufferedWriter.write(line);
             mBufferedWriter.newLine();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -96,7 +96,7 @@ public class PWritableTextFile implements Closeable, PFileInterface {
     }
 
     public void writelines(List<String> lines) {
-        for (String line : lines) {
+        for(String line : lines) {
             writeline(line);
         }
     }
@@ -104,7 +104,7 @@ public class PWritableTextFile implements Closeable, PFileInterface {
     public void close() {
         try {
             mBufferedWriter.close();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -112,7 +112,7 @@ public class PWritableTextFile implements Closeable, PFileInterface {
     public void flush() {
         try {
             mBufferedWriter.flush();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }

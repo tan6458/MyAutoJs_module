@@ -36,7 +36,7 @@ public class ValueMapper<V> {
 
     public V get(String key, V defValue) {
         V v = mHashMap.get(key);
-        if (v == null) {
+        if(v == null) {
             return defValue;
         }
         return v;
@@ -44,15 +44,15 @@ public class ValueMapper<V> {
 
     public V get(String key) {
         V v = mHashMap.get(key);
-        if (v == null) {
+        if(v == null) {
             throw new InflateException(String.format("unknown value for %s: %s", mAttrName, key));
         }
         return v;
     }
 
-    public int split(String str){
+    public int split(String str) {
         int r = 0;
-        for(String s : str.split("\\|")){
+        for(String s : str.split("\\|")) {
             r |= (Integer) get(s);
         }
         return r;

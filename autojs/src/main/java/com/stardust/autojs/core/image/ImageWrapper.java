@@ -54,14 +54,14 @@ public class ImageWrapper {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static ImageWrapper ofImage(Image image) {
-        if (image == null) {
+        if(image == null) {
             return null;
         }
         return new ImageWrapper(toBitmap(image));
     }
 
     public static ImageWrapper ofMat(Mat mat) {
-        if (mat == null) {
+        if(mat == null) {
             return null;
         }
         return new ImageWrapper(mat);
@@ -69,7 +69,7 @@ public class ImageWrapper {
 
 
     public static ImageWrapper ofBitmap(Bitmap bitmap) {
-        if (bitmap == null) {
+        if(bitmap == null) {
             return null;
         }
         return new ImageWrapper(bitmap);
@@ -81,10 +81,10 @@ public class ImageWrapper {
         ByteBuffer buffer = plane.getBuffer();
         buffer.position(0);
         int pixelStride = plane.getPixelStride();
-        int rowPadding = plane.getRowStride() - pixelStride * image.getWidth();
-        Bitmap bitmap = Bitmap.createBitmap(image.getWidth() + rowPadding / pixelStride, image.getHeight(), Bitmap.Config.ARGB_8888);
+        int rowPadding = plane.getRowStride()-pixelStride * image.getWidth();
+        Bitmap bitmap = Bitmap.createBitmap(image.getWidth()+rowPadding / pixelStride, image.getHeight(), Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(buffer);
-        if (rowPadding == 0) {
+        if(rowPadding == 0) {
             return bitmap;
         }
         return Bitmap.createBitmap(bitmap, 0, 0, image.getWidth(), image.getHeight());
@@ -102,7 +102,7 @@ public class ImageWrapper {
 
     public Mat getMat() {
         ensureNotRecycled();
-        if (mMat == null && mBitmap != null) {
+        if(mMat == null && mBitmap != null) {
             mMat = new Mat();
             Utils.bitmapToMat(mBitmap, mMat);
         }
@@ -111,10 +111,10 @@ public class ImageWrapper {
 
     public void saveTo(String path) {
         ensureNotRecycled();
-        if (mBitmap != null) {
+        if(mBitmap != null) {
             try {
                 mBitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(path));
-            } catch (FileNotFoundException e) {
+            } catch(FileNotFoundException e) {
                 throw new UncheckedIOException(e);
             }
         } else {
@@ -124,7 +124,7 @@ public class ImageWrapper {
 
     public int pixel(int x, int y) {
         ensureNotRecycled();
-        if (mBitmap != null) {
+        if(mBitmap != null) {
             return mBitmap.getPixel(x, y);
         }
         double[] channels = mMat.get(x, y);
@@ -133,7 +133,7 @@ public class ImageWrapper {
 
     public Bitmap getBitmap() {
         ensureNotRecycled();
-        if (mBitmap == null && mMat != null) {
+        if(mBitmap == null && mMat != null) {
             mBitmap = Bitmap.createBitmap(mMat.width(), mMat.height(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mMat, mBitmap);
         }
@@ -141,11 +141,11 @@ public class ImageWrapper {
     }
 
     public void recycle() {
-        if (mBitmap != null) {
+        if(mBitmap != null) {
             mBitmap.recycle();
             mBitmap = null;
         }
-        if (mMat != null) {
+        if(mMat != null) {
             OpenCVHelper.release(mMat);
             mMat = null;
         }
@@ -153,16 +153,16 @@ public class ImageWrapper {
     }
 
     public void ensureNotRecycled() {
-        if (mBitmap == null && mMat == null)
+        if(mBitmap == null && mMat == null)
             throw new IllegalStateException("image has been recycled");
     }
 
     public ImageWrapper clone() {
         ensureNotRecycled();
-        if (mBitmap == null) {
+        if(mBitmap == null) {
             return ImageWrapper.ofMat(mMat.clone());
         }
-        if (mMat == null) {
+        if(mMat == null) {
             return ImageWrapper.ofBitmap(mBitmap.copy(mBitmap.getConfig(), true));
         }
         return new ImageWrapper(mBitmap.copy(mBitmap.getConfig(), true), mMat.clone());

@@ -6,14 +6,12 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-
 import com.stardust.app.OnActivityResultDelegate;
 import com.stardust.app.SimpleActivityLifecycleCallbacks;
 import com.stardust.autojs.core.accessibility.AccessibilityBridge;
-import com.stardust.autojs.core.console.GlobalConsole;
+import com.stardust.autojs.core.activity.ActivityInfoProvider;
 import com.stardust.autojs.core.console.ConsoleImpl;
+import com.stardust.autojs.core.console.GlobalConsole;
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequestActivity;
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester;
 import com.stardust.autojs.core.record.accessibility.AccessibilityActionRecorder;
@@ -30,7 +28,6 @@ import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.util.ResourceMonitor;
 import com.stardust.util.ScreenMetrics;
 import com.stardust.util.UiHandler;
-import com.stardust.autojs.core.activity.ActivityInfoProvider;
 import com.stardust.view.accessibility.AccessibilityNotificationObserver;
 import com.stardust.view.accessibility.AccessibilityService;
 import com.stardust.view.accessibility.LayoutInspector;
@@ -39,6 +36,9 @@ import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.WrappedException;
 
 import java.io.File;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Stardust on 2017/11/29.
@@ -87,7 +87,7 @@ public abstract class AutoJs {
         registerActivityLifecycleCallbacks();
         ResourceMonitor.setExceptionCreator(resource -> {
             Exception exception;
-            if (org.mozilla.javascript.Context.getCurrentContext() != null) {
+            if(org.mozilla.javascript.Context.getCurrentContext() != null) {
                 exception = new WrappedException(new ResourceMonitor.UnclosedResourceException(resource));
             } else {
                 exception = new ResourceMonitor.UnclosedResourceException(resource);
@@ -254,7 +254,7 @@ public abstract class AutoJs {
         @Override
         public void request() {
             Activity activity = mAppUtils.getCurrentActivity();
-            if (activity instanceof OnActivityResultDelegate.DelegateHost) {
+            if(activity instanceof OnActivityResultDelegate.DelegateHost) {
                 ScreenCaptureRequester requester = new ActivityScreenCaptureRequester(
                         ((OnActivityResultDelegate.DelegateHost) activity).getOnActivityResultDelegateMediator(), activity);
                 requester.setOnActivityResultCallback(mCallback);

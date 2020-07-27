@@ -1,12 +1,12 @@
 package com.stardust.autojs.core.record.inputevent;
 
-import androidx.annotation.NonNull;
-
 import com.stardust.autojs.core.inputevent.InputEventObserver;
 import com.stardust.autojs.core.record.Recorder;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/3/7.
@@ -40,7 +40,7 @@ public abstract class InputEventRecorder extends Recorder.AbstractRecorder imple
 
     public static int parseDeviceNumber(String device) {
         Matcher matcher = LAST_INT_PATTERN.matcher(device);
-        if (matcher.find()) {
+        if(matcher.find()) {
             String someNumberStr = matcher.group(1);
             return Integer.parseInt(someNumberStr);
         }
@@ -50,7 +50,7 @@ public abstract class InputEventRecorder extends Recorder.AbstractRecorder imple
 
     @Override
     public void onInputEvent(@NonNull InputEventObserver.InputEvent e) {
-        if (!mRecording) {
+        if(!mRecording) {
             return;
         }
         recordInputEvent(e);

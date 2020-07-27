@@ -1,6 +1,7 @@
 package com.stardust.util;
 
 import android.app.Activity;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 
 /**
@@ -12,14 +13,14 @@ public class DrawerAutoClose implements BackPressedHandler {
     private DrawerLayout mDrawerLayout;
     private int mGravity;
 
-    public DrawerAutoClose(DrawerLayout drawerLayout, int gravity){
+    public DrawerAutoClose(DrawerLayout drawerLayout, int gravity) {
         mDrawerLayout = drawerLayout;
         mGravity = gravity;
     }
 
     @Override
     public boolean onBackPressed(Activity activity) {
-        if (mDrawerLayout.isDrawerOpen(mGravity)) {
+        if(mDrawerLayout.isDrawerOpen(mGravity)) {
             mDrawerLayout.closeDrawer(mGravity);
             return true;
         }

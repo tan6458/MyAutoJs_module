@@ -28,8 +28,8 @@ public class ConcurrentArrayList<T> {
     @SuppressWarnings("unchecked")
     public T get(int i) {
         int size = mSize.get();
-        if (i >= size) {
-            throw new IndexOutOfBoundsException("i = " + i + ", size = " + size);
+        if(i >= size) {
+            throw new IndexOutOfBoundsException("i = "+i+", size = "+size);
         }
         return mArray[i];
     }
@@ -48,10 +48,10 @@ public class ConcurrentArrayList<T> {
     }
 
     private void ensureCapacity(int index) {
-        if (index < mArray.length)
+        if(index < mArray.length)
             return;
         synchronized (mArrayResizeLock) {
-            if (index < mArray.length)
+            if(index < mArray.length)
                 return;
             T[] newArray = newArray(mArray.length * 2);
             System.arraycopy(mArray, 0, newArray, 0, mArray.length);

@@ -12,7 +12,7 @@ public class Strings {
 
 
     public static String parse(Context context, String str) {
-        if (str.startsWith("@string/")) {
+        if(str.startsWith("@string/")) {
             Resources resources = context.getResources();
             return resources.getString(resources.getIdentifier(str, "string",
                     context.getPackageName()));

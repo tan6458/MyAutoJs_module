@@ -23,10 +23,10 @@ public class ImageViewInflater<V extends ImageView> extends BaseViewInflater<V> 
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        if (super.setAttr(view, attr, value, parent, attrs)) {
+        if(super.setAttr(view, attr, value, parent, attrs)) {
             return true;
         }
-        switch (attr) {
+        switch(attr) {
             case "adjustViewBounds":
                 view.setAdjustViewBounds(Boolean.valueOf(value));
                 break;
@@ -46,7 +46,7 @@ public class ImageViewInflater<V extends ImageView> extends BaseViewInflater<V> 
                 view.setMaxWidth(Dimensions.parseToIntPixel(value, view));
                 break;
             case "path":
-                getDrawables().setupWithImage(view,  wrapAsPath(value));
+                getDrawables().setupWithImage(view, wrapAsPath(value));
                 break;
             case "scaleType":
                 view.setScaleType(parseScaleType(value));
@@ -58,34 +58,35 @@ public class ImageViewInflater<V extends ImageView> extends BaseViewInflater<V> 
                 view.setColorFilter(Colors.parse(view, value));
                 break;
             case "tintMode":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setImageTintMode(TINT_MODES.get(value));
                 }
                 break;
             case "url":
-                getDrawables().setupWithImage(view,  wrapAsUrl(value));
+                getDrawables().setupWithImage(view, wrapAsUrl(value));
                 break;
             default:
                 return false;
         }
         return true;
     }
+
     private String wrapAsPath(String value) {
-        if (!value.startsWith("file://")) {
-            return "file://" + value;
+        if(!value.startsWith("file://")) {
+            return "file://"+value;
         }
         return value;
     }
 
     private String wrapAsUrl(String value) {
-        if (!value.startsWith("http://") && !value.startsWith("https://")) {
-            return "http://" + value;
+        if(!value.startsWith("http://") && !value.startsWith("https://")) {
+            return "http://"+value;
         }
         return value;
     }
 
     private ImageView.ScaleType parseScaleType(String value) {
-        switch (value.toLowerCase()) {
+        switch(value.toLowerCase()) {
             case "center":
                 return ImageView.ScaleType.CENTER;
             case "center_crop":
@@ -103,6 +104,6 @@ public class ImageViewInflater<V extends ImageView> extends BaseViewInflater<V> 
             case "matrix":
                 return ImageView.ScaleType.MATRIX;
         }
-        throw new InflateException("unknown scale type: " + value);
+        throw new InflateException("unknown scale type: "+value);
     }
 }

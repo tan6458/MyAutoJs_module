@@ -1,17 +1,13 @@
 package com.stardust.autojs.core.ui.nativeview;
 
-import android.graphics.PorterDuff;
 import android.view.View;
-import android.widget.Button;
 
 import com.stardust.autojs.core.ui.JsViewHelper;
 import com.stardust.autojs.core.ui.ViewExtras;
 import com.stardust.autojs.core.ui.attribute.ViewAttributes;
 import com.stardust.autojs.rhino.NativeJavaObjectWithPrototype;
 
-import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 
 public class NativeView extends NativeJavaObjectWithPrototype {
@@ -56,7 +52,7 @@ public class NativeView extends NativeJavaObjectWithPrototype {
 
     @Override
     public boolean has(String name, Scriptable start) {
-        if (mViewAttributes.contains(name)) {
+        if(mViewAttributes.contains(name)) {
             return true;
         }
         return super.has(name, start);
@@ -64,11 +60,11 @@ public class NativeView extends NativeJavaObjectWithPrototype {
 
     @Override
     public Object get(String name, Scriptable start) {
-        if (super.has(name, start)) {
+        if(super.has(name, start)) {
             return super.get(name, start);
         } else {
             View view = JsViewHelper.findViewByStringId(mView, name);
-            if (view != null) {
+            if(view != null) {
                 return view;
             }
         }

@@ -3,7 +3,6 @@ package com.stardust.autojs.core.ui.nativeview;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Looper;
-import androidx.core.view.ViewCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -43,7 +42,7 @@ public class ViewPrototype {
 
     public Object attr(String name) {
         ViewAttributes.Attribute attribute = mViewAttributes.get(name);
-        if (attribute != null) {
+        if(attribute != null) {
             return attribute.get();
         }
         return Undefined.SCRIPTABLE_UNDEFINED;
@@ -51,7 +50,7 @@ public class ViewPrototype {
 
     public void attr(String name, Object value) {
         ViewAttributes.Attribute attribute = mViewAttributes.get(name);
-        if (attribute != null) {
+        if(attribute != null) {
             attribute.set(org.mozilla.javascript.ScriptRuntime.toString(value));
         }
     }
@@ -96,19 +95,19 @@ public class ViewPrototype {
     }
 
     private void registerEventIfNeeded(String eventName) {
-        if (mRegisteredEvents.contains(eventName)) {
+        if(mRegisteredEvents.contains(eventName)) {
             return;
         }
-        if (Looper.getMainLooper() == Looper.myLooper()) {
-            if (registerEvent(eventName)) {
+        if(Looper.getMainLooper() == Looper.myLooper()) {
+            if(registerEvent(eventName)) {
                 mRegisteredEvents.add(eventName);
             }
         } else {
             mView.post(() -> {
-                if (mRegisteredEvents.contains(eventName)) {
+                if(mRegisteredEvents.contains(eventName)) {
                     return;
                 }
-                if (registerEvent(eventName)) {
+                if(registerEvent(eventName)) {
                     mRegisteredEvents.add(eventName);
                 }
             });
@@ -118,18 +117,18 @@ public class ViewPrototype {
 
     @SuppressLint("ClickableViewAccessibility")
     private boolean registerEvent(String eventName) {
-        switch (eventName) {
+        switch(eventName) {
             case "touch_down":
             case "touch_up":
             case "touch": {
                 mView.setOnTouchListener((v, event) -> {
                     BaseEvent e = new BaseEvent(mScope, event, event.getClass());
                     //Log.d(LOG_TAG, "this = " + NativeView.this + ", emitter = " + mEventEmitter + ", view = " + mView);
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
                         emit("touch_down", e, v);
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    } else if(event.getAction() == MotionEvent.ACTION_UP) {
                         emit("touch_up", e, v);
-                    } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
                         emit("touch_move", e, v);
                     }
                     emit("touch", e, v);
@@ -152,9 +151,9 @@ public class ViewPrototype {
             case "key": {
                 mView.setOnKeyListener((v, keyCode, event) -> {
                     BaseEvent e = new BaseEvent(mScope, event, event.getClass());
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
                         emit("key_down", keyCode, e, v);
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    } else if(event.getAction() == MotionEvent.ACTION_UP) {
                         emit("key_up", keyCode, e, v);
                     }
                     emit("key", keyCode, e, v);
@@ -163,7 +162,7 @@ public class ViewPrototype {
             }
             return true;
             case "scroll_change": {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     mView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                         BaseEvent e = new BaseEvent(mScope, new NativeView.ScrollEvent(scrollX, scrollY, oldScrollX, oldScrollY));
                         emit("scroll_change", e, v);
@@ -173,14 +172,14 @@ public class ViewPrototype {
             }
             break;
             case "check": {
-                if (mView instanceof CompoundButton) {
+                if(mView instanceof CompoundButton) {
                     ((CompoundButton) mView).setOnCheckedChangeListener((buttonView, isChecked) ->
                             emit("check", isChecked, buttonView));
                 }
             }
             case "item_click":
             case "item_long_click": {
-                if (mView instanceof JsListView) {
+                if(mView instanceof JsListView) {
                     ((JsListView) mView).setOnItemTouchListener(new JsListView.OnItemTouchListener() {
                         @Override
                         public void onItemClick(JsListView listView, View itemView, Object item, int pos) {

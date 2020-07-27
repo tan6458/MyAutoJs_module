@@ -13,7 +13,7 @@ public class LocalStorage {
     private SharedPreferences mSharedPreferences;
 
     public LocalStorage(Context context, String name) {
-        mSharedPreferences = context.getSharedPreferences(NAME_PREFIX + name, Context.MODE_PRIVATE);
+        mSharedPreferences = context.getSharedPreferences(NAME_PREFIX+name, Context.MODE_PRIVATE);
     }
 
     public LocalStorage put(String key, String value) {

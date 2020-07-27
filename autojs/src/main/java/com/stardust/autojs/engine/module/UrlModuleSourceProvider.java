@@ -105,13 +105,13 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
     private ModuleSource loadFromPathList(String moduleId,
                                           Object validator, Iterable<URI> paths)
             throws IOException, URISyntaxException {
-        if (paths == null) {
+        if(paths == null) {
             return null;
         }
-        for (URI path : paths) {
+        for(URI path : paths) {
             final ModuleSource moduleSource = loadFromUri(
                     path.resolve(moduleId), path, validator);
-            if (moduleSource != null) {
+            if(moduleSource != null) {
                 return moduleSource;
             }
         }
@@ -122,7 +122,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
     protected ModuleSource loadFromUri(URI uri, URI base, Object validator)
             throws IOException, URISyntaxException {
         // We expect modules to have a ".js" file name extension ...
-        URI fullUri = new URI(uri + ".js");
+        URI fullUri = new URI(uri+".js");
         ModuleSource source = loadFromActualUri(fullUri, base, validator);
         // ... but for compatibility we support modules without extension,
         // or ids with explicit extension.
@@ -136,19 +136,19 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         final long request_time = System.currentTimeMillis();
         final URLConnection urlConnection = openUrlConnection(url);
         final URLValidator applicableValidator;
-        if (validator instanceof URLValidator) {
+        if(validator instanceof URLValidator) {
             final URLValidator uriValidator = ((URLValidator) validator);
             applicableValidator = uriValidator.appliesTo(uri) ? uriValidator :
                     null;
         } else {
             applicableValidator = null;
         }
-        if (applicableValidator != null) {
+        if(applicableValidator != null) {
             applicableValidator.applyConditionals(urlConnection);
         }
         try {
             urlConnection.connect();
-            if (applicableValidator != null &&
+            if(applicableValidator != null &&
                     applicableValidator.updateValidator(urlConnection,
                             request_time, urlConnectionExpiryCalculator)) {
                 close(urlConnection);
@@ -159,12 +159,12 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
                     getSecurityDomain(urlConnection), uri, base,
                     new URLValidator(uri, urlConnection, request_time,
                             urlConnectionExpiryCalculator));
-        } catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             return null;
-        } catch (RuntimeException e) {
+        } catch(RuntimeException e) {
             close(urlConnection);
             throw e;
-        } catch (IOException e) {
+        } catch(IOException e) {
             close(urlConnection);
             throw e;
         }
@@ -180,11 +180,11 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         final ParsedContentType pct = new ParsedContentType(
                 urlConnection.getContentType());
         final String encoding = pct.getEncoding();
-        if (encoding != null) {
+        if(encoding != null) {
             return encoding;
         }
         final String contentType = pct.getContentType();
-        if (contentType != null && contentType.startsWith("text/")) {
+        if(contentType != null && contentType.startsWith("text/")) {
             return "8859_1";
         }
         return "utf-8";
@@ -199,7 +199,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
     private void close(URLConnection urlConnection) {
         try {
             urlConnection.getInputStream().close();
-        } catch (IOException e) {
+        } catch(IOException e) {
             onFailedClosingUrlConnection(urlConnection, e);
         }
     }
@@ -255,7 +255,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
                                 UrlConnectionExpiryCalculator urlConnectionExpiryCalculator)
                 throws IOException {
             boolean isResourceChanged = isResourceChanged(urlConnection);
-            if (!isResourceChanged) {
+            if(!isResourceChanged) {
                 expiry = calculateExpiry(urlConnection, request_time,
                         urlConnectionExpiryCalculator);
             }
@@ -264,7 +264,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
 
         private boolean isResourceChanged(URLConnection urlConnection)
                 throws IOException {
-            if (urlConnection instanceof HttpURLConnection) {
+            if(urlConnection instanceof HttpURLConnection) {
                 return ((HttpURLConnection) urlConnection).getResponseCode() ==
                         HttpURLConnection.HTTP_NOT_MODIFIED;
             }
@@ -274,33 +274,33 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         private long calculateExpiry(URLConnection urlConnection,
                                      long request_time, UrlConnectionExpiryCalculator
                                              urlConnectionExpiryCalculator) {
-            if ("no-cache".equals(urlConnection.getHeaderField("Pragma"))) {
+            if("no-cache".equals(urlConnection.getHeaderField("Pragma"))) {
                 return 0L;
             }
             final String cacheControl = urlConnection.getHeaderField(
                     "Cache-Control");
-            if (cacheControl != null) {
-                if (cacheControl.indexOf("no-cache") != -1) {
+            if(cacheControl != null) {
+                if(cacheControl.indexOf("no-cache") != -1) {
                     return 0L;
                 }
                 final int max_age = getMaxAge(cacheControl);
-                if (-1 != max_age) {
+                if(-1 != max_age) {
                     final long response_time = System.currentTimeMillis();
-                    final long apparent_age = Math.max(0, response_time -
+                    final long apparent_age = Math.max(0, response_time-
                             urlConnection.getDate());
                     final long corrected_received_age = Math.max(apparent_age,
                             urlConnection.getHeaderFieldInt("Age", 0) * 1000L);
-                    final long response_delay = response_time - request_time;
-                    final long corrected_initial_age = corrected_received_age +
+                    final long response_delay = response_time-request_time;
+                    final long corrected_initial_age = corrected_received_age+
                             response_delay;
-                    final long creation_time = response_time -
+                    final long creation_time = response_time-
                             corrected_initial_age;
-                    return max_age * 1000L + creation_time;
+                    return max_age * 1000L+creation_time;
                 }
             }
             final long explicitExpiry = urlConnection.getHeaderFieldDate(
                     "Expires", -1L);
-            if (explicitExpiry != -1L) {
+            if(explicitExpiry != -1L) {
                 return explicitExpiry;
             }
             return urlConnectionExpiryCalculator == null ? 0L :
@@ -309,30 +309,30 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
 
         private int getMaxAge(String cacheControl) {
             final int maxAgeIndex = cacheControl.indexOf("max-age");
-            if (maxAgeIndex == -1) {
+            if(maxAgeIndex == -1) {
                 return -1;
             }
-            final int eq = cacheControl.indexOf('=', maxAgeIndex + 7);
-            if (eq == -1) {
+            final int eq = cacheControl.indexOf('=', maxAgeIndex+7);
+            if(eq == -1) {
                 return -1;
             }
-            final int comma = cacheControl.indexOf(',', eq + 1);
+            final int comma = cacheControl.indexOf(',', eq+1);
             final String strAge;
-            if (comma == -1) {
-                strAge = cacheControl.substring(eq + 1);
+            if(comma == -1) {
+                strAge = cacheControl.substring(eq+1);
             } else {
-                strAge = cacheControl.substring(eq + 1, comma);
+                strAge = cacheControl.substring(eq+1, comma);
             }
             try {
                 return Integer.parseInt(strAge);
-            } catch (NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 return -1;
             }
         }
 
         private String getEntityTags(URLConnection urlConnection) {
             final List<String> etags = urlConnection.getHeaderFields().get("ETag");
-            if (etags == null || etags.isEmpty()) {
+            if(etags == null || etags.isEmpty()) {
                 return null;
             }
             final StringBuilder b = new StringBuilder();
@@ -349,10 +349,10 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         }
 
         void applyConditionals(URLConnection urlConnection) {
-            if (lastModified != 0L) {
+            if(lastModified != 0L) {
                 urlConnection.setIfModifiedSince(lastModified);
             }
-            if (entityTags != null && entityTags.length() > 0) {
+            if(entityTags != null && entityTags.length() > 0) {
                 urlConnection.addRequestProperty("If-None-Match", entityTags);
             }
         }

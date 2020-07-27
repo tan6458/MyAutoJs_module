@@ -11,19 +11,19 @@ public class TextViewHelper {
         try {
             text = TextView.SavedState.class.getDeclaredField("text");
             text.setAccessible(true);
-        } catch (NoSuchFieldException e) {
+        } catch(NoSuchFieldException e) {
             e.printStackTrace();
         }
         sSavedStateText = text;
     }
 
     public static void setText(TextView.SavedState state, CharSequence text) {
-        if (sSavedStateText == null) {
+        if(sSavedStateText == null) {
             return;
         }
         try {
             sSavedStateText.set(state, text);
-        } catch (IllegalAccessException e) {
+        } catch(IllegalAccessException e) {
             e.printStackTrace();
         }
     }

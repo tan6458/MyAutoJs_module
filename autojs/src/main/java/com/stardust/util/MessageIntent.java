@@ -38,7 +38,7 @@ public class MessageIntent extends Intent {
     }
 
     public MessageIntent putExtra(String key, Object value) {
-        if (mObjectExtras == null) {
+        if(mObjectExtras == null) {
             mObjectExtras = new HashMap<>();
         }
         mObjectExtras.put(key, value);

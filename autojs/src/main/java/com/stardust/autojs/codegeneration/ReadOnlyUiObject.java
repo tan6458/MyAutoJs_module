@@ -1,12 +1,13 @@
 package com.stardust.autojs.codegeneration;
 
 import android.graphics.Rect;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.stardust.automator.UiObject;
 import com.stardust.view.accessibility.NodeInfo;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 /**
  * Created by Stardust on 2017/11/5.
@@ -309,9 +310,12 @@ public class ReadOnlyUiObject extends UiObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if(this == o)
+            return true;
+        if(o == null || getClass() != o.getClass())
+            return false;
+        if(!super.equals(o))
+            return false;
 
         ReadOnlyUiObject that = (ReadOnlyUiObject) o;
 
@@ -321,7 +325,7 @@ public class ReadOnlyUiObject extends UiObject {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + mNodeInfo.hashCode();
+        result = 31 * result+mNodeInfo.hashCode();
         return result;
     }
 

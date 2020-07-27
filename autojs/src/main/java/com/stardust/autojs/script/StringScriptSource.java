@@ -1,9 +1,9 @@
 package com.stardust.autojs.script;
 
 
-import androidx.annotation.Nullable;
-
 import java.io.Reader;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/4/2.

@@ -10,8 +10,14 @@ import com.stardust.autojs.R;
 import com.stardust.autojs.ScriptEngineService;
 import com.stardust.autojs.annotation.ScriptVariable;
 import com.stardust.autojs.core.accessibility.AccessibilityBridge;
+import com.stardust.autojs.core.accessibility.SimpleActionAutomator;
+import com.stardust.autojs.core.accessibility.UiSelector;
+import com.stardust.autojs.core.activity.ActivityInfoProvider;
 import com.stardust.autojs.core.image.Colors;
+import com.stardust.autojs.core.image.capture.ScreenCaptureRequester;
+import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.core.permission.Permissions;
+import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.rhino.AndroidClassLoader;
 import com.stardust.autojs.rhino.TopLevelScope;
 import com.stardust.autojs.rhino.continuation.Continuation;
@@ -19,35 +25,29 @@ import com.stardust.autojs.runtime.api.AbstractShell;
 import com.stardust.autojs.runtime.api.AppUtils;
 import com.stardust.autojs.runtime.api.Console;
 import com.stardust.autojs.runtime.api.Device;
+import com.stardust.autojs.runtime.api.Dialogs;
 import com.stardust.autojs.runtime.api.Engines;
 import com.stardust.autojs.runtime.api.Events;
 import com.stardust.autojs.runtime.api.Files;
 import com.stardust.autojs.runtime.api.Floaty;
-import com.stardust.autojs.core.looper.Loopers;
+import com.stardust.autojs.runtime.api.Images;
 import com.stardust.autojs.runtime.api.Media;
 import com.stardust.autojs.runtime.api.Plugins;
 import com.stardust.autojs.runtime.api.Sensors;
 import com.stardust.autojs.runtime.api.Threads;
 import com.stardust.autojs.runtime.api.Timers;
-import com.stardust.autojs.core.accessibility.UiSelector;
-import com.stardust.autojs.runtime.api.Images;
-import com.stardust.autojs.core.image.capture.ScreenCaptureRequester;
-import com.stardust.autojs.runtime.api.Dialogs;
+import com.stardust.autojs.runtime.api.UI;
 import com.stardust.autojs.runtime.exception.ScriptEnvironmentException;
 import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
-import com.stardust.autojs.core.accessibility.SimpleActionAutomator;
-import com.stardust.autojs.runtime.api.UI;
 import com.stardust.concurrent.VolatileDispose;
 import com.stardust.lang.ThreadCompat;
 import com.stardust.pio.UncheckedIOException;
 import com.stardust.util.ClipboardUtil;
-import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.util.ScreenMetrics;
 import com.stardust.util.SdkVersionUtil;
 import com.stardust.util.Supplier;
 import com.stardust.util.UiHandler;
-import com.stardust.autojs.core.activity.ActivityInfoProvider;
 
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.RhinoException;
@@ -215,7 +215,7 @@ public class ScriptRuntime {
         this.automator = new SimpleActionAutomator(accessibilityBridge, this);
         automator.setScreenMetrics(mScreenMetrics);
         this.info = accessibilityBridge.getInfoProvider();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             images = new Images(context, this, builder.mScreenCaptureRequester);
         }
         engines = new Engines(builder.mEngineService, this);
@@ -228,7 +228,7 @@ public class ScriptRuntime {
     }
 
     public void init() {
-        if (loopers != null)
+        if(loopers != null)
             throw new IllegalStateException("already initialized");
         threads = new Threads(this);
         timers = new Timers(this);
@@ -243,7 +243,7 @@ public class ScriptRuntime {
     }
 
     public void setTopLevelScope(TopLevelScope topLevelScope) {
-        if (mTopLevelScope != null) {
+        if(mTopLevelScope != null) {
             throw new IllegalStateException("top level has already exists");
         }
         mTopLevelScope = topLevelScope;
@@ -254,7 +254,7 @@ public class ScriptRuntime {
     }
 
     public static Context getApplicationContext() {
-        if (applicationContext == null || applicationContext.get() == null) {
+        if(applicationContext == null || applicationContext.get() == null) {
             throw new ScriptEnvironmentException("No application context");
         }
         return applicationContext.get();
@@ -275,13 +275,13 @@ public class ScriptRuntime {
     public void sleep(long millis) {
         try {
             Thread.sleep(millis);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
     }
 
     public void setClip(final String text) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             ClipboardUtil.setClip(uiHandler.getContext(), text);
             return;
         }
@@ -294,7 +294,7 @@ public class ScriptRuntime {
     }
 
     public String getClip() {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             return ClipboardUtil.getClipOrEmpty(uiHandler.getContext()).toString();
         }
         final VolatileDispose<String> clip = new VolatileDispose<>();
@@ -308,7 +308,7 @@ public class ScriptRuntime {
     }
 
     private void ensureRootShell() {
-        if (mRootShell == null) {
+        if(mRootShell == null) {
             mRootShell = mShellSupplier.get();
             mRootShell.SetScreenMetrics(mScreenMetrics);
             mShellSupplier = null;
@@ -328,18 +328,18 @@ public class ScriptRuntime {
     }
 
     public static void requiresApi(int i) {
-        if (Build.VERSION.SDK_INT < i) {
-            throw new ScriptException(GlobalAppContext.getString(R.string.text_requires_sdk_version_to_run_the_script) + SdkVersionUtil.sdkIntToString(i));
+        if(Build.VERSION.SDK_INT < i) {
+            throw new ScriptException(GlobalAppContext.getString(R.string.text_requires_sdk_version_to_run_the_script)+SdkVersionUtil.sdkIntToString(i));
         }
     }
 
     public void requestPermissions(String[] permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
         Context context = uiHandler.getContext();
         permissions = Permissions.getPermissionsNeedToRequest(context, permissions);
-        if (permissions.length == 0)
+        if(permissions.length == 0)
             return;
         Permissions.requestPermissions(context, permissions);
     }
@@ -348,7 +348,7 @@ public class ScriptRuntime {
         path = files.path(path);
         try {
             ((AndroidClassLoader) ContextFactory.getGlobal().getApplicationClassLoader()).loadJar(new File(path));
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -357,7 +357,7 @@ public class ScriptRuntime {
         path = files.path(path);
         try {
             ((AndroidClassLoader) ContextFactory.getGlobal().getApplicationClassLoader()).loadDex(new File(path));
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -366,7 +366,7 @@ public class ScriptRuntime {
         mThread.interrupt();
         engines.myEngine().forceStop();
         threads.exit();
-        if (Looper.myLooper() != Looper.getMainLooper()) {
+        if(Looper.myLooper() != Looper.getMainLooper()) {
             throw new ScriptInterruptedException();
         }
     }
@@ -402,7 +402,7 @@ public class ScriptRuntime {
         ignoresException(floaty::closeAll);
         try {
             events.emit("exit");
-        } catch (Throwable e) {
+        } catch(Throwable e) {
             console.error("exception on exit: ", e);
         }
         ignoresException(threads::shutDownAll);
@@ -410,11 +410,12 @@ public class ScriptRuntime {
         ignoresException(media::recycle);
         ignoresException(loopers::recycle);
         ignoresException(() -> {
-            if (mRootShell != null) mRootShell.exit();
+            if(mRootShell != null)
+                mRootShell.exit();
             mRootShell = null;
             mShellSupplier = null;
         });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ignoresException(images::releaseScreenCapturer);
         }
         ignoresException(sensors::unregisterAll);
@@ -425,7 +426,7 @@ public class ScriptRuntime {
     private void ignoresException(Runnable r) {
         try {
             r.run();
-        } catch (Throwable e) {
+        } catch(Throwable e) {
             e.printStackTrace();
         }
     }
@@ -457,15 +458,15 @@ public class ScriptRuntime {
 
     public static String getStackTrace(Throwable e, boolean printJavaStackTrace) {
         String message = e.getMessage();
-        StringBuilder scriptTrace = new StringBuilder(message == null ? "" : message + "\n");
-        if (e instanceof RhinoException) {
+        StringBuilder scriptTrace = new StringBuilder(message == null ? "" : message+"\n");
+        if(e instanceof RhinoException) {
             RhinoException rhinoException = (RhinoException) e;
             scriptTrace.append(rhinoException.details()).append("\n");
-            for (ScriptStackElement element : rhinoException.getScriptStack()) {
+            for(ScriptStackElement element : rhinoException.getScriptStack()) {
                 element.renderV8Style(scriptTrace);
                 scriptTrace.append("\n");
             }
-            if (printJavaStackTrace) {
+            if(printJavaStackTrace) {
                 scriptTrace.append("- - - - - - - - - - -\n");
             } else {
                 return scriptTrace.toString();
@@ -482,7 +483,7 @@ public class ScriptRuntime {
                 scriptTrace.append("\n").append(line);
             }
             return scriptTrace.toString();
-        } catch (IOException e1) {
+        } catch(IOException e1) {
             e1.printStackTrace();
             return message;
         }

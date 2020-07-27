@@ -34,10 +34,10 @@ public interface NodeHandler {
         @Override
         public String handleNode(Node node, StringBuilder layoutXml) {
             NodeHandler handler = mNodeHandlerMap.get(node.getNodeName());
-            if (handler != null) {
+            if(handler != null) {
                 return handler.handleNode(node, layoutXml);
             }
-            if (mDefaultHandler == null)
+            if(mDefaultHandler == null)
                 return null;
             return mDefaultHandler.handleNode(node, layoutXml);
         }
@@ -60,7 +60,7 @@ public interface NodeHandler {
         @Override
         public String handleNode(Node node, StringBuilder layoutXml) {
             String name = mNameMap.get(node.getNodeName());
-            if (name == null) {
+            if(name == null) {
                 name = node.getNodeName();
             }
             layoutXml.append("<").append(name).append("\n");

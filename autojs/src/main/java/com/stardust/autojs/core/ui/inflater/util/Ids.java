@@ -13,9 +13,9 @@ public class Ids {
     private static HashMap<String, Integer> ids = new HashMap<>();
 
     public static String parseIdName(String idName) {
-        if (idName.startsWith("@+id/")) {
+        if(idName.startsWith("@+id/")) {
             return idName.substring(5);
-        } else if (idName.startsWith("@id/")) {
+        } else if(idName.startsWith("@id/")) {
             return idName.substring(4);
         }
         return idName;
@@ -24,7 +24,7 @@ public class Ids {
     public static int parse(String name) {
         name = parseIdName(name);
         Integer id = ids.get(name);
-        if (id == null) {
+        if(id == null) {
             id = maxId.incrementAndGet();
             ids.put(name, id);
         }

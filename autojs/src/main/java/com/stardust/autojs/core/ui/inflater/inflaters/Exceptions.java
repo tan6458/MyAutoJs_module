@@ -20,7 +20,7 @@ public class Exceptions {
     public static void unsupports(View v, String name, String value) {
         UnsupportedOperationException e = new UnsupportedOperationException(String.format("Attr %s:%s=\"%s\" is not supported",
                 v.getClass().getSimpleName(), name, value));
-        if (sExceptionHandler == null || !sExceptionHandler.handleUnsupportedException(e, v, name, value)) {
+        if(sExceptionHandler == null || !sExceptionHandler.handleUnsupportedException(e, v, name, value)) {
             throw e;
         }
 

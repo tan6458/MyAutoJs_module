@@ -37,7 +37,7 @@ public class ViewGroupInflater<V extends ViewGroup> extends BaseViewInflater<V> 
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "addStatesFromChildren":
                 view.setAddStatesFromChildren(Boolean.valueOf(value));
                 break;
@@ -63,7 +63,7 @@ public class ViewGroupInflater<V extends ViewGroup> extends BaseViewInflater<V> 
                 Exceptions.unsupports(view, attr, value);
                 break;
             case "layoutMode":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     view.setLayoutMode(LAYOUT_MODES.get(value));
                 }
                 break;

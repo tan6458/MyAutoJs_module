@@ -1,14 +1,13 @@
 package com.stardust.autojs.rhino;
 
-import androidx.annotation.VisibleForTesting;
-
-
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.SecurityController;
 
 import java.io.File;
 import java.io.IOException;
+
+import androidx.annotation.VisibleForTesting;
 
 /**
  * Created by Stardust on 2017/4/5.
@@ -50,7 +49,7 @@ public class RhinoAndroidHelper {
      * @return a context prepared for android
      */
     public Context enterContext() {
-        if (!SecurityController.hasGlobal())
+        if(!SecurityController.hasGlobal())
             SecurityController.initGlobal(new NoSecurityController());
         return getContextFactory().enterContext();
     }
@@ -61,10 +60,10 @@ public class RhinoAndroidHelper {
     @VisibleForTesting
     public AndroidContextFactory getContextFactory() {
         AndroidContextFactory factory;
-        if (!ContextFactory.hasExplicitGlobal()) {
+        if(!ContextFactory.hasExplicitGlobal()) {
             factory = new AndroidContextFactory(cacheDirectory);
             ContextFactory.getGlobalSetter().setContextFactoryGlobal(factory);
-        } else if (!(ContextFactory.getGlobal() instanceof AndroidContextFactory)) {
+        } else if(!(ContextFactory.getGlobal() instanceof AndroidContextFactory)) {
             throw new IllegalStateException("Cannot initialize factory for Android Rhino: There is already another factory");
         } else {
             factory = (AndroidContextFactory) ContextFactory.getGlobal();

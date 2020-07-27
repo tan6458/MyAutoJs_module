@@ -1,8 +1,6 @@
 package com.stardust.util;
 
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,6 +9,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 public class BiMaps {
 
@@ -82,7 +83,7 @@ public class BiMaps {
         @Override
         public V remove(Object key) {
             V remove = mKVMap.remove(key);
-            if (remove != null) {
+            if(remove != null) {
                 mVKMap.remove(key);
             }
             return remove;

@@ -20,7 +20,7 @@ public class Config {
     }
 
     public static void setInstance(Config instance) {
-        if (sInstance != null)
+        if(sInstance != null)
             throw new IllegalStateException();
         sInstance = instance;
     }

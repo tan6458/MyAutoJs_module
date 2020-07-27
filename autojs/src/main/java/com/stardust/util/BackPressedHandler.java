@@ -1,9 +1,7 @@
 package com.stardust.util;
 
 import android.app.Activity;
-import android.os.Handler;
 import android.widget.Toast;
-
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -26,8 +24,8 @@ public interface BackPressedHandler {
 
         @Override
         public boolean onBackPressed(Activity activity) {
-            for (BackPressedHandler handler : mBackPressedHandlers) {
-                if (handler.onBackPressed(activity)) {
+            for(BackPressedHandler handler : mBackPressedHandlers) {
+                if(handler.onBackPressed(activity)) {
                     return true;
                 }
             }
@@ -71,7 +69,7 @@ public interface BackPressedHandler {
 
         @Override
         public boolean onBackPressed(Activity activity) {
-            if (System.currentTimeMillis() - mLastPressedMillis < mDoublePressInterval) {
+            if(System.currentTimeMillis()-mLastPressedMillis < mDoublePressInterval) {
                 mActivity.finish();
             } else {
                 mLastPressedMillis = System.currentTimeMillis();

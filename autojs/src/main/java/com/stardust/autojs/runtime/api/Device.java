@@ -15,8 +15,6 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.telephony.TelephonyManager;
 
 import com.stardust.autojs.R;
@@ -30,6 +28,8 @@ import java.net.SocketException;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import ezy.assist.compat.SettingsCompat;
 
 /**
@@ -73,7 +73,7 @@ public class Device {
     public static final String securityPatch;
 
     static {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             baseOS = Build.VERSION.BASE_OS;
             securityPatch = Build.VERSION.SECURITY_PATCH;
         } else {
@@ -101,7 +101,7 @@ public class Device {
         checkReadPhoneStatePermission();
         try {
             return ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        } catch (SecurityException e) {
+        } catch(SecurityException e) {
             return null;
         }
     }
@@ -180,7 +180,7 @@ public class Device {
 
     public float getBattery() {
         Intent batteryIntent = mContext.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        if (batteryIntent == null) {
+        if(batteryIntent == null) {
             return -1;
         }
         int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
@@ -205,7 +205,7 @@ public class Device {
 
     public boolean isCharging() {
         Intent intent = mContext.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        if (intent == null) {
+        if(intent == null) {
             throw new ScriptException("Cannot retrieve the battery state");
         }
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
@@ -234,7 +234,7 @@ public class Device {
     }
 
     public void wakeUpIfNeeded() {
-        if (!isScreenOn()) {
+        if(!isScreenOn()) {
             wakeUp();
         }
     }
@@ -260,14 +260,14 @@ public class Device {
     }
 
     private void checkWakeLock(int flags) {
-        if (mWakeLock == null || flags != mWakeLockFlag) {
+        if(mWakeLock == null || flags != mWakeLockFlag) {
             cancelKeepingAwake();
             mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(flags, Device.class.getName());
         }
     }
 
     public void cancelKeepingAwake() {
-        if (mWakeLock != null && mWakeLock.isHeld())
+        if(mWakeLock != null && mWakeLock.isHeld())
             mWakeLock.release();
     }
 
@@ -281,7 +281,7 @@ public class Device {
 
 
     private void checkWriteSettingsPermission() {
-        if (SettingsCompat.canWriteSettings(mContext)) {
+        if(SettingsCompat.canWriteSettings(mContext)) {
             return;
         }
         SettingsCompat.manageWriteSettings(mContext);
@@ -290,8 +290,8 @@ public class Device {
 
 
     private void checkReadPhoneStatePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (mContext.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(mContext.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
                     != PackageManager.PERMISSION_GRANTED) {
                 throw new SecurityException(mContext.getString(R.string.no_read_phone_state_permissin));
             }
@@ -304,8 +304,8 @@ public class Device {
     @SuppressWarnings("unchecked")
     private <T> T getSystemService(String service) {
         Object systemService = mContext.getSystemService(service);
-        if (systemService == null) {
-            throw new RuntimeException("should never happen..." + service);
+        if(systemService == null) {
+            throw new RuntimeException("should never happen..."+service);
         }
         return (T) systemService;
     }
@@ -315,21 +315,21 @@ public class Device {
     @SuppressLint("HardwareIds")
     public String getMacAddress() throws Exception {
         WifiManager wifiMan = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (wifiMan == null) {
+        if(wifiMan == null) {
             return null;
         }
         WifiInfo wifiInf = wifiMan.getConnectionInfo();
-        if (wifiInf == null) {
+        if(wifiInf == null) {
             return getMacByFile();
         }
 
         String mac = wifiInf.getMacAddress();
-        if (FAKE_MAC_ADDRESS.equals(mac)) {
+        if(FAKE_MAC_ADDRESS.equals(mac)) {
             mac = null;
         }
-        if (mac == null) {
+        if(mac == null) {
             mac = getMacByInterface();
-            if (mac == null) {
+            if(mac == null) {
                 mac = getMacByFile();
             }
         }
@@ -338,20 +338,20 @@ public class Device {
 
     private static String getMacByInterface() throws SocketException {
         List<NetworkInterface> networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-        for (NetworkInterface networkInterface : networkInterfaces) {
-            if (networkInterface.getName().equalsIgnoreCase("wlan0")) {
+        for(NetworkInterface networkInterface : networkInterfaces) {
+            if(networkInterface.getName().equalsIgnoreCase("wlan0")) {
                 byte[] macBytes = networkInterface.getHardwareAddress();
-                if (macBytes == null) {
+                if(macBytes == null) {
                     return null;
                 }
 
                 StringBuilder mac = new StringBuilder();
-                for (byte b : macBytes) {
+                for(byte b : macBytes) {
                     mac.append(String.format("%02X:", b));
                 }
 
-                if (mac.length() > 0) {
-                    mac.deleteCharAt(mac.length() - 1);
+                if(mac.length() > 0) {
+                    mac.deleteCharAt(mac.length()-1);
                 }
                 return mac.toString();
             }
@@ -362,32 +362,32 @@ public class Device {
     private static String getMacByFile() throws Exception {
         try {
             return PFiles.read("/sys/class/net/wlan0/address");
-        } catch (UncheckedIOException e) {
+        } catch(UncheckedIOException e) {
             return null;
         }
     }
 
     @Override
     public String toString() {
-        return "Device{" +
-                "width=" + width +
-                ", height=" + height +
-                ", buildId='" + buildId + '\'' +
-                ", buildDisplay='" + buildDisplay + '\'' +
-                ", product='" + product + '\'' +
-                ", board='" + board + '\'' +
-                ", brand='" + brand + '\'' +
-                ", device='" + device + '\'' +
-                ", model='" + model + '\'' +
-                ", bootloader='" + bootloader + '\'' +
-                ", hardware='" + hardware + '\'' +
-                ", fingerprint='" + fingerprint + '\'' +
-                ", sdkInt=" + sdkInt +
-                ", incremental='" + incremental + '\'' +
-                ", release='" + release + '\'' +
-                ", baseOS='" + baseOS + '\'' +
-                ", securityPatch='" + securityPatch + '\'' +
-                ", serial='" + serial + '\'' +
+        return "Device{"+
+                "width="+width+
+                ", height="+height+
+                ", buildId='"+buildId+'\''+
+                ", buildDisplay='"+buildDisplay+'\''+
+                ", product='"+product+'\''+
+                ", board='"+board+'\''+
+                ", brand='"+brand+'\''+
+                ", device='"+device+'\''+
+                ", model='"+model+'\''+
+                ", bootloader='"+bootloader+'\''+
+                ", hardware='"+hardware+'\''+
+                ", fingerprint='"+fingerprint+'\''+
+                ", sdkInt="+sdkInt+
+                ", incremental='"+incremental+'\''+
+                ", release='"+release+'\''+
+                ", baseOS='"+baseOS+'\''+
+                ", securityPatch='"+securityPatch+'\''+
+                ", serial='"+serial+'\''+
                 '}';
     }
 

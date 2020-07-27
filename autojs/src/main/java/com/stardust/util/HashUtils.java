@@ -16,7 +16,7 @@ public class HashUtils {
         byte[] bytesOfMessage = text.getBytes();
         try {
             md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
+        } catch(NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
         byte[] thedigest = md.digest(bytesOfMessage);

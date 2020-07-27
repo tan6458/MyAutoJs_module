@@ -1,7 +1,5 @@
 package com.stardust.autojs.script;
 
-import androidx.annotation.NonNull;
-
 import com.stardust.pio.PFiles;
 import com.stardust.pio.UncheckedIOException;
 
@@ -9,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/4/2.
@@ -38,7 +38,7 @@ public class JavaScriptFileSource extends JavaScriptSource {
     @NonNull
     @Override
     public String getScript() {
-        if (mScript == null)
+        if(mScript == null)
             mScript = PFiles.read(mFile);
         return mScript;
     }
@@ -46,7 +46,7 @@ public class JavaScriptFileSource extends JavaScriptSource {
     @Override
     protected int parseExecutionMode() {
         short flags = EncryptedScriptFileHeader.INSTANCE.getHeaderFlags(mFile);
-        if (flags == EncryptedScriptFileHeader.FLAG_INVALID_FILE) {
+        if(flags == EncryptedScriptFileHeader.FLAG_INVALID_FILE) {
             return super.parseExecutionMode();
         }
         return flags;
@@ -56,7 +56,7 @@ public class JavaScriptFileSource extends JavaScriptSource {
     public Reader getScriptReader() {
         try {
             return new FileReader(mFile);
-        } catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -67,7 +67,7 @@ public class JavaScriptFileSource extends JavaScriptSource {
 
     @Override
     public String toString() {
-        if (mCustomsName) {
+        if(mCustomsName) {
             return super.toString();
         }
         return mFile.toString();

@@ -9,7 +9,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 
 import org.mozilla.javascript.Context;
@@ -30,7 +29,7 @@ public class InjectableWebClient extends WebViewClient {
     private final ValueCallback<String> defaultCallback = new ValueCallback<String>() {
         @Override
         public void onReceiveValue(String value) {
-            Log.i(TAG, "onReceiveValue: " + value);
+            Log.i(TAG, "onReceiveValue: "+value);
         }
     };
     private WebView mWebView;
@@ -67,7 +66,7 @@ public class InjectableWebClient extends WebViewClient {
     }
 
     public void inject(String script, ValueCallback<String> callback) {
-        if (mWebView != null) {
+        if(mWebView != null) {
             inject(mWebView, script, callback);
             return;
         }
@@ -93,9 +92,9 @@ public class InjectableWebClient extends WebViewClient {
         public String eval(final String script) {
             result = null;
             mWebView.post(() -> {
-                Log.v(TAG, "ScriptBridge.eval: " + script);
+                Log.v(TAG, "ScriptBridge.eval: "+script);
                 result = mContext.evaluateString(mScriptable, script, "<eval-local>", 1, null);
-                Log.v(TAG, "ScriptBridge.eval = " + result);
+                Log.v(TAG, "ScriptBridge.eval = "+result);
                 synchronized (ScriptBridge.this) {
                     ScriptBridge.this.notify();
                 }
@@ -103,7 +102,7 @@ public class InjectableWebClient extends WebViewClient {
             synchronized (ScriptBridge.this) {
                 try {
                     ScriptBridge.this.wait();
-                } catch (InterruptedException e) {
+                } catch(InterruptedException e) {
                     throw new ScriptInterruptedException();
                 }
             }
@@ -127,7 +126,7 @@ public class InjectableWebClient extends WebViewClient {
             synchronized (this) {
                 try {
                     this.wait();
-                } catch (InterruptedException e) {
+                } catch(InterruptedException e) {
                     throw new ScriptInterruptedException();
                 }
             }

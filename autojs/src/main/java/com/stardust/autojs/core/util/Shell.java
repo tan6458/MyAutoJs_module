@@ -100,7 +100,7 @@ public class Shell extends AbstractShell {
             try {
                 mTermSession = new MyShellTermSession(settings, initialCommand);
                 mTermSession.initializeEmulator(1024, 40);
-            } catch (IOException e) {
+            } catch(IOException e) {
                 mInitException = new UncheckedIOException(e);
             }
         });
@@ -108,7 +108,7 @@ public class Shell extends AbstractShell {
 
     public void exec(String command) {
         ensureInitialized();
-        mTermSession.write(command + "\n");
+        mTermSession.write(command+"\n");
     }
 
     public String execAndWaitFor(String command) {
@@ -117,7 +117,7 @@ public class Shell extends AbstractShell {
             try {
                 mCommandOutputLock.wait();
                 return mCommandOutput;
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new ScriptInterruptedException();
             }
         }
@@ -132,11 +132,11 @@ public class Shell extends AbstractShell {
     }
 
     private void ensureInitialized() {
-        if (mTermSession == null) {
+        if(mTermSession == null) {
             logDebug("ensureInitialized: not init");
             checkInitException();
             waitInitialization();
-            if (mTermSession == null) {
+            if(mTermSession == null) {
                 checkInitException();
                 throw new IllegalStateException();
             }
@@ -146,34 +146,34 @@ public class Shell extends AbstractShell {
     }
 
     private void logDebug(String log) {
-        if (DEBUG) {
+        if(DEBUG) {
             Log.d(TAG, log);
         }
     }
 
     private void checkInitException() {
-        if (mInitException != null) {
+        if(mInitException != null) {
             throw mInitException;
         }
     }
 
     private void waitInitialization() {
         synchronized (mInitLock) {
-            if (mInitialized) {
+            if(mInitialized) {
                 return;
             }
             logDebug("waitInitialization: enter");
             try {
                 mInitLock.wait();
                 logDebug("waitInitialization: exit");
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 onInterrupted(e);
             }
         }
     }
 
     private void onInterrupted(InterruptedException e) {
-        if (mCallback == null) {
+        if(mCallback == null) {
             exit();
             throw new ScriptInterruptedException();
         } else {
@@ -189,7 +189,7 @@ public class Shell extends AbstractShell {
     @Override
     public void exitAndWaitFor() {
         execExitAndWait();
-        if (!isRoot()) {
+        if(!isRoot()) {
             return;
         }
         execExitAndWait();
@@ -201,7 +201,7 @@ public class Shell extends AbstractShell {
             exec("exit");
             try {
                 mExitLock.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 onInterrupted(e);
             }
         }
@@ -221,31 +221,31 @@ public class Shell extends AbstractShell {
         }
 
         private void onNewLine(String line) {
-            logDebug("onNewLine: " + line);
-            if (!mInitialized) {
-                if (!isRoot() && line.endsWith(" $ sh")) {
+            logDebug("onNewLine: "+line);
+            if(!mInitialized) {
+                if(!isRoot() && line.endsWith(" $ sh")) {
                     notifyInitialized();
                 }
             } else {
                 mCommandOutputs.add(line);
             }
-            if (mCallback != null) {
+            if(mCallback != null) {
                 mCallback.onNewLine(line);
             }
-            if (mWaitingExit && line.endsWith(" exit")) {
+            if(mWaitingExit && line.endsWith(" exit")) {
                 notifyExit();
             }
         }
 
         private void onCommandOutput(ArrayList<String> output) {
             StringBuilder result = new StringBuilder();
-            for (int i = 1; i < output.size(); i++) {
+            for(int i = 1; i < output.size(); i++) {
                 result.append(output.get(i));
-                if (i < output.size() - 1) {
+                if(i < output.size()-1) {
                     result.append("\n");
                 }
             }
-            logDebug("onCommandOutput: lines = " + output + ", output = " + result);
+            logDebug("onCommandOutput: lines = "+output+", output = "+result);
             synchronized (mCommandOutputLock) {
                 mCommandOutput = result.toString();
                 mCommandOutputLock.notifyAll();
@@ -253,9 +253,9 @@ public class Shell extends AbstractShell {
         }
 
         private void onOutput(String str) {
-            logDebug("onOutput: " + str);
-            if (!mInitialized) {
-                if (isRoot() && str.endsWith(":/ # ")) {
+            logDebug("onOutput: "+str);
+            if(!mInitialized) {
+                if(isRoot() && str.endsWith(":/ # ")) {
                     notifyInitialized();
                 }
             }
@@ -263,22 +263,22 @@ public class Shell extends AbstractShell {
             int i;
             while (true) {
                 i = str.indexOf("\n", start);
-                if (i > 0) {
-                    onNewLine((mStringBuffer.toString() + str.substring(0, i - 1)).trim());
+                if(i > 0) {
+                    onNewLine((mStringBuffer.toString()+str.substring(0, i-1)).trim());
                     mStringBuffer.delete(0, mStringBuffer.length());
                 } else {
-                    if (start <= str.length() - 1) {
+                    if(start <= str.length()-1) {
                         mStringBuffer.append(str.substring(start));
                     }
                     break;
                 }
-                start = i + 1;
+                start = i+1;
             }
-            if (str.endsWith(" # ") || str.endsWith(" $ ")) {
+            if(str.endsWith(" # ") || str.endsWith(" $ ")) {
                 onCommandOutput(mCommandOutputs);
                 mCommandOutputs.clear();
             }
-            if (mCallback != null) {
+            if(mCallback != null) {
                 mCallback.onOutput(str.replace("\r", ""));
             }
         }
@@ -302,7 +302,7 @@ public class Shell extends AbstractShell {
             synchronized (mInitLock) {
                 mInitLock.notifyAll();
             }
-            if (mCallback != null) {
+            if(mCallback != null) {
                 mCallback.onInitialized();
             }
         }

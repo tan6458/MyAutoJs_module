@@ -1,7 +1,6 @@
 package com.stardust.util;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -13,10 +12,10 @@ public class ViewUtils {
 
     public static View findParentById(View view, int id) {
         ViewParent parent = view.getParent();
-        if (parent == null || !(parent instanceof View))
+        if(parent == null || !(parent instanceof View))
             return null;
         View viewParent = (View) parent;
-        if (viewParent.getId() == id) {
+        if(viewParent.getId() == id) {
             return viewParent;
         }
         return findParentById(viewParent, id);

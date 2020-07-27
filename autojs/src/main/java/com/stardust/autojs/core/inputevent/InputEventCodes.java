@@ -13,25 +13,25 @@ public class InputEventCodes {
     public static final int UP = 0x00;
     public static final int DOWN = 0x01;
 
-    
-/*
- * Device properties and quirks
- */
 
-    public static final int INPUT_PROP_POINTER = 0x00;	/* needs a pointer */
-    public static final int INPUT_PROP_DIRECT = 0x01;	/* direct input devices */
-    public static final int INPUT_PROP_BUTTONPAD = 0x02;	/* has button(s) under pad */
-    public static final int INPUT_PROP_SEMI_MT = 0x03;	/* touch rectangle only */
-    public static final int INPUT_PROP_TOPBUTTONPAD = 0x04;	/* softbuttons at top of pad */
-    public static final int INPUT_PROP_POINTING_STICK = 0x05;	/* is a pointing stick */
-    public static final int INPUT_PROP_ACCELEROMETER = 0x06;	/* has accelerometer */
+    /*
+     * Device properties and quirks
+     */
+
+    public static final int INPUT_PROP_POINTER = 0x00;    /* needs a pointer */
+    public static final int INPUT_PROP_DIRECT = 0x01;    /* direct input devices */
+    public static final int INPUT_PROP_BUTTONPAD = 0x02;    /* has button(s) under pad */
+    public static final int INPUT_PROP_SEMI_MT = 0x03;    /* touch rectangle only */
+    public static final int INPUT_PROP_TOPBUTTONPAD = 0x04;    /* softbuttons at top of pad */
+    public static final int INPUT_PROP_POINTING_STICK = 0x05;    /* is a pointing stick */
+    public static final int INPUT_PROP_ACCELEROMETER = 0x06;    /* has accelerometer */
 
     public static final int INPUT_PROP_MAX = 0x1f;
-    public static final int INPUT_PROP_CNT = (INPUT_PROP_MAX + 1);
+    public static final int INPUT_PROP_CNT = (INPUT_PROP_MAX+1);
 
-/*
- * Event types
- */
+    /*
+     * Event types
+     */
 
     public static final int EV_SYN = 0x00;
     public static final int EV_KEY = 0x01;
@@ -46,29 +46,29 @@ public class InputEventCodes {
     public static final int EV_PWR = 0x16;
     public static final int EV_FF_STATUS = 0x17;
     public static final int EV_MAX = 0x1f;
-    public static final int EV_CNT = (EV_MAX + 1);
+    public static final int EV_CNT = (EV_MAX+1);
 
-/*
- * Synchronization events.
- */
+    /*
+     * Synchronization events.
+     */
 
     public static final int SYN_REPORT = 0;
     public static final int SYN_CONFIG = 1;
     public static final int SYN_MT_REPORT = 2;
     public static final int SYN_DROPPED = 3;
     public static final int SYN_MAX = 0xf;
-    public static final int SYN_CNT = (SYN_MAX + 1);
+    public static final int SYN_CNT = (SYN_MAX+1);
 
-/*
- * Keys and buttons
- *
- * Most of the keys/buttons are modeled after USB HUT 1.12
- * (see http://www.usb.org/developers/hidpage).
- * Abbreviations in the comments:
- * AC - Application Control
- * AL - Application Launch Button
- * SC - System Control
- */
+    /*
+     * Keys and buttons
+     *
+     * Most of the keys/buttons are modeled after USB HUT 1.12
+     * (see http://www.usb.org/developers/hidpage).
+     * Abbreviations in the comments:
+     * AC - Application Control
+     * AL - Application Launch Button
+     * SC - System Control
+     */
 
     public static final int KEY_RESERVED = 0;
     public static final int KEY_ESC = 1;
@@ -186,11 +186,11 @@ public class InputEventCodes {
     public static final int KEY_MUTE = 113;
     public static final int KEY_VOLUMEDOWN = 114;
     public static final int KEY_VOLUMEUP = 115;
-    public static final int KEY_POWER = 116;	/* SC System Power Down */
+    public static final int KEY_POWER = 116;    /* SC System Power Down */
     public static final int KEY_KPEQUAL = 117;
     public static final int KEY_KPPLUSMINUS = 118;
     public static final int KEY_PAUSE = 119;
-    public static final int KEY_SCALE = 120;	/* AL Compiz Scale (Expose) */
+    public static final int KEY_SCALE = 120;    /* AL Compiz Scale (Expose) */
 
     public static final int KEY_KPCOMMA = 121;
     public static final int KEY_HANGEUL = 122;
@@ -201,40 +201,40 @@ public class InputEventCodes {
     public static final int KEY_RIGHTMETA = 126;
     public static final int KEY_COMPOSE = 127;
 
-    public static final int KEY_STOP = 128;	/* AC Stop */
+    public static final int KEY_STOP = 128;    /* AC Stop */
     public static final int KEY_AGAIN = 129;
-    public static final int KEY_PROPS = 130;	/* AC Properties */
-    public static final int KEY_UNDO = 131;	/* AC Undo */
+    public static final int KEY_PROPS = 130;    /* AC Properties */
+    public static final int KEY_UNDO = 131;    /* AC Undo */
     public static final int KEY_FRONT = 132;
-    public static final int KEY_COPY = 133;	/* AC Copy */
-    public static final int KEY_OPEN = 134;	/* AC Open */
-    public static final int KEY_PASTE = 135;	/* AC Paste */
-    public static final int KEY_FIND = 136;	/* AC Search */
-    public static final int KEY_CUT = 137;	/* AC Cut */
-    public static final int KEY_HELP = 138;	/* AL Integrated Help Center */
-    public static final int KEY_MENU = 139;	/* Menu (show menu) */
-    public static final int KEY_CALC = 140;	/* AL Calculator */
+    public static final int KEY_COPY = 133;    /* AC Copy */
+    public static final int KEY_OPEN = 134;    /* AC Open */
+    public static final int KEY_PASTE = 135;    /* AC Paste */
+    public static final int KEY_FIND = 136;    /* AC Search */
+    public static final int KEY_CUT = 137;    /* AC Cut */
+    public static final int KEY_HELP = 138;    /* AL Integrated Help Center */
+    public static final int KEY_MENU = 139;    /* Menu (show menu) */
+    public static final int KEY_CALC = 140;    /* AL Calculator */
     public static final int KEY_SETUP = 141;
-    public static final int KEY_SLEEP = 142;	/* SC System Sleep */
-    public static final int KEY_WAKEUP = 143;	/* System Wake Up */
-    public static final int KEY_FILE = 144;	/* AL Local Machine Browser */
+    public static final int KEY_SLEEP = 142;    /* SC System Sleep */
+    public static final int KEY_WAKEUP = 143;    /* System Wake Up */
+    public static final int KEY_FILE = 144;    /* AL Local Machine Browser */
     public static final int KEY_SENDFILE = 145;
     public static final int KEY_DELETEFILE = 146;
     public static final int KEY_XFER = 147;
     public static final int KEY_PROG1 = 148;
     public static final int KEY_PROG2 = 149;
-    public static final int KEY_WWW = 150;	/* AL Internet Browser */
+    public static final int KEY_WWW = 150;    /* AL Internet Browser */
     public static final int KEY_MSDOS = 151;
-    public static final int KEY_COFFEE = 152;	/* AL Terminal Lock/Screensaver */
+    public static final int KEY_COFFEE = 152;    /* AL Terminal Lock/Screensaver */
     public static final int KEY_SCREENLOCK = KEY_COFFEE;
-    public static final int KEY_ROTATE_DISPLAY = 153;	/* Display orientation for e.g. tablets */
+    public static final int KEY_ROTATE_DISPLAY = 153;    /* Display orientation for e.g. tablets */
     public static final int KEY_DIRECTION = KEY_ROTATE_DISPLAY;
     public static final int KEY_CYCLEWINDOWS = 154;
     public static final int KEY_MAIL = 155;
-    public static final int KEY_BOOKMARKS = 156;	/* AC Bookmarks */
+    public static final int KEY_BOOKMARKS = 156;    /* AC Bookmarks */
     public static final int KEY_COMPUTER = 157;
-    public static final int KEY_BACK = 158;	/* AC Back */
-    public static final int KEY_FORWARD = 159;	/* AC Forward */
+    public static final int KEY_BACK = 158;    /* AC Back */
+    public static final int KEY_FORWARD = 159;    /* AC Forward */
     public static final int KEY_CLOSECD = 160;
     public static final int KEY_EJECTCD = 161;
     public static final int KEY_EJECTCLOSECD = 162;
@@ -244,20 +244,20 @@ public class InputEventCodes {
     public static final int KEY_STOPCD = 166;
     public static final int KEY_RECORD = 167;
     public static final int KEY_REWIND = 168;
-    public static final int KEY_PHONE = 169;	/* Media Select Telephone */
+    public static final int KEY_PHONE = 169;    /* Media Select Telephone */
     public static final int KEY_ISO = 170;
-    public static final int KEY_CONFIG = 171;	/* AL Consumer Control Configuration */
-    public static final int KEY_HOMEPAGE = 172;	/* AC Home */
-    public static final int KEY_REFRESH = 173;	/* AC Refresh */
-    public static final int KEY_EXIT = 174;	/* AC Exit */
+    public static final int KEY_CONFIG = 171;    /* AL Consumer Control Configuration */
+    public static final int KEY_HOMEPAGE = 172;    /* AC Home */
+    public static final int KEY_REFRESH = 173;    /* AC Refresh */
+    public static final int KEY_EXIT = 174;    /* AC Exit */
     public static final int KEY_MOVE = 175;
     public static final int KEY_EDIT = 176;
     public static final int KEY_SCROLLUP = 177;
     public static final int KEY_SCROLLDOWN = 178;
     public static final int KEY_KPLEFTPAREN = 179;
     public static final int KEY_KPRIGHTPAREN = 180;
-    public static final int KEY_NEW = 181;	/* AC New */
-    public static final int KEY_REDO = 182;	/* AC Redo/Repeat */
+    public static final int KEY_NEW = 181;    /* AC New */
+    public static final int KEY_REDO = 182;    /* AC Redo/Repeat */
 
     public static final int KEY_F13 = 183;
     public static final int KEY_F14 = 184;
@@ -276,13 +276,13 @@ public class InputEventCodes {
     public static final int KEY_PAUSECD = 201;
     public static final int KEY_PROG3 = 202;
     public static final int KEY_PROG4 = 203;
-    public static final int KEY_DASHBOARD = 204;	/* AL Dashboard */
+    public static final int KEY_DASHBOARD = 204;    /* AL Dashboard */
     public static final int KEY_SUSPEND = 205;
-    public static final int KEY_CLOSE = 206;	/* AC Close */
+    public static final int KEY_CLOSE = 206;    /* AC Close */
     public static final int KEY_PLAY = 207;
     public static final int KEY_FASTFORWARD = 208;
     public static final int KEY_BASSBOOST = 209;
-    public static final int KEY_PRINT = 210;	/* AC Print */
+    public static final int KEY_PRINT = 210;    /* AC Print */
     public static final int KEY_HP = 211;
     public static final int KEY_CAMERA = 212;
     public static final int KEY_SOUND = 213;
@@ -291,11 +291,11 @@ public class InputEventCodes {
     public static final int KEY_CHAT = 216;
     public static final int KEY_SEARCH = 217;
     public static final int KEY_CONNECT = 218;
-    public static final int KEY_FINANCE = 219;	/* AL Checkbook/Finance */
+    public static final int KEY_FINANCE = 219;    /* AL Checkbook/Finance */
     public static final int KEY_SPORT = 220;
     public static final int KEY_SHOP = 221;
     public static final int KEY_ALTERASE = 222;
-    public static final int KEY_CANCEL = 223;	/* AC Cancel */
+    public static final int KEY_CANCEL = 223;    /* AC Cancel */
     public static final int KEY_BRIGHTNESSDOWN = 224;
     public static final int KEY_BRIGHTNESSUP = 225;
     public static final int KEY_MEDIA = 226;
@@ -306,10 +306,10 @@ public class InputEventCodes {
     public static final int KEY_KBDILLUMDOWN = 229;
     public static final int KEY_KBDILLUMUP = 230;
 
-    public static final int KEY_SEND = 231;	/* AC Send */
-    public static final int KEY_REPLY = 232;	/* AC Reply */
-    public static final int KEY_FORWARDMAIL = 233;	/* AC Forward Msg */
-    public static final int KEY_SAVE = 234;	/* AC Save */
+    public static final int KEY_SEND = 231;    /* AC Send */
+    public static final int KEY_REPLY = 232;    /* AC Reply */
+    public static final int KEY_FORWARDMAIL = 233;    /* AC Forward Msg */
+    public static final int KEY_SAVE = 234;    /* AC Save */
     public static final int KEY_DOCUMENTS = 235;
 
     public static final int KEY_BATTERY = 236;
@@ -320,22 +320,22 @@ public class InputEventCodes {
 
     public static final int KEY_UNKNOWN = 240;
 
-    public static final int KEY_VIDEO_NEXT = 241;	/* drive next video source */
-    public static final int KEY_VIDEO_PREV = 242;	/* drive previous video source */
-    public static final int KEY_BRIGHTNESS_CYCLE = 243;	/* brightness up, after max is min */
+    public static final int KEY_VIDEO_NEXT = 241;    /* drive next video source */
+    public static final int KEY_VIDEO_PREV = 242;    /* drive previous video source */
+    public static final int KEY_BRIGHTNESS_CYCLE = 243;    /* brightness up, after max is min */
     public static final int KEY_BRIGHTNESS_AUTO = 244;	/* Set Auto Brightness: manual
                       brightness control is off,
 					  rely on ambient */
     public static final int KEY_BRIGHTNESS_ZERO = KEY_BRIGHTNESS_AUTO;
-    public static final int KEY_DISPLAY_OFF = 245;	/* display device to off state */
+    public static final int KEY_DISPLAY_OFF = 245;    /* display device to off state */
 
-    public static final int KEY_WWAN = 246;	/* Wireless WAN (LTE, UMTS, GSM, etc.) */
+    public static final int KEY_WWAN = 246;    /* Wireless WAN (LTE, UMTS, GSM, etc.) */
     public static final int KEY_WIMAX = KEY_WWAN;
-    public static final int KEY_RFKILL = 247;	/* Key that controls all radios */
+    public static final int KEY_RFKILL = 247;    /* Key that controls all radios */
 
-    public static final int KEY_MICMUTE = 248;	/* Mute / unmute the microphone */
+    public static final int KEY_MICMUTE = 248;    /* Mute / unmute the microphone */
 
-/* Code 255 is reserved for special needs of AT keyboard driver */
+    /* Code 255 is reserved for special needs of AT keyboard driver */
 
     public static final int BTN_MISC = 0x100;
     public static final int BTN_0 = 0x100;
@@ -404,13 +404,13 @@ public class InputEventCodes {
     public static final int BTN_TOOL_FINGER = 0x145;
     public static final int BTN_TOOL_MOUSE = 0x146;
     public static final int BTN_TOOL_LENS = 0x147;
-    public static final int BTN_TOOL_QUINTTAP = 0x148;	/* Five fingers on trackpad */
+    public static final int BTN_TOOL_QUINTTAP = 0x148;    /* Five fingers on trackpad */
     public static final int BTN_TOUCH = 0x14a;
     public static final int BTN_STYLUS = 0x14b;
     public static final int BTN_STYLUS2 = 0x14c;
     public static final int BTN_TOOL_DOUBLETAP = 0x14d;
     public static final int BTN_TOOL_TRIPLETAP = 0x14e;
-    public static final int BTN_TOOL_QUADTAP = 0x14f;	/* Four fingers on trackpad */
+    public static final int BTN_TOOL_QUADTAP = 0x14f;    /* Four fingers on trackpad */
 
     public static final int BTN_WHEEL = 0x150;
     public static final int BTN_GEAR_DOWN = 0x150;
@@ -422,15 +422,15 @@ public class InputEventCodes {
     public static final int KEY_CLEAR = 0x163;
     public static final int KEY_POWER2 = 0x164;
     public static final int KEY_OPTION = 0x165;
-    public static final int KEY_INFO = 0x166;	/* AL OEM Features/Tips/Tutorial */
+    public static final int KEY_INFO = 0x166;    /* AL OEM Features/Tips/Tutorial */
     public static final int KEY_TIME = 0x167;
     public static final int KEY_VENDOR = 0x168;
     public static final int KEY_ARCHIVE = 0x169;
-    public static final int KEY_PROGRAM = 0x16a;	/* Media Select Program Guide */
+    public static final int KEY_PROGRAM = 0x16a;    /* Media Select Program Guide */
     public static final int KEY_CHANNEL = 0x16b;
     public static final int KEY_FAVORITES = 0x16c;
     public static final int KEY_EPG = 0x16d;
-    public static final int KEY_PVR = 0x16e;	/* Media Select Home */
+    public static final int KEY_PVR = 0x16e;    /* Media Select Home */
     public static final int KEY_MHP = 0x16f;
     public static final int KEY_LANGUAGE = 0x170;
     public static final int KEY_TITLE = 0x171;
@@ -440,36 +440,36 @@ public class InputEventCodes {
     public static final int KEY_MODE = 0x175;
     public static final int KEY_KEYBOARD = 0x176;
     public static final int KEY_SCREEN = 0x177;
-    public static final int KEY_PC = 0x178;	/* Media Select Computer */
-    public static final int KEY_TV = 0x179;	/* Media Select TV */
-    public static final int KEY_TV2 = 0x17a;	/* Media Select Cable */
-    public static final int KEY_VCR = 0x17b;	/* Media Select VCR */
-    public static final int KEY_VCR2 = 0x17c;	/* VCR Plus */
-    public static final int KEY_SAT = 0x17d;	/* Media Select Satellite */
+    public static final int KEY_PC = 0x178;    /* Media Select Computer */
+    public static final int KEY_TV = 0x179;    /* Media Select TV */
+    public static final int KEY_TV2 = 0x17a;    /* Media Select Cable */
+    public static final int KEY_VCR = 0x17b;    /* Media Select VCR */
+    public static final int KEY_VCR2 = 0x17c;    /* VCR Plus */
+    public static final int KEY_SAT = 0x17d;    /* Media Select Satellite */
     public static final int KEY_SAT2 = 0x17e;
-    public static final int KEY_CD = 0x17f;	/* Media Select CD */
-    public static final int KEY_TAPE = 0x180;	/* Media Select Tape */
+    public static final int KEY_CD = 0x17f;    /* Media Select CD */
+    public static final int KEY_TAPE = 0x180;    /* Media Select Tape */
     public static final int KEY_RADIO = 0x181;
-    public static final int KEY_TUNER = 0x182;	/* Media Select Tuner */
+    public static final int KEY_TUNER = 0x182;    /* Media Select Tuner */
     public static final int KEY_PLAYER = 0x183;
     public static final int KEY_TEXT = 0x184;
-    public static final int KEY_DVD = 0x185;	/* Media Select DVD */
+    public static final int KEY_DVD = 0x185;    /* Media Select DVD */
     public static final int KEY_AUX = 0x186;
     public static final int KEY_MP3 = 0x187;
-    public static final int KEY_AUDIO = 0x188;	/* AL Audio Browser */
-    public static final int KEY_VIDEO = 0x189;	/* AL Movie Browser */
+    public static final int KEY_AUDIO = 0x188;    /* AL Audio Browser */
+    public static final int KEY_VIDEO = 0x189;    /* AL Movie Browser */
     public static final int KEY_DIRECTORY = 0x18a;
     public static final int KEY_LIST = 0x18b;
-    public static final int KEY_MEMO = 0x18c;	/* Media Select Messages */
+    public static final int KEY_MEMO = 0x18c;    /* Media Select Messages */
     public static final int KEY_CALENDAR = 0x18d;
     public static final int KEY_RED = 0x18e;
     public static final int KEY_GREEN = 0x18f;
     public static final int KEY_YELLOW = 0x190;
     public static final int KEY_BLUE = 0x191;
-    public static final int KEY_CHANNELUP = 0x192;	/* Channel Increment */
-    public static final int KEY_CHANNELDOWN = 0x193;	/* Channel Decrement */
+    public static final int KEY_CHANNELUP = 0x192;    /* Channel Increment */
+    public static final int KEY_CHANNELDOWN = 0x193;    /* Channel Decrement */
     public static final int KEY_FIRST = 0x194;
-    public static final int KEY_LAST = 0x195;	/* Recall Last */
+    public static final int KEY_LAST = 0x195;    /* Recall Last */
     public static final int KEY_AB = 0x196;
     public static final int KEY_NEXT = 0x197;
     public static final int KEY_RESTART = 0x198;
@@ -480,22 +480,22 @@ public class InputEventCodes {
     public static final int KEY_DIGITS = 0x19d;
     public static final int KEY_TEEN = 0x19e;
     public static final int KEY_TWEN = 0x19f;
-    public static final int KEY_VIDEOPHONE = 0x1a0;	/* Media Select Video Phone */
-    public static final int KEY_GAMES = 0x1a1;	/* Media Select Games */
-    public static final int KEY_ZOOMIN = 0x1a2;	/* AC Zoom In */
-    public static final int KEY_ZOOMOUT = 0x1a3;	/* AC Zoom Out */
-    public static final int KEY_ZOOMRESET = 0x1a4;	/* AC Zoom */
-    public static final int KEY_WORDPROCESSOR = 0x1a5;	/* AL Word Processor */
-    public static final int KEY_EDITOR = 0x1a6;	/* AL Text Editor */
-    public static final int KEY_SPREADSHEET = 0x1a7;	/* AL Spreadsheet */
-    public static final int KEY_GRAPHICSEDITOR = 0x1a8;	/* AL Graphics Editor */
-    public static final int KEY_PRESENTATION = 0x1a9;	/* AL Presentation App */
-    public static final int KEY_DATABASE = 0x1aa;	/* AL Database App */
-    public static final int KEY_NEWS = 0x1ab;	/* AL Newsreader */
-    public static final int KEY_VOICEMAIL = 0x1ac;	/* AL Voicemail */
-    public static final int KEY_ADDRESSBOOK = 0x1ad;	/* AL Contacts/Address Book */
-    public static final int KEY_MESSENGER = 0x1ae;	/* AL Instant Messaging */
-    public static final int KEY_DISPLAYTOGGLE = 0x1af;	/* Turn display (LCD) on and off */
+    public static final int KEY_VIDEOPHONE = 0x1a0;    /* Media Select Video Phone */
+    public static final int KEY_GAMES = 0x1a1;    /* Media Select Games */
+    public static final int KEY_ZOOMIN = 0x1a2;    /* AC Zoom In */
+    public static final int KEY_ZOOMOUT = 0x1a3;    /* AC Zoom Out */
+    public static final int KEY_ZOOMRESET = 0x1a4;    /* AC Zoom */
+    public static final int KEY_WORDPROCESSOR = 0x1a5;    /* AL Word Processor */
+    public static final int KEY_EDITOR = 0x1a6;    /* AL Text Editor */
+    public static final int KEY_SPREADSHEET = 0x1a7;    /* AL Spreadsheet */
+    public static final int KEY_GRAPHICSEDITOR = 0x1a8;    /* AL Graphics Editor */
+    public static final int KEY_PRESENTATION = 0x1a9;    /* AL Presentation App */
+    public static final int KEY_DATABASE = 0x1aa;    /* AL Database App */
+    public static final int KEY_NEWS = 0x1ab;    /* AL Newsreader */
+    public static final int KEY_VOICEMAIL = 0x1ac;    /* AL Voicemail */
+    public static final int KEY_ADDRESSBOOK = 0x1ad;    /* AL Contacts/Address Book */
+    public static final int KEY_MESSENGER = 0x1ae;    /* AL Instant Messaging */
+    public static final int KEY_DISPLAYTOGGLE = 0x1af;    /* Turn display (LCD) on and off */
     public static final int KEY_BRIGHTNESS_TOGGLE = KEY_DISPLAYTOGGLE;
     public static final int KEY_SPELLCHECK = 0x1b0;   /* AL Spell Check */
     public static final int KEY_LOGOFF = 0x1b1;   /* AL Logoff */
@@ -503,13 +503,13 @@ public class InputEventCodes {
     public static final int KEY_DOLLAR = 0x1b2;
     public static final int KEY_EURO = 0x1b3;
 
-    public static final int KEY_FRAMEBACK = 0x1b4;	/* Consumer - transport controls */
+    public static final int KEY_FRAMEBACK = 0x1b4;    /* Consumer - transport controls */
     public static final int KEY_FRAMEFORWARD = 0x1b5;
-    public static final int KEY_CONTEXT_MENU = 0x1b6;	/* GenDesc - system context menu */
-    public static final int KEY_MEDIA_REPEAT = 0x1b7;	/* Consumer - transport control */
-    public static final int KEY_10CHANNELSUP = 0x1b8;	/* 10 channels up (10+) */
-    public static final int KEY_10CHANNELSDOWN = 0x1b9;	/* 10 channels down (10-) */
-    public static final int KEY_IMAGES = 0x1ba;	/* AL Image Browser */
+    public static final int KEY_CONTEXT_MENU = 0x1b6;    /* GenDesc - system context menu */
+    public static final int KEY_MEDIA_REPEAT = 0x1b7;    /* Consumer - transport control */
+    public static final int KEY_10CHANNELSUP = 0x1b8;    /* 10 channels up (10+) */
+    public static final int KEY_10CHANNELSDOWN = 0x1b9;    /* 10 channels down (10-) */
+    public static final int KEY_IMAGES = 0x1ba;    /* AL Image Browser */
 
     public static final int KEY_DEL_EOL = 0x1c0;
     public static final int KEY_DEL_EOS = 0x1c1;
@@ -549,8 +549,8 @@ public class InputEventCodes {
     public static final int KEY_BRL_DOT9 = 0x1f9;
     public static final int KEY_BRL_DOT10 = 0x1fa;
 
-    public static final int KEY_NUMERIC_0 = 0x200;	/* used by phones, remote controls, */
-    public static final int KEY_NUMERIC_1 = 0x201;	/* and other keypads */
+    public static final int KEY_NUMERIC_0 = 0x200;    /* used by phones, remote controls, */
+    public static final int KEY_NUMERIC_1 = 0x201;    /* and other keypads */
     public static final int KEY_NUMERIC_2 = 0x202;
     public static final int KEY_NUMERIC_3 = 0x203;
     public static final int KEY_NUMERIC_4 = 0x204;
@@ -561,15 +561,15 @@ public class InputEventCodes {
     public static final int KEY_NUMERIC_9 = 0x209;
     public static final int KEY_NUMERIC_STAR = 0x20a;
     public static final int KEY_NUMERIC_POUND = 0x20b;
-    public static final int KEY_NUMERIC_A = 0x20c;	/* Phone key A - HUT Telephony 0xb9 */
+    public static final int KEY_NUMERIC_A = 0x20c;    /* Phone key A - HUT Telephony 0xb9 */
     public static final int KEY_NUMERIC_B = 0x20d;
     public static final int KEY_NUMERIC_C = 0x20e;
     public static final int KEY_NUMERIC_D = 0x20f;
 
     public static final int KEY_CAMERA_FOCUS = 0x210;
-    public static final int KEY_WPS_BUTTON = 0x211;	/* WiFi Protected Setup key */
+    public static final int KEY_WPS_BUTTON = 0x211;    /* WiFi Protected Setup key */
 
-    public static final int KEY_TOUCHPAD_TOGGLE = 0x212;	/* Request switch touchpad on or off */
+    public static final int KEY_TOUCHPAD_TOGGLE = 0x212;    /* Request switch touchpad on or off */
     public static final int KEY_TOUCHPAD_ON = 0x213;
     public static final int KEY_TOUCHPAD_OFF = 0x214;
 
@@ -582,27 +582,27 @@ public class InputEventCodes {
 
     public static final int KEY_ATTENDANT_ON = 0x21b;
     public static final int KEY_ATTENDANT_OFF = 0x21c;
-    public static final int KEY_ATTENDANT_TOGGLE = 0x21d;	/* Attendant call on or off */
-    public static final int KEY_LIGHTS_TOGGLE = 0x21e;	/* Reading light on or off */
+    public static final int KEY_ATTENDANT_TOGGLE = 0x21d;    /* Attendant call on or off */
+    public static final int KEY_LIGHTS_TOGGLE = 0x21e;    /* Reading light on or off */
 
     public static final int BTN_DPAD_UP = 0x220;
     public static final int BTN_DPAD_DOWN = 0x221;
     public static final int BTN_DPAD_LEFT = 0x222;
     public static final int BTN_DPAD_RIGHT = 0x223;
 
-    public static final int KEY_ALS_TOGGLE = 0x230;	/* Ambient light sensor */
+    public static final int KEY_ALS_TOGGLE = 0x230;    /* Ambient light sensor */
 
-    public static final int KEY_BUTTONCONFIG = 0x240;	/* AL Button Configuration */
-    public static final int KEY_TASKMANAGER = 0x241;	/* AL Task/Project Manager */
-    public static final int KEY_JOURNAL = 0x242;	/* AL Log/Journal/Timecard */
-    public static final int KEY_CONTROLPANEL = 0x243;	/* AL Control Panel */
-    public static final int KEY_APPSELECT = 0x244;	/* AL Select Task/Application */
-    public static final int KEY_SCREENSAVER = 0x245;	/* AL Screen Saver */
-    public static final int KEY_VOICECOMMAND = 0x246;	/* Listening Voice Command */
-    public static final int KEY_ASSISTANT = 0x247;	/* AL Context-aware desktop assistant */
+    public static final int KEY_BUTTONCONFIG = 0x240;    /* AL Button Configuration */
+    public static final int KEY_TASKMANAGER = 0x241;    /* AL Task/Project Manager */
+    public static final int KEY_JOURNAL = 0x242;    /* AL Log/Journal/Timecard */
+    public static final int KEY_CONTROLPANEL = 0x243;    /* AL Control Panel */
+    public static final int KEY_APPSELECT = 0x244;    /* AL Select Task/Application */
+    public static final int KEY_SCREENSAVER = 0x245;    /* AL Screen Saver */
+    public static final int KEY_VOICECOMMAND = 0x246;    /* Listening Voice Command */
+    public static final int KEY_ASSISTANT = 0x247;    /* AL Context-aware desktop assistant */
 
-    public static final int KEY_BRIGHTNESS_MIN = 0x250;	/* Set Brightness to Minimum */
-    public static final int KEY_BRIGHTNESS_MAX = 0x251;	/* Set Brightness to Maximum */
+    public static final int KEY_BRIGHTNESS_MIN = 0x250;    /* Set Brightness to Minimum */
+    public static final int KEY_BRIGHTNESS_MAX = 0x251;    /* Set Brightness to Maximum */
 
     public static final int KEY_KBDINPUTASSIST_PREV = 0x260;
     public static final int KEY_KBDINPUTASSIST_NEXT = 0x261;
@@ -688,11 +688,11 @@ public class InputEventCodes {
     /* We avoid low common keys in module aliases so they don't get huge. */
     public static final int KEY_MIN_INTERESTING = KEY_MUTE;
     public static final int KEY_MAX = 0x2ff;
-    public static final int KEY_CNT = (KEY_MAX + 1);
+    public static final int KEY_CNT = (KEY_MAX+1);
 
-/*
- * Relative axes
- */
+    /*
+     * Relative axes
+     */
 
     public static final int REL_X = 0x00;
     public static final int REL_Y = 0x01;
@@ -705,11 +705,11 @@ public class InputEventCodes {
     public static final int REL_WHEEL = 0x08;
     public static final int REL_MISC = 0x09;
     public static final int REL_MAX = 0x0f;
-    public static final int REL_CNT = (REL_MAX + 1);
+    public static final int REL_CNT = (REL_MAX+1);
 
-/*
- * Absolute axes
- */
+    /*
+     * Absolute axes
+     */
 
     public static final int ABS_X = 0x00;
     public static final int ABS_Y = 0x01;
@@ -740,36 +740,36 @@ public class InputEventCodes {
 
     public static final int ABS_MISC = 0x28;
 
-    public static final int ABS_MT_SLOT = 0x2f;	/* MT slot being modified */
-    public static final int ABS_MT_TOUCH_MAJOR = 0x30;	/* Major axis of touching ellipse */
-    public static final int ABS_MT_TOUCH_MINOR = 0x31;	/* Minor axis (omit if circular) */
-    public static final int ABS_MT_WIDTH_MAJOR = 0x32;	/* Major axis of approaching ellipse */
-    public static final int ABS_MT_WIDTH_MINOR = 0x33;	/* Minor axis (omit if circular) */
-    public static final int ABS_MT_ORIENTATION = 0x34;	/* Ellipse orientation */
-    public static final int ABS_MT_POSITION_X = 0x35;	/* Center X touch position */
-    public static final int ABS_MT_POSITION_Y = 0x36;	/* Center Y touch position */
-    public static final int ABS_MT_TOOL_TYPE = 0x37;	/* Type of touching device */
-    public static final int ABS_MT_BLOB_ID = 0x38;	/* Group a set of packets as a blob */
-    public static final int ABS_MT_TRACKING_ID = 0x39;	/* Unique ID of initiated contact */
-    public static final int ABS_MT_PRESSURE = 0x3a;	/* Pressure on contact area */
-    public static final int ABS_MT_DISTANCE = 0x3b;	/* Contact hover distance */
-    public static final int ABS_MT_TOOL_X = 0x3c;	/* Center X tool position */
-    public static final int ABS_MT_TOOL_Y = 0x3d;	/* Center Y tool position */
+    public static final int ABS_MT_SLOT = 0x2f;    /* MT slot being modified */
+    public static final int ABS_MT_TOUCH_MAJOR = 0x30;    /* Major axis of touching ellipse */
+    public static final int ABS_MT_TOUCH_MINOR = 0x31;    /* Minor axis (omit if circular) */
+    public static final int ABS_MT_WIDTH_MAJOR = 0x32;    /* Major axis of approaching ellipse */
+    public static final int ABS_MT_WIDTH_MINOR = 0x33;    /* Minor axis (omit if circular) */
+    public static final int ABS_MT_ORIENTATION = 0x34;    /* Ellipse orientation */
+    public static final int ABS_MT_POSITION_X = 0x35;    /* Center X touch position */
+    public static final int ABS_MT_POSITION_Y = 0x36;    /* Center Y touch position */
+    public static final int ABS_MT_TOOL_TYPE = 0x37;    /* Type of touching device */
+    public static final int ABS_MT_BLOB_ID = 0x38;    /* Group a set of packets as a blob */
+    public static final int ABS_MT_TRACKING_ID = 0x39;    /* Unique ID of initiated contact */
+    public static final int ABS_MT_PRESSURE = 0x3a;    /* Pressure on contact area */
+    public static final int ABS_MT_DISTANCE = 0x3b;    /* Contact hover distance */
+    public static final int ABS_MT_TOOL_X = 0x3c;    /* Center X tool position */
+    public static final int ABS_MT_TOOL_Y = 0x3d;    /* Center Y tool position */
 
 
     public static final int ABS_MAX = 0x3f;
-    public static final int ABS_CNT = (ABS_MAX + 1);
+    public static final int ABS_CNT = (ABS_MAX+1);
 
-/*
- * Switch events
- */
+    /*
+     * Switch events
+     */
 
     public static final int SW_LID = 0x00;  /* set = lid shut */
     public static final int SW_TABLET_MODE = 0x01;  /* set = tablet mode */
     public static final int SW_HEADPHONE_INSERT = 0x02;  /* set = inserted */
     public static final int SW_RFKILL_ALL = 0x03;  /* rfkill master switch, type "any"
                      set = radio enabled */
-    public static final int SW_RADIO = SW_RFKILL_ALL;	/* deprecated */
+    public static final int SW_RADIO = SW_RFKILL_ALL;    /* deprecated */
     public static final int SW_MICROPHONE_INSERT = 0x04;  /* set = inserted */
     public static final int SW_DOCK = 0x05;  /* set = plugged into dock */
     public static final int SW_LINEOUT_INSERT = 0x06;  /* set = inserted */
@@ -783,11 +783,11 @@ public class InputEventCodes {
     public static final int SW_MUTE_DEVICE = 0x0e;  /* set = device disabled */
     public static final int SW_PEN_INSERTED = 0x0f;  /* set = pen inserted */
     public static final int SW_MAX = 0x0f;
-    public static final int SW_CNT = (SW_MAX + 1);
+    public static final int SW_CNT = (SW_MAX+1);
 
-/*
- * Misc events
- */
+    /*
+     * Misc events
+     */
 
     public static final int MSC_SERIAL = 0x00;
     public static final int MSC_PULSELED = 0x01;
@@ -796,11 +796,11 @@ public class InputEventCodes {
     public static final int MSC_SCAN = 0x04;
     public static final int MSC_TIMESTAMP = 0x05;
     public static final int MSC_MAX = 0x07;
-    public static final int MSC_CNT = (MSC_MAX + 1);
+    public static final int MSC_CNT = (MSC_MAX+1);
 
-/*
- * LEDs
- */
+    /*
+     * LEDs
+     */
 
     public static final int LED_NUML = 0x00;
     public static final int LED_CAPSL = 0x01;
@@ -814,24 +814,24 @@ public class InputEventCodes {
     public static final int LED_MAIL = 0x09;
     public static final int LED_CHARGING = 0x0a;
     public static final int LED_MAX = 0x0f;
-    public static final int LED_CNT = (LED_MAX + 1);
+    public static final int LED_CNT = (LED_MAX+1);
 
-/*
- * Autorepeat values
- */
+    /*
+     * Autorepeat values
+     */
 
     public static final int REP_DELAY = 0x00;
     public static final int REP_PERIOD = 0x01;
     public static final int REP_MAX = 0x01;
-    public static final int REP_CNT = (REP_MAX + 1);
+    public static final int REP_CNT = (REP_MAX+1);
 
-/*
- * Sounds
- */
+    /*
+     * Sounds
+     */
 
     public static final int SND_CLICK = 0x00;
     public static final int SND_BELL = 0x01;
     public static final int SND_TONE = 0x02;
     public static final int SND_MAX = 0x07;
-    public static final int SND_CNT = (SND_MAX + 1);
+    public static final int SND_CNT = (SND_MAX+1);
 }

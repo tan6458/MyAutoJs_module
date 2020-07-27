@@ -23,7 +23,7 @@ public class ProgressBarInflater<V extends ProgressBar> extends BaseViewInflater
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "animationResolution":
                 Exceptions.unsupports(view, attr, value);
                 break;
@@ -43,12 +43,12 @@ public class ProgressBarInflater<V extends ProgressBar> extends BaseViewInflater
                 Exceptions.unsupports(view, attr, value);
                 break;
             case "indeterminateTint":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setIndeterminateTintList(ColorStateList.valueOf(Colors.parse(view, value)));
                 }
                 break;
             case "indeterminateTintMode":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setIndeterminateTintMode(TINT_MODES.get(value));
                 }
                 break;
@@ -80,12 +80,12 @@ public class ProgressBarInflater<V extends ProgressBar> extends BaseViewInflater
                 view.setProgress(Integer.parseInt(value));
                 break;
             case "progressBackgroundTint":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setProgressBackgroundTintList(ColorStateList.valueOf(Colors.parse(view, value)));
                 }
                 break;
             case "progressBackgroundTintMode":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setProgressBackgroundTintMode(TINT_MODES.get(value));
                 }
                 break;
@@ -93,12 +93,12 @@ public class ProgressBarInflater<V extends ProgressBar> extends BaseViewInflater
                 view.setProgressDrawable(getDrawables().parse(view, value));
                 break;
             case "progressTint":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setProgressTintList(ColorStateList.valueOf(Colors.parse(view, value)));
                 }
                 break;
             case "progressTintMode":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setProgressTintMode(TINT_MODES.get(value));
                 }
                 break;
@@ -106,12 +106,12 @@ public class ProgressBarInflater<V extends ProgressBar> extends BaseViewInflater
                 view.setSecondaryProgress(Integer.parseInt(value));
                 break;
             case "secondaryProgressTint":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setSecondaryProgressTintList(ColorStateList.valueOf(Colors.parse(view, value)));
                 }
                 break;
             case "secondaryProgressTintMode":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setSecondaryProgressTintMode(TINT_MODES.get(value));
                 }
                 break;

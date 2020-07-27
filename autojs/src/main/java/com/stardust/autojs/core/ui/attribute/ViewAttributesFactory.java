@@ -37,7 +37,7 @@ public class ViewAttributesFactory {
         Class viewClass = view.getClass();
         while (viewClass != null && !viewClass.equals(Object.class)) {
             ViewAttributesCreator creator = sViewAttributesCreators.get(viewClass);
-            if (creator != null) {
+            if(creator != null) {
                 return creator.create(resourceParser, view);
             }
             viewClass = viewClass.getSuperclass();

@@ -3,14 +3,14 @@ package com.stardust.autojs.core.ui.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.util.AttributeSet;
+
+import com.stardust.autojs.R;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.util.AttributeSet;
-
-import com.stardust.autojs.R;
 
 public class JsToolbar extends Toolbar {
 
@@ -36,7 +36,7 @@ public class JsToolbar extends Toolbar {
     private Activity getActivity() {
         Context context = getContext();
         while (!(context instanceof Activity)) {
-            if (context instanceof ContextWrapper) {
+            if(context instanceof ContextWrapper) {
                 context = ((ContextWrapper) context).getBaseContext();
             } else {
                 return null;

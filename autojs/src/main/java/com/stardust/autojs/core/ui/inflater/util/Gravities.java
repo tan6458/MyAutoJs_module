@@ -11,8 +11,8 @@ public class Gravities {
     public static int parse(String g) {
         int gravity = Gravity.NO_GRAVITY;
         String[] parts = g.toLowerCase().split("[|]");
-        for (String part : parts) {
-            switch (part) {
+        for(String part : parts) {
+            switch(part) {
                 case "center":
                     gravity = gravity | Gravity.CENTER;
                     break;
@@ -40,7 +40,6 @@ public class Gravities {
         }
         return gravity;
     }
-
 
 
 }

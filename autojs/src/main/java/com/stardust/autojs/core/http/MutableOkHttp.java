@@ -27,13 +27,13 @@ public class MutableOkHttp extends OkHttpClient {
             try {
                 response = chain.proceed(request);
                 succeed = response.isSuccessful();
-            } catch (SocketTimeoutException e) {
+            } catch(SocketTimeoutException e) {
                 succeed = false;
-                if (tryCount >= getMaxRetries()) {
+                if(tryCount >= getMaxRetries()) {
                     throw e;
                 }
             }
-            if (succeed || tryCount >= getMaxRetries()) {
+            if(succeed || tryCount >= getMaxRetries()) {
                 return response;
             }
             tryCount++;
@@ -52,7 +52,7 @@ public class MutableOkHttp extends OkHttpClient {
         builder.readTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                 .writeTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                 .connectTimeout(getTimeout(), TimeUnit.MILLISECONDS);
-        for (Interceptor interceptor : getInterceptors()) {
+        for(Interceptor interceptor : getInterceptors()) {
             builder.addInterceptor(interceptor);
         }
         return builder.build();

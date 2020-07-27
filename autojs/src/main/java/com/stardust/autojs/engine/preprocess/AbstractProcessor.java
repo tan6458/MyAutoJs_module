@@ -14,7 +14,7 @@ public abstract class AbstractProcessor implements Preprocessor {
     public Reader preprocess(Reader reader) throws IOException {
         reset();
         int ch;
-        if (!(reader instanceof BufferedReader))
+        if(!(reader instanceof BufferedReader))
             reader = new BufferedReader(reader);
         while ((ch = reader.read()) != -1) {
             handleChar(ch);

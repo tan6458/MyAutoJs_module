@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
-import android.widget.CompoundButton;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -13,10 +12,8 @@ import com.stardust.autojs.annotation.ScriptInterface;
 import com.stardust.autojs.annotation.ScriptVariable;
 import com.stardust.autojs.core.ui.dialog.BlockedMaterialDialog;
 import com.stardust.autojs.core.ui.dialog.JsDialogBuilder;
-import com.stardust.autojs.runtime.ScriptBridges;
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.util.ArrayUtils;
-import com.stardust.util.UiHandler;
 
 /**
  * Created by Stardust on 2017/5/8.
@@ -48,7 +45,7 @@ public class Dialogs {
                 .alert()
                 .title(title)
                 .positiveText(R.string.ok);
-        if (!TextUtils.isEmpty(content)) {
+        if(!TextUtils.isEmpty(content)) {
             builder.content(content);
         }
         return ((BlockedMaterialDialog.Builder) builder).showAndGet();
@@ -61,14 +58,14 @@ public class Dialogs {
                 .title(title)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel);
-        if (!TextUtils.isEmpty(content)) {
+        if(!TextUtils.isEmpty(content)) {
             builder.content(content);
         }
         return ((BlockedMaterialDialog.Builder) builder).showAndGet();
-}
+    }
 
     private Context getContext() {
-        if (mThemeWrapper != null)
+        if(mThemeWrapper != null)
             return mThemeWrapper;
         mThemeWrapper = new ContextThemeWrapper(mRuntime.uiHandler.getContext().getApplicationContext(), R.style.Theme_AppCompat_Light);
         return mThemeWrapper;
@@ -85,15 +82,15 @@ public class Dialogs {
 
     private String[] getItems(Object[] args) {
         int len = 0;
-        if (args.length > 1) {
-            if (args[args.length - 1] instanceof CharSequence) {
+        if(args.length > 1) {
+            if(args[args.length-1] instanceof CharSequence) {
                 len = args.length;
             } else {
-                len = args.length - 1;
+                len = args.length-1;
             }
         }
         String[] items = new String[len];
-        for (int i = 0; i < len; i++) {
+        for(int i = 0; i < len; i++) {
             items[i] = args[i] == null ? null : args[i].toString();
         }
         return items;
@@ -129,7 +126,7 @@ public class Dialogs {
 
     private BlockedMaterialDialog.Builder dialogBuilder(Object callback) {
         Context context = mRuntime.app.getCurrentActivity();
-        if (context == null || ((Activity) context).isFinishing()) {
+        if(context == null || ((Activity) context).isFinishing()) {
             context = getContext();
         }
         return (BlockedMaterialDialog.Builder) new BlockedMaterialDialog.Builder(context, mRuntime, callback)
@@ -139,7 +136,7 @@ public class Dialogs {
     @ScriptInterface
     public MaterialDialog.Builder newBuilder() {
         Context context = mRuntime.app.getCurrentActivity();
-        if (context == null || ((Activity) context).isFinishing()) {
+        if(context == null || ((Activity) context).isFinishing()) {
             context = getContext();
         }
         return new JsDialogBuilder(context, mRuntime)

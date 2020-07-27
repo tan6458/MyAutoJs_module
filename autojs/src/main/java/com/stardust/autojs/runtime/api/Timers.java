@@ -1,14 +1,10 @@
 package com.stardust.autojs.runtime.api;
 
-import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.util.Log;
-import android.util.SparseArray;
 
 import com.stardust.autojs.core.looper.Timer;
 import com.stardust.autojs.core.looper.TimerThread;
-import com.stardust.autojs.runtime.ScriptBridges;
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.concurrent.VolatileBox;
 
@@ -45,11 +41,11 @@ public class Timers {
     }
 
     public Timer getTimerForThread(Thread thread) {
-        if (thread == mThreads.getMainThread()) {
+        if(thread == mThreads.getMainThread()) {
             return mMainTimer;
         }
         Timer timer = TimerThread.getTimerForThread(thread);
-        if (timer == null && Looper.myLooper() == Looper.getMainLooper()) {
+        if(timer == null && Looper.myLooper() == Looper.getMainLooper()) {
             return mUiTimer;
         }
         return timer;
@@ -81,7 +77,7 @@ public class Timers {
 
     public boolean hasPendingCallbacks() {
         //如果是脚本主线程，则检查所有子线程中的定时回调。mFutureCallbackUptimeMillis用来记录所有子线程中定时最久的一个。
-        if (mThreads.getMainThread() == Thread.currentThread()) {
+        if(mThreads.getMainThread() == Thread.currentThread()) {
             return mMaxCallbackUptimeMillisForAllThreads.get() > SystemClock.uptimeMillis();
         }
         // 否则检查当前线程的定时回调

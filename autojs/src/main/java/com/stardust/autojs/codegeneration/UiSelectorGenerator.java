@@ -4,11 +4,8 @@ import com.stardust.automator.UiGlobalSelector;
 import com.stardust.automator.UiObject;
 import com.stardust.util.Consumer;
 
-import androidx.appcompat.widget.AppCompatEditText;
-
 import static com.stardust.autojs.codegeneration.CodeGenerator.FIND_ONE;
 import static com.stardust.autojs.codegeneration.CodeGenerator.UNTIL_FIND;
-import static com.stardust.autojs.codegeneration.CodeGenerator.WAIT_FOR;
 
 /**
  * Created by Stardust on 2017/12/7.
@@ -30,41 +27,41 @@ public class UiSelectorGenerator {
 
     public UiGlobalSelector generateSelector() {
         UiGlobalSelector selector = new UiGlobalSelector();
-        if (mUsingId &&
+        if(mUsingId &&
                 tryWithStringCondition(selector, mTarget.id(), selector::id)) {
             return selector;
         }
 
-        if (tryWithStringCondition(selector, mTarget.className(), selector::className)) {
+        if(tryWithStringCondition(selector, mTarget.className(), selector::className)) {
             return selector;
         }
-        if (mUsingText &&
+        if(mUsingText &&
                 tryWithStringCondition(selector, mTarget.text(), selector::text)) {
             return selector;
         }
-        if (mUsingDesc &&
+        if(mUsingDesc &&
                 tryWithStringCondition(selector, mTarget.desc(), selector::desc)) {
             return selector;
         }
-        if (mTarget.scrollable() && tryWithBooleanCondition(selector, mTarget.scrollable(), selector::scrollable)) {
+        if(mTarget.scrollable() && tryWithBooleanCondition(selector, mTarget.scrollable(), selector::scrollable)) {
             return selector;
         }
-        if (mTarget.clickable() && tryWithBooleanCondition(selector, mTarget.clickable(), selector::clickable)) {
+        if(mTarget.clickable() && tryWithBooleanCondition(selector, mTarget.clickable(), selector::clickable)) {
             return selector;
         }
-        if (mTarget.selected() && tryWithBooleanCondition(selector, mTarget.selected(), selector::selected)) {
+        if(mTarget.selected() && tryWithBooleanCondition(selector, mTarget.selected(), selector::selected)) {
             return selector;
         }
-        if (mTarget.checkable() && tryWithBooleanCondition(selector, mTarget.checkable(), selector::checkable)) {
+        if(mTarget.checkable() && tryWithBooleanCondition(selector, mTarget.checkable(), selector::checkable)) {
             return selector;
         }
-        if (mTarget.checked() && tryWithBooleanCondition(selector, mTarget.checked(), selector::checked)) {
+        if(mTarget.checked() && tryWithBooleanCondition(selector, mTarget.checked(), selector::checked)) {
             return selector;
         }
-        if (mTarget.longClickable() && tryWithBooleanCondition(selector, mTarget.longClickable(), selector::longClickable)) {
+        if(mTarget.longClickable() && tryWithBooleanCondition(selector, mTarget.longClickable(), selector::longClickable)) {
             return selector;
         }
-        if (tryWithIntCondition(selector, mTarget.depth(), selector::depth)) {
+        if(tryWithIntCondition(selector, mTarget.depth(), selector::depth)) {
             return selector;
         }
         return null;
@@ -72,13 +69,13 @@ public class UiSelectorGenerator {
 
     public String generateSelectorCode() {
         UiGlobalSelector selector = generateSelector();
-        if (selector == null) {
+        if(selector == null) {
             return null;
         }
-        if (mSearchMode == FIND_ONE) {
-            return selector + ".findOne()";
-        } else if (mSearchMode == UNTIL_FIND) {
-            return selector + ".untilFind()";
+        if(mSearchMode == FIND_ONE) {
+            return selector+".findOne()";
+        } else if(mSearchMode == UNTIL_FIND) {
+            return selector+".untilFind()";
         } else {
             return selector.toString();
         }
@@ -108,7 +105,7 @@ public class UiSelectorGenerator {
 
 
     private boolean tryWithStringCondition(UiGlobalSelector selector, String value, Consumer<String> condition) {
-        if (value == null || value.isEmpty()) {
+        if(value == null || value.isEmpty()) {
             return false;
         }
         condition.accept(value);
@@ -116,7 +113,7 @@ public class UiSelectorGenerator {
     }
 
     private boolean shouldStopGeneration(UiGlobalSelector selector) {
-        if (mSearchMode == UNTIL_FIND) {
+        if(mSearchMode == UNTIL_FIND) {
             return !selector.findAndReturnList(mRoot, 1).isEmpty();
         } else {
             return selector.findAndReturnList(mRoot, 2).size() == 1;

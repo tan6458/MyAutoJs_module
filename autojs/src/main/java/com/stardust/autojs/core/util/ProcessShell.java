@@ -47,7 +47,7 @@ public class ProcessShell extends AbstractShell {
             mCommandOutputStream = new DataOutputStream(mProcess.getOutputStream());
             mSucceedReader = new BufferedReader(new InputStreamReader(mProcess.getInputStream()));
             mErrorReader = new BufferedReader(new InputStreamReader(mProcess.getErrorStream()));
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -56,34 +56,34 @@ public class ProcessShell extends AbstractShell {
     public void exec(String command) {
         try {
             mCommandOutputStream.writeBytes(command);
-            if (!command.endsWith(COMMAND_LINE_END)) {
+            if(!command.endsWith(COMMAND_LINE_END)) {
                 mCommandOutputStream.writeBytes(COMMAND_LINE_END);
             }
             mCommandOutputStream.flush();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void exit() {
-        if (mProcess != null) {
-            Log.d(TAG, "exit: pid = " + ProcessUtils.getProcessPid(mProcess));
+        if(mProcess != null) {
+            Log.d(TAG, "exit: pid = "+ProcessUtils.getProcessPid(mProcess));
             mProcess.destroy();
             mProcess = null;
         }
-        if (mSucceedReader != null) {
+        if(mSucceedReader != null) {
             try {
                 mSucceedReader.close();
-            } catch (IOException ignored) {
+            } catch(IOException ignored) {
 
             }
             mSucceedReader = null;
         }
-        if (mErrorReader != null) {
+        if(mErrorReader != null) {
             try {
                 mErrorReader.close();
-            } catch (IOException ignored) {
+            } catch(IOException ignored) {
 
             }
             mErrorReader = null;
@@ -101,7 +101,7 @@ public class ProcessShell extends AbstractShell {
     public int waitFor() {
         try {
             return mProcess.waitFor();
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -121,7 +121,7 @@ public class ProcessShell extends AbstractShell {
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -160,7 +160,7 @@ public class ProcessShell extends AbstractShell {
         ProcessShell shell = null;
         try {
             shell = new ProcessShell(isRoot);
-            for (String command : commands) {
+            for(String command : commands) {
                 shell.exec(command);
             }
             shell.exec(COMMAND_EXIT);
@@ -172,7 +172,7 @@ public class ProcessShell extends AbstractShell {
             shell.exit();
             return result;
         } finally {
-            if (shell != null) {
+            if(shell != null) {
                 shell.exit();
             }
         }
@@ -180,15 +180,15 @@ public class ProcessShell extends AbstractShell {
 
     public static Result execCommand(String[] commands, boolean isRoot) {
         Result commandResult = new Result();
-        if (commands == null || commands.length == 0)
+        if(commands == null || commands.length == 0)
             throw new IllegalArgumentException("command is empty");
         Process process = null;
         DataOutputStream os = null;
         try {
             process = Runtime.getRuntime().exec(isRoot ? COMMAND_SU : COMMAND_SH);
             os = new DataOutputStream(process.getOutputStream());
-            for (String command : commands) {
-                if (command != null) {
+            for(String command : commands) {
+                if(command != null) {
                     os.write(command.getBytes());
                     os.writeBytes(COMMAND_LINE_END);
                     os.flush();
@@ -196,24 +196,25 @@ public class ProcessShell extends AbstractShell {
             }
             os.writeBytes(COMMAND_EXIT);
             os.flush();
-            Log.d(TAG, "pid = " + ProcessUtils.getProcessPid(process));
+            Log.d(TAG, "pid = "+ProcessUtils.getProcessPid(process));
             commandResult.code = process.waitFor();
             commandResult.result = readAll(process.getInputStream());
             commandResult.error = readAll(process.getErrorStream());
             Log.d(TAG, commandResult.toString());
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new ScriptInterruptedException(e);
         } finally {
             try {
-                if (os != null) os.close();
-                if (process != null) {
+                if(os != null)
+                    os.close();
+                if(process != null) {
                     process.getInputStream().close();
                     process.getOutputStream().close();
                 }
-            } catch (IOException ignored) {
+            } catch(IOException ignored) {
 
             }
-            if (process != null) {
+            if(process != null) {
                 process.destroy();
             }
         }

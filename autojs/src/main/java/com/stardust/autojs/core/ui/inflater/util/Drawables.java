@@ -31,7 +31,7 @@ public class Drawables {
     private ImageLoader mImageLoader = sDefaultImageLoader;
 
     public static void setDefaultImageLoader(ImageLoader defaultImageLoader) {
-        if (defaultImageLoader == null)
+        if(defaultImageLoader == null)
             throw new NullPointerException();
         sDefaultImageLoader = defaultImageLoader;
     }
@@ -42,13 +42,13 @@ public class Drawables {
 
     public Drawable parse(Context context, String value) {
         Resources resources = context.getResources();
-        if (value.startsWith("@color/") || value.startsWith("@android:color/") || value.startsWith("#")) {
+        if(value.startsWith("@color/") || value.startsWith("@android:color/") || value.startsWith("#")) {
             return new ColorDrawable(Colors.parse(context, value));
         }
-        if (value.startsWith("?")) {
+        if(value.startsWith("?")) {
             return loadAttrResources(context, value);
         }
-        if (value.startsWith("file://")) {
+        if(value.startsWith("file://")) {
             return decodeImage(value.substring(7));
         }
         return loadDrawableResources(context, value);
@@ -57,8 +57,8 @@ public class Drawables {
     public Drawable loadDrawableResources(Context context, String value) {
         int resId = context.getResources().getIdentifier(value, "drawable",
                 context.getPackageName());
-        if (resId == 0)
-            throw new Resources.NotFoundException("drawable not found: " + value);
+        if(resId == 0)
+            throw new Resources.NotFoundException("drawable not found: "+value);
         return context.getResources().getDrawable(resId);
     }
 
@@ -88,9 +88,9 @@ public class Drawables {
     }
 
     public <V extends ImageView> void setupWithImage(V view, String value) {
-        if (value.startsWith("http://") || value.startsWith("https://")) {
+        if(value.startsWith("http://") || value.startsWith("https://")) {
             loadInto(view, Uri.parse(value));
-        } else if (value.startsWith("data:")) {
+        } else if(value.startsWith("data:")) {
             loadDataInto(view, value);
         } else {
             view.setImageDrawable(parse(view, value));
@@ -105,7 +105,7 @@ public class Drawables {
     public static Bitmap loadBase64Data(String data) {
         Matcher matcher = DATA_PATTERN.matcher(data);
         String base64;
-        if (!matcher.matches() || matcher.groupCount() != 2) {
+        if(!matcher.matches() || matcher.groupCount() != 2) {
             base64 = data;
         } else {
             String mimeType = matcher.group(1);
@@ -116,10 +116,10 @@ public class Drawables {
     }
 
     public void setupWithViewBackground(View view, String value) {
-        if (value.startsWith("http://") || value.startsWith("https://")) {
+        if(value.startsWith("http://") || value.startsWith("https://")) {
             loadIntoBackground(view, Uri.parse(value));
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 view.setBackground(parse(view, value));
             } else {
                 view.setBackgroundDrawable(parse(view, value));
@@ -153,7 +153,7 @@ public class Drawables {
                 URL url = new URL(uri.toString());
                 Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 return new BitmapDrawable(view.getResources(), bmp);
-            } catch (Exception e) {
+            } catch(Exception e) {
                 return null;
             }
         }
@@ -170,7 +170,7 @@ public class Drawables {
                     URL url = new URL(uri.toString());
                     final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                     view.post(() -> callback.onLoaded(bmp));
-                } catch (Exception e) {
+                } catch(Exception e) {
                     e.printStackTrace();
                 }
             }).start();

@@ -17,7 +17,7 @@ public class ScriptInterruptedException extends ScriptException {
 
     public static boolean causedByInterrupted(Throwable e) {
         while (e != null) {
-            if (e instanceof ScriptInterruptedException || e instanceof InterruptedException) {
+            if(e instanceof ScriptInterruptedException || e instanceof InterruptedException) {
                 return true;
             }
             e = e.getCause();

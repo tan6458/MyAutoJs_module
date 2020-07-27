@@ -1,7 +1,5 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +12,9 @@ import com.stardust.autojs.core.ui.inflater.util.Strings;
 import com.stardust.autojs.core.ui.inflater.util.ValueMapper;
 
 import java.util.Map;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * Created by Stardust on 2017/11/5.
@@ -32,7 +33,7 @@ public class ToolbarInflater<V extends Toolbar> extends BaseViewInflater<V> {
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
 
             case "logo":
                 view.setLogo(getDrawables().parse(view, value));

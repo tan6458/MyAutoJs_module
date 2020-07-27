@@ -1,13 +1,13 @@
 package com.stardust.autojs.core.ui.inflater;
 
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import org.w3c.dom.Node;
 
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/11/3.

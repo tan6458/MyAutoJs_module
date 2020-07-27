@@ -3,9 +3,8 @@ package com.example.myautojs.utils.autojs
 import android.util.Log
 import android.view.KeyEvent
 import com.example.myautojs.App
-
-import com.stardust.app.GlobalAppContext
 import com.example.myautojs.utils.Pref
+import com.stardust.app.GlobalAppContext
 import com.stardust.autojs.core.inputevent.InputEventObserver
 import com.stardust.autojs.core.inputevent.ShellKeyObserver
 import com.stardust.view.accessibility.AccessibilityService

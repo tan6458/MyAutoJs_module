@@ -2,14 +2,15 @@ package com.stardust.autojs.core.ui.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
 
@@ -76,9 +77,9 @@ public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
 
     public void setTextSize(float textSize) {
         mTextSize = textSize;
-        for (int i = 0; i < getChildCount(); i++) {
+        for(int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            if (child instanceof TextView) {
+            if(child instanceof TextView) {
                 ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
             }
         }
@@ -91,9 +92,9 @@ public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
 
     public void setTextStyle(int textStyle) {
         mTextStyle = textStyle;
-        for (int i = 0; i < getChildCount(); i++) {
+        for(int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            if (child instanceof TextView) {
+            if(child instanceof TextView) {
                 ((TextView) child).setTypeface(((TextView) child).getTypeface(), mTextStyle);
             }
         }
@@ -105,9 +106,9 @@ public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
 
     public void setTextColor(int textColor) {
         mTextColor = textColor;
-        for (int i = 0; i < getChildCount(); i++) {
+        for(int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            if (child instanceof TextView) {
+            if(child instanceof TextView) {
                 ((TextView) child).setTextColor(mTextColor);
             }
         }
@@ -124,17 +125,17 @@ public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View view = super.getView(position, convertView, parent);
-            if (!(view instanceof TextView)) {
+            if(!(view instanceof TextView)) {
                 return view;
             }
             TextView textView = (TextView) view;
-            if (mTextColor != 0) {
+            if(mTextColor != 0) {
                 textView.setTextColor(mTextColor);
             }
-            if (mTextSize != -1) {
+            if(mTextSize != -1) {
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
             }
-            if (mTextStyle != -1) {
+            if(mTextStyle != -1) {
                 textView.setTypeface(textView.getTypeface(), mTextStyle);
             }
             return textView;
@@ -143,17 +144,17 @@ public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
         @Override
         public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View view = super.getDropDownView(position, convertView, parent);
-            if (!(view instanceof TextView)) {
+            if(!(view instanceof TextView)) {
                 return view;
             }
             TextView textView = (TextView) view;
-            if (mEntryTextColor != 0) {
+            if(mEntryTextColor != 0) {
                 textView.setTextColor(mEntryTextColor);
             }
-            if (mEntryTextSize != -1) {
+            if(mEntryTextSize != -1) {
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mEntryTextSize);
             }
-            if (mEntryTextStyle != -1) {
+            if(mEntryTextStyle != -1) {
                 textView.setTypeface(textView.getTypeface(), mEntryTextStyle);
             }
             return textView;

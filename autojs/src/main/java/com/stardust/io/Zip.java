@@ -1,6 +1,5 @@
 package com.stardust.io;
 
-import com.stardust.pio.PFile;
 import com.stardust.pio.PFiles;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class Zip {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 File file = new File(dir, entry.getName());
-                if (entry.isDirectory()) {
+                if(entry.isDirectory()) {
                     file.mkdirs();
                 } else {
                     PFiles.ensureDir(file.getPath());

@@ -19,7 +19,7 @@ public class Broadcast {
     }
 
     public static void send(String eventName, Object[] args) {
-        for (BroadcastEmitter emitter : sEventEmitters) {
+        for(BroadcastEmitter emitter : sEventEmitters) {
             emitter.onBroadcast(eventName, args);
         }
     }

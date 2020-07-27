@@ -1,7 +1,6 @@
 package com.stardust.autojs.core.inputevent;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.stardust.autojs.core.record.inputevent.EventFormatException;
@@ -10,6 +9,8 @@ import com.stardust.autojs.core.util.Shell;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/8/4.
@@ -22,13 +23,13 @@ public class InputEventObserver {
 
         static InputEvent parse(String eventStr) {
             Matcher matcher = PATTERN.matcher(eventStr);
-            if (!matcher.matches()) {
+            if(!matcher.matches()) {
                 throw new EventFormatException(eventStr);
             }
             double time;
             try {
                 time = Double.parseDouble(matcher.group(1));
-            } catch (NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 throw new EventFormatException(eventStr, e);
             }
             return new InputEvent(time, matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5));
@@ -52,12 +53,12 @@ public class InputEventObserver {
 
         @Override
         public String toString() {
-            return "Event{" +
-                    "time=" + time +
-                    ", device='" + device + '\'' +
-                    ", type='" + type + '\'' +
-                    ", code='" + code + '\'' +
-                    ", value='" + value + '\'' +
+            return "Event{"+
+                    "time="+time+
+                    ", device='"+device+'\''+
+                    ", type='"+type+'\''+
+                    ", code='"+code+'\''+
+                    ", value='"+value+'\''+
                     '}';
         }
     }
@@ -76,27 +77,27 @@ public class InputEventObserver {
     }
 
     public static InputEventObserver getGlobal(Context context) {
-        if (sGlobal == null) {
+        if(sGlobal == null) {
             initGlobal(context);
         }
         return sGlobal;
     }
 
     private static void initGlobal(Context context) {
-        if (sGlobal != null)
+        if(sGlobal != null)
             return;
         sGlobal = new InputEventObserver(context);
         sGlobal.observe();
     }
 
     public void observe() {
-        if (mShell != null)
+        if(mShell != null)
             throw new IllegalStateException("observe() should be called only once");
         mShell = new Shell(mContext, true);
         mShell.setCallback(new Shell.SimpleCallback() {
             @Override
             public void onNewLine(String str) {
-                if (mShell.isInitialized()) {
+                if(mShell.isInitialized()) {
                     onInputEvent(str);
                 }
             }
@@ -110,18 +111,18 @@ public class InputEventObserver {
     }
 
     public void onInputEvent(String eventStr) {
-        if (TextUtils.isEmpty(eventStr) || !eventStr.startsWith("["))
+        if(TextUtils.isEmpty(eventStr) || !eventStr.startsWith("["))
             return;
         try {
             InputEvent event = InputEvent.parse(eventStr);
             dispatchInputEvent(event);
-        } catch (Exception ignored) {
+        } catch(Exception ignored) {
 
         }
     }
 
     private void dispatchInputEvent(InputEvent event) {
-        for (InputEventListener listener : mInputEventListeners) {
+        for(InputEventListener listener : mInputEventListeners) {
             listener.onInputEvent(event);
         }
     }

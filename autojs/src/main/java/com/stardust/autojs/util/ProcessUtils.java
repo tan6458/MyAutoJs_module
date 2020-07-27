@@ -1,9 +1,5 @@
 package com.stardust.autojs.util;
 
-import android.util.Log;
-
-import com.stardust.autojs.core.util.ProcessShell;
-
 import java.lang.reflect.Field;
 
 /**
@@ -20,7 +16,7 @@ public class ProcessUtils {
             Field pid = process.getClass().getDeclaredField("pid");
             pid.setAccessible(true);
             return (int) pid.get(process);
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
             return -1;
         }

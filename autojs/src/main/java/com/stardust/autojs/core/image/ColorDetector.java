@@ -48,7 +48,7 @@ public interface ColorDetector {
 
         @Override
         public boolean detectsColor(int R, int G, int B) {
-            return Math.abs(R - mR) + Math.abs(G - mG) + Math.abs(B - mB) <= mThreshold;
+            return Math.abs(R-mR)+Math.abs(G-mG)+Math.abs(B-mB) <= mThreshold;
         }
     }
 
@@ -63,7 +63,7 @@ public interface ColorDetector {
 
         @Override
         public boolean detectsColor(int R, int G, int B) {
-            return Math.abs(mR - R) <= mThreshold;
+            return Math.abs(mR-R) <= mThreshold;
         }
     }
 
@@ -78,10 +78,10 @@ public interface ColorDetector {
 
         @Override
         public boolean detectsColor(int R, int G, int B) {
-            int dR = R - mR;
-            int dG = G - mG;
-            int dB = B - mB;
-            int d = dR * dR + dG * dG + dB * dB;
+            int dR = R-mR;
+            int dG = G-mG;
+            int dB = B-mB;
+            int d = dR * dR+dG * dG+dB * dB;
             return d <= mThreshold;
         }
     }
@@ -101,14 +101,14 @@ public interface ColorDetector {
 
         @Override
         public boolean detectsColor(int R, int G, int B) {
-            int dR = R - mR;
-            int dG = G - mG;
-            int dB = B - mB;
-            double meanR = (mR + R) / 2;
-            double weightR = 2 + meanR / 256;
+            int dR = R-mR;
+            int dG = G-mG;
+            int dB = B-mB;
+            double meanR = (mR+R) / 2;
+            double weightR = 2+meanR / 256;
             double weightG = 4.0;
-            double weightB = 2 + (255 - meanR) / 256;
-            return weightR * dR * dR + weightG * dG * dG + weightB * dB * dB <= mThreshold;
+            double weightB = 2+(255-meanR) / 256;
+            return weightR * dR * dR+weightG * dG * dG+weightB * dB * dB <= mThreshold;
         }
     }
 
@@ -125,26 +125,27 @@ public interface ColorDetector {
 
         @Override
         public boolean detectsColor(int R, int G, int B) {
-            return Math.abs(mH - getH(R, G, B)) <= mThreshold;
+            return Math.abs(mH-getH(R, G, B)) <= mThreshold;
         }
 
         private static int getH(int R, int G, int B) {
             int max, min, H;
-            if (R > G) {
+            if(R > G) {
                 min = Math.min(G, B);
                 max = Math.max(R, B);
             } else {
                 min = Math.min(R, B);
                 max = Math.max(G, B);
             }
-            if (R == max) {
-                H = (G - B) / (max - min) * 60;
-            } else if (G == max) {
-                H = 120 + (B - R) / (max - min) * 60;
+            if(R == max) {
+                H = (G-B) / (max-min) * 60;
+            } else if(G == max) {
+                H = 120+(B-R) / (max-min) * 60;
             } else {
-                H = 240 + (R - G) / (max - min) * 60;
+                H = 240+(R-G) / (max-min) * 60;
             }
-            if (H < 0) H = H + 360;
+            if(H < 0)
+                H = H+360;
             return H;
         }
     }
@@ -163,35 +164,36 @@ public interface ColorDetector {
         }
 
         public HSDistanceDetector(int color, float similarity) {
-            this(color, (int) (1.0f - similarity) * 255);
+            this(color, (int) (1.0f-similarity) * 255);
         }
 
         @Override
         public boolean detectsColor(int R, int G, int B) {
             long hs = getHS(R, G, B);
-            int dH = (int) (hs & 0xffffffffL) - mH;
-            int dS = (int) ((hs >> 32) & 0xffffffffL) - mS;
-            return dH * dH + dS * dS <= mThreshold;
+            int dH = (int) (hs & 0xffffffffL)-mH;
+            int dS = (int) ((hs >> 32) & 0xffffffffL)-mS;
+            return dH * dH+dS * dS <= mThreshold;
         }
 
         private static long getHS(int R, int G, int B) {
             int max, min, H;
-            if (R > G) {
+            if(R > G) {
                 min = Math.min(G, B);
                 max = Math.max(R, B);
             } else {
                 min = Math.min(R, B);
                 max = Math.max(G, B);
             }
-            if (R == max) {
-                H = (G - B) / (max - min) * 60;
-            } else if (G == max) {
-                H = 120 + (B - R) / (max - min) * 60;
+            if(R == max) {
+                H = (G-B) / (max-min) * 60;
+            } else if(G == max) {
+                H = 120+(B-R) / (max-min) * 60;
             } else {
-                H = 240 + (R - G) / (max - min) * 60;
+                H = 240+(R-G) / (max-min) * 60;
             }
-            if (H < 0) H = H + 360;
-            int S = (max - min) * 100 / max;
+            if(H < 0)
+                H = H+360;
+            int S = (max-min) * 100 / max;
             return H & ((long) S << 32);
         }
     }

@@ -13,16 +13,16 @@ public class Colors {
 
     public static int parse(Context context, String color) {
         Resources resources = context.getResources();
-        if (color.startsWith("@color/")) {
+        if(color.startsWith("@color/")) {
             return resources.getColor(resources.getIdentifier(color.substring("@color/".length()), "color", context.getPackageName()));
         }
-        if (color.startsWith("@android:color/")) {
+        if(color.startsWith("@android:color/")) {
             return Color.parseColor(color.substring(15));
         }
         return Color.parseColor(color);
     }
 
-    public static int parse(View view, String color){
+    public static int parse(View view, String color) {
         return parse(view.getContext(), color);
     }
 }

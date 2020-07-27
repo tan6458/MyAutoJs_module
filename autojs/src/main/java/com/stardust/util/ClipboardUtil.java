@@ -26,7 +26,7 @@ public class ClipboardUtil {
     @NonNull
     public static CharSequence getClipOrEmpty(Context context) {
         CharSequence clip = getClip(context);
-        if (clip == null) {
+        if(clip == null) {
             return "";
         }
         return clip;

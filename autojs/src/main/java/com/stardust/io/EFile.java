@@ -1,9 +1,9 @@
 package com.stardust.io;
 
-import androidx.annotation.NonNull;
-
 import java.io.File;
 import java.net.URI;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/8/19.

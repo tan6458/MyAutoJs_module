@@ -1,7 +1,5 @@
 package com.stardust.autojs.runtime.api;
 
-import androidx.annotation.NonNull;
-
 import com.stardust.autojs.core.looper.MainThreadProxy;
 import com.stardust.autojs.core.looper.TimerThread;
 import com.stardust.autojs.runtime.ScriptRuntime;
@@ -11,6 +9,8 @@ import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/12/3.
@@ -37,7 +37,7 @@ public class Threads {
 
     public Object currentThread() {
         Thread thread = Thread.currentThread();
-        if (thread == mMainThread)
+        if(thread == mMainThread)
             return mMainThreadProxy;
         return thread;
     }
@@ -45,11 +45,11 @@ public class Threads {
     public TimerThread start(Runnable runnable) {
         TimerThread thread = createThread(runnable);
         synchronized (mThreads) {
-            if (mExit) {
+            if(mExit) {
                 throw new IllegalStateException("script exiting");
             }
             mThreads.add(thread);
-            thread.setName(mMainThread.getName() + " (Spawn-" + mSpawnCount + ")");
+            thread.setName(mMainThread.getName()+" (Spawn-"+mSpawnCount+")");
             mSpawnCount++;
             thread.start();
         }
@@ -89,7 +89,7 @@ public class Threads {
 
     public void shutDownAll() {
         synchronized (mThreads) {
-            for (Thread thread : mThreads) {
+            for(Thread thread : mThreads) {
                 thread.interrupt();
             }
             mThreads.clear();

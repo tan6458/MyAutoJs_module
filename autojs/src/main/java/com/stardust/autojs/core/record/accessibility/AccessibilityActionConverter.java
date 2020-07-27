@@ -31,7 +31,7 @@ public class AccessibilityActionConverter {
             .sparseArray();
 
     static {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CONVERTER_MAP.put(AccessibilityEvent.TYPE_VIEW_CONTEXT_CLICKED, new DoOnceConverter("contextClick"));
         }
     }
@@ -47,8 +47,8 @@ public class AccessibilityActionConverter {
 
     public void record(AccessibilityService service, AccessibilityEvent event) {
         EventToScriptConverter converter = CONVERTER_MAP.get(event.getEventType());
-        if (converter != null) {
-            if (mFirstAction && mShouldIgnoreFirstAction) {
+        if(converter != null) {
+            if(mFirstAction && mShouldIgnoreFirstAction) {
                 mFirstAction = false;
                 return;
             }
@@ -76,7 +76,7 @@ public class AccessibilityActionConverter {
         @Override
         public void onAccessibilityEvent(AccessibilityService service, AccessibilityEvent event, StringBuilder sb) {
             AccessibilityNodeInfo source = event.getSource();
-            if (source == null)
+            if(source == null)
                 return;
             String bounds = NodeInfo.Companion.boundsToString(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(source));
             source.recycle();
@@ -120,7 +120,7 @@ public class AccessibilityActionConverter {
         @Override
         public void onAccessibilityEvent(AccessibilityService service, AccessibilityEvent event, StringBuilder sb) {
             AccessibilityNodeInfo source = event.getSource();
-            if (source == null)
+            if(source == null)
                 return;
             UiObject uiObject = UiObject.Companion.createRoot(service.getRootInActiveWindow());
             List<UiObject> editableList = FilterAction.EditableFilter.Companion.findEditable(uiObject);
@@ -131,8 +131,8 @@ public class AccessibilityActionConverter {
 
         private static int findInEditableList(List<UiObject> editableList, AccessibilityNodeInfo editable) {
             int i = 0;
-            for (UiObject nodeInfo : editableList) {
-                if (AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(nodeInfo).equals(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(editable))) {
+            for(UiObject nodeInfo : editableList) {
+                if(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(nodeInfo).equals(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(editable))) {
                     return i;
                 }
                 i++;

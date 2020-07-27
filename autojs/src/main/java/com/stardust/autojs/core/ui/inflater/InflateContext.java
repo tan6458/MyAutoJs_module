@@ -7,7 +7,7 @@ public class InflateContext {
     private HashMap<String, Object> mProperties;
 
     public void put(String key, Object value) {
-        if (mProperties == null) {
+        if(mProperties == null) {
             mProperties = new HashMap<>();
         }
         mProperties.put(key, value);
@@ -20,7 +20,7 @@ public class InflateContext {
     }
 
 
-    public Object remove(String key){
+    public Object remove(String key) {
         if(mProperties == null)
             return null;
         return mProperties.remove(key);

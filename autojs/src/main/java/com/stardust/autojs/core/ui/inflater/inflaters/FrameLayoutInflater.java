@@ -23,7 +23,7 @@ public class FrameLayoutInflater<V extends FrameLayout> extends ViewGroupInflate
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        if (attr.equals("gravity")) {
+        if(attr.equals("gravity")) {
             mGravity = Gravities.parse(value);
             return true;
         }
@@ -32,9 +32,9 @@ public class FrameLayoutInflater<V extends FrameLayout> extends ViewGroupInflate
 
     @Override
     public void applyPendingAttributesOfChildren(V view) {
-        if (mGravity == null)
+        if(mGravity == null)
             return;
-        for (int i = 0; i < view.getChildCount(); i++) {
+        for(int i = 0; i < view.getChildCount(); i++) {
             View child = view.getChildAt(i);
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) child.getLayoutParams();
             params.gravity = mGravity;

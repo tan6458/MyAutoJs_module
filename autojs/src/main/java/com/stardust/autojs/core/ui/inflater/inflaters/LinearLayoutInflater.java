@@ -31,7 +31,7 @@ public class LinearLayoutInflater<V extends LinearLayout> extends ViewGroupInfla
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "baselineAligned":
                 view.setBaselineAligned(Boolean.valueOf(value));
                 break;

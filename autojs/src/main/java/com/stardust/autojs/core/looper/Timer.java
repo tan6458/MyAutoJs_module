@@ -48,13 +48,13 @@ public class Timer {
     }
 
     private void callFunction(Object callback, Object thiz, Object[] args) {
-        if(Looper.myLooper() == Looper.getMainLooper()){
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             try {
                 mRuntime.bridges.callFunction(callback, thiz, args);
-            }catch (Exception e){
+            } catch(Exception e) {
                 mRuntime.exit(e);
             }
-        }else {
+        } else {
             mRuntime.bridges.callFunction(callback, thiz, args);
         }
     }
@@ -69,7 +69,7 @@ public class Timer {
         final Runnable r = new Runnable() {
             @Override
             public void run() {
-                if (mHandlerCallbacks.get(id) == null)
+                if(mHandlerCallbacks.get(id) == null)
                     return;
                 callFunction(listener, null, args);
                 postDelayed(this, interval);
@@ -81,7 +81,7 @@ public class Timer {
     }
 
     public void postDelayed(Runnable r, long interval) {
-        long uptime = SystemClock.uptimeMillis() + interval;
+        long uptime = SystemClock.uptimeMillis()+interval;
         mHandler.postAtTime(r, uptime);
         mMaxCallbackUptimeMillis = Math.max(mMaxCallbackUptimeMillis, uptime);
         synchronized (mMaxCallbackMillisForAllThread) {
@@ -115,7 +115,7 @@ public class Timer {
 
     private boolean clearCallback(int id) {
         Runnable callback = mHandlerCallbacks.get(id);
-        if (callback != null) {
+        if(callback != null) {
             mHandler.removeCallbacks(callback);
             mHandlerCallbacks.remove(id);
             return true;

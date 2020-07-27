@@ -18,7 +18,7 @@ public class MapAttrbuteSet implements AttributeSet {
         mMap = map;
         mKeys = new ArrayList<>(map.size());
         mValues = new ArrayList<>(map.size());
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        for(Map.Entry<String, String> entry : map.entrySet()) {
             mKeys.add(entry.getKey());
             mValues.add(entry.getValue());
         }

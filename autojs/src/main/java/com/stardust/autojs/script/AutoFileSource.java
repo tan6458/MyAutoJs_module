@@ -10,7 +10,7 @@ import java.io.File;
 
 public class AutoFileSource extends ScriptSource {
 
-    public static final String ENGINE = AutoFileSource.class.getName() + ".Engine";
+    public static final String ENGINE = AutoFileSource.class.getName()+".Engine";
     private File mFile;
 
     public AutoFileSource(File file) {

@@ -19,10 +19,10 @@ public abstract class AbstractShell {
 
         @Override
         public String toString() {
-            return "ShellResult{" +
-                    "code=" + code +
-                    ", error='" + error + '\'' +
-                    ", result='" + result + '\'' +
+            return "ShellResult{"+
+                    "code="+code+
+                    ", error='"+error+'\''+
+                    ", result='"+result+'\''+
                     '}';
         }
     }
@@ -50,7 +50,7 @@ public abstract class AbstractShell {
     public AbstractShell(Context context, boolean root) {
         mContext = context;
         mRoot = root;
-        if (context != null)
+        if(context != null)
             mTouchDevice = RootAutomatorEngine.getTouchDevice(context);
         init(root ? COMMAND_SU : COMMAND_SH);
     }
@@ -66,7 +66,7 @@ public abstract class AbstractShell {
     public abstract void exit();
 
     public void SetTouchDevice(int touchDevice) {
-        if (mTouchDevice > 0)
+        if(mTouchDevice > 0)
             return;
         mTouchDevice = touchDevice;
     }
@@ -80,7 +80,7 @@ public abstract class AbstractShell {
     }
 
     public void SetScreenMetrics(int width, int height) {
-        if (mScreenMetrics == null) {
+        if(mScreenMetrics == null) {
             mScreenMetrics = new ScreenMetrics();
         }
         mScreenMetrics.setScreenMetrics(width, height);
@@ -101,7 +101,7 @@ public abstract class AbstractShell {
     }
 
     private int scaleX(int x) {
-        if (mScreenMetrics == null)
+        if(mScreenMetrics == null)
             return x;
         return mScreenMetrics.scaleX(x);
     }
@@ -111,13 +111,13 @@ public abstract class AbstractShell {
     }
 
     private int scaleY(int y) {
-        if (mScreenMetrics == null)
+        if(mScreenMetrics == null)
             return y;
         return mScreenMetrics.scaleY(y);
     }
 
     public void Tap(int x, int y) {
-        exec("input tap " + scaleX(x) + " " + scaleY(y));
+        exec("input tap "+scaleX(x)+" "+scaleY(y));
     }
 
     public void Swipe(int x1, int y1, int x2, int y2) {
@@ -129,11 +129,11 @@ public abstract class AbstractShell {
     }
 
     public void KeyCode(int keyCode) {
-        exec("input keyevent " + keyCode);
+        exec("input keyevent "+keyCode);
     }
 
     public void KeyCode(String keyCode) {
-        exec("input keyevent " + keyCode);
+        exec("input keyevent "+keyCode);
     }
 
     public void Home() {
@@ -185,11 +185,11 @@ public abstract class AbstractShell {
     }
 
     public void Input(String text) {
-        exec("input text " + text);
+        exec("input text "+text);
     }
 
     public void Screencap(String path) {
-        exec("screencap -p " + path);
+        exec("screencap -p "+path);
     }
 
     public void Text(String text) {
@@ -199,10 +199,10 @@ public abstract class AbstractShell {
     public abstract void exitAndWaitFor();
 
     public void sleep(long i) {
-        exec("sleep " + i);
+        exec("sleep "+i);
     }
 
     public void usleep(long l) {
-        exec("usleep " + l);
+        exec("usleep "+l);
     }
 }

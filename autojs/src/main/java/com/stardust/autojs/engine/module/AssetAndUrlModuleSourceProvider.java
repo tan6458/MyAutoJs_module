@@ -33,20 +33,20 @@ public class AssetAndUrlModuleSourceProvider extends UrlModuleSourceProvider {
         super(list, null);
         mContext = context;
         mAssetDirPath = assetDirPath;
-        mBaseURI = URI.create("file:///android_asset/" + assetDirPath);
+        mBaseURI = URI.create("file:///android_asset/"+assetDirPath);
         mAssetManager = mContext.getAssets();
     }
 
     @Override
     protected ModuleSource loadFromPrivilegedLocations(String moduleId, Object validator) throws IOException, URISyntaxException {
         String moduleIdWithExtension = moduleId;
-        if (!moduleIdWithExtension.endsWith(".js")) {
+        if(!moduleIdWithExtension.endsWith(".js")) {
             moduleIdWithExtension += ".js";
         }
         try {
-            return new ModuleSource(new InputStreamReader(mAssetManager.open(mAssetDirPath + "/" + moduleIdWithExtension)), null,
-                    new URI(mBaseURI.toString() + "/" + moduleIdWithExtension), mBaseURI, validator);
-        } catch (FileNotFoundException e) {
+            return new ModuleSource(new InputStreamReader(mAssetManager.open(mAssetDirPath+"/"+moduleIdWithExtension)), null,
+                    new URI(mBaseURI.toString()+"/"+moduleIdWithExtension), mBaseURI, validator);
+        } catch(FileNotFoundException e) {
             return super.loadFromPrivilegedLocations(moduleId, validator);
         }
     }
@@ -57,7 +57,7 @@ public class AssetAndUrlModuleSourceProvider extends UrlModuleSourceProvider {
         byte[] bytes = new byte[stream.available()];
         stream.read(bytes);
         stream.close();
-        if (EncryptedScriptFileHeader.INSTANCE.isValidFile(bytes)) {
+        if(EncryptedScriptFileHeader.INSTANCE.isValidFile(bytes)) {
             byte[] clearText = ScriptEncryption.INSTANCE.decrypt(bytes, EncryptedScriptFileHeader.BLOCK_SIZE, bytes.length);
             return new InputStreamReader(new ByteArrayInputStream(clearText));
         }

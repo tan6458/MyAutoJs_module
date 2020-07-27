@@ -33,19 +33,19 @@ public class KeyEventDispatcher {
     }
 
     public void notifyVolumeUp() {
-        for (OnKeyListener listener : mOnKeyListeners) {
+        for(OnKeyListener listener : mOnKeyListeners) {
             listener.onVolumeUp();
         }
     }
 
     public void notifyVolumeDown() {
-        for (OnKeyListener listener : mOnKeyListeners) {
+        for(OnKeyListener listener : mOnKeyListeners) {
             listener.onVolumeDown();
         }
     }
 
     public void notifyCarema() {
-        for (OnKeyListener listener : mOnKeyListeners) {
+        for(OnKeyListener listener : mOnKeyListeners) {
             listener.onCamera();
         }
     }

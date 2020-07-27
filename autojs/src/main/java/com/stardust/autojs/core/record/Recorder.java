@@ -108,11 +108,11 @@ public interface Recorder {
 
 
         private void ensureIsStateOf(int... expectedStates) {
-            for (int expectedState : expectedStates) {
-                if (mState == expectedState)
+            for(int expectedState : expectedStates) {
+                if(mState == expectedState)
                     return;
             }
-            throw new IllegalStateException("expected=" + Arrays.toString(expectedStates) + " state=" + mState);
+            throw new IllegalStateException("expected="+Arrays.toString(expectedStates)+" state="+mState);
         }
 
 
@@ -135,7 +135,7 @@ public interface Recorder {
         }
 
         protected synchronized void setState(int state) {
-            if (mSync) {
+            if(mSync) {
                 synchronized (this) {
                     mState = state;
                 }
@@ -145,7 +145,7 @@ public interface Recorder {
         }
 
         public synchronized int getState() {
-            if (mSync) {
+            if(mSync) {
                 synchronized (this) {
                     return mState;
                 }

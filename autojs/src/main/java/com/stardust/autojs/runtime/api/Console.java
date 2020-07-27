@@ -1,8 +1,8 @@
 package com.stardust.autojs.runtime.api;
 
-import androidx.annotation.Nullable;
-
 import com.stardust.autojs.annotation.ScriptInterface;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/4/2.

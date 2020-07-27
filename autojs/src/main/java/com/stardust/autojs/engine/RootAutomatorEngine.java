@@ -4,8 +4,8 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.core.inputevent.InputDevices;
+import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.autojs.script.AutoFileSource;
@@ -27,7 +27,7 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
 
     public static final int VERSION = 1;
 
-    private static final String KEY_TOUCH_DEVICE = RootAutomatorEngine.class.getName() + ".touch_device";
+    private static final String KEY_TOUCH_DEVICE = RootAutomatorEngine.class.getName()+".touch_device";
     private static final String LOG_TAG = "RootAutomatorEngine";
     private static final Pattern PID_PATTERN = Pattern.compile("[0-9]{2,}");
 
@@ -53,9 +53,9 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
 
     public void execute(String autoFile) {
         mExecutablePath = getExecutablePath(mContext);
-        Log.d(LOG_TAG, "exec: " + autoFile);
+        Log.d(LOG_TAG, "exec: "+autoFile);
         final String[] commands = {
-                "chmod 755 " + mExecutablePath,
+                "chmod 755 "+mExecutablePath,
                 String.format("\"%s\" \"%s\" -d \"%s\" &", mExecutablePath, autoFile, mDeviceNameOrPath), // to run root_automator
                 "echo $!",  // to print the root_automator pid
                 "exit", // to exit su
@@ -66,9 +66,9 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
             executeCommands(mProcess, commands);
             mPid = readPid(mProcess);
             mProcess.waitFor();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new ScriptException(e);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         } finally {
             mProcess.destroy();
@@ -81,7 +81,7 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
         String line;
         while ((line = reader.readLine()) != null) {
             Matcher matcher = PID_PATTERN.matcher(line);
-            if (matcher.find()) {
+            if(matcher.find()) {
                 return matcher.group();
             }
         }
@@ -90,8 +90,8 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
 
     private void executeCommands(Process process, String[] commands) throws IOException {
         DataOutputStream os = new DataOutputStream(process.getOutputStream());
-        for (String command : commands) {
-            if (command != null) {
+        for(String command : commands) {
+            if(command != null) {
                 os.write(command.getBytes());
                 os.writeBytes("\n");
             }
@@ -101,11 +101,11 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
 
 
     public static String getDeviceNameOrPath(Context context, String deviceNameOrPath) {
-        if (sTouchDevice < 0) {
+        if(sTouchDevice < 0) {
             sTouchDevice = PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_TOUCH_DEVICE, -1);
         }
-        if (sTouchDevice >= 0) {
-            deviceNameOrPath = "/dev/input/event" + sTouchDevice;
+        if(sTouchDevice >= 0) {
+            deviceNameOrPath = "/dev/input/event"+sTouchDevice;
             PreferenceManager.getDefaultSharedPreferences(context)
                     .edit()
                     .putInt(KEY_TOUCH_DEVICE, sTouchDevice)
@@ -125,7 +125,7 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
     }
 
     public static int getTouchDevice(Context context) {
-        if (sTouchDevice >= 0)
+        if(sTouchDevice >= 0)
             return sTouchDevice;
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_TOUCH_DEVICE, -1);
     }
@@ -144,8 +144,8 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
     @Override
     public void forceStop() {
         mThread.interrupt();
-        if (mPid != null) {
-            ProcessShell.exec("kill " + mPid, true);
+        if(mPid != null) {
+            ProcessShell.exec("kill "+mPid, true);
         }
     }
 

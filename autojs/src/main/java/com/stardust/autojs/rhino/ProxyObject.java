@@ -17,17 +17,17 @@ public class ProxyObject extends NativeObject {
 
     @Override
     public void put(String name, Scriptable start, Object value) {
-        if (name.equals("__proxy__")) {
+        if(name.equals("__proxy__")) {
             NativeObject proxy = (NativeObject) value;
             Object getter = proxy.get("get", start);
-            if (getter instanceof NativeFunction) {
+            if(getter instanceof NativeFunction) {
                 mGetter = (NativeFunction) getter;
             }
             Object setter = proxy.get("set", start);
-            if (setter instanceof NativeFunction) {
+            if(setter instanceof NativeFunction) {
                 mSetter = (NativeFunction) setter;
             }
-        } else if (mSetter != null) {
+        } else if(mSetter != null) {
             mSetter.call(Context.getCurrentContext(), start, start, new Object[]{name, value});
         } else {
             super.put(name, start, value);
@@ -41,10 +41,10 @@ public class ProxyObject extends NativeObject {
     @Override
     public Object get(String name, Scriptable start) {
         Object value = super.get(name, start);
-        if (value != null && value != UniqueTag.NOT_FOUND) {
+        if(value != null && value != UniqueTag.NOT_FOUND) {
             return value;
         }
-        if (mGetter != null) {
+        if(mGetter != null) {
             value = mGetter.call(Context.getCurrentContext(), start, start, new Object[]{name});
         }
         return value;

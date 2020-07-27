@@ -35,7 +35,7 @@ public class GlobalConsole extends ConsoleImpl {
     }
 
     private Priority toLog4jLevel(int level) {
-        switch (level) {
+        switch(level) {
             case android.util.Log.VERBOSE:
                 return Level.DEBUG;
             case android.util.Log.DEBUG:
@@ -49,11 +49,11 @@ public class GlobalConsole extends ConsoleImpl {
             case android.util.Log.ASSERT:
                 return Level.FATAL;
         }
-        throw new IllegalArgumentException("invalid level = " + level);
+        throw new IllegalArgumentException("invalid level = "+level);
     }
 
     private String getLevelChar(int level) {
-        switch (level) {
+        switch(level) {
             case android.util.Log.VERBOSE:
                 return "V";
             case android.util.Log.DEBUG:

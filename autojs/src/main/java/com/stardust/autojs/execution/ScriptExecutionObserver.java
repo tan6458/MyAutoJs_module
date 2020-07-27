@@ -11,21 +11,21 @@ public class ScriptExecutionObserver implements ScriptExecutionListener {
 
     @Override
     public void onStart(ScriptExecution execution) {
-        for (ScriptExecutionListener listener : mScriptExecutionListeners) {
+        for(ScriptExecutionListener listener : mScriptExecutionListeners) {
             listener.onStart(execution);
         }
     }
 
     @Override
     public void onSuccess(ScriptExecution execution, Object result) {
-        for (ScriptExecutionListener listener : mScriptExecutionListeners) {
+        for(ScriptExecutionListener listener : mScriptExecutionListeners) {
             listener.onSuccess(execution, result);
         }
     }
 
     @Override
     public void onException(ScriptExecution execution, Throwable e) {
-        for (ScriptExecutionListener listener : mScriptExecutionListeners) {
+        for(ScriptExecutionListener listener : mScriptExecutionListeners) {
             listener.onException(execution, e);
         }
     }

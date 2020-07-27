@@ -2,7 +2,6 @@ package com.stardust.autojs.runtime.api;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.graphics.ScriptCanvasView;
 import com.stardust.autojs.core.ui.inflater.DynamicLayoutInflater;
@@ -65,7 +64,7 @@ public class UI extends ProxyObject {
     }
 
     public void setBindingContext(Object context) {
-        if (context == null)
+        if(context == null)
             mProperties.remove("bindingContext");
         else
             mProperties.put("bindingContext", context);
@@ -85,15 +84,15 @@ public class UI extends ProxyObject {
     @Override
     public Object get(String name, Scriptable start) {
         Object value = mProperties.get(name);
-        if (value != null)
+        if(value != null)
             return value;
         return super.get(name, start);
     }
 
     @Override
     public void put(String name, Scriptable start, Object value) {
-        if (mProperties.containsKey(name)) {
-            if (value == null) {
+        if(mProperties.containsKey(name)) {
+            if(value == null) {
                 mProperties.remove(name);
             } else {
                 mProperties.put(name, value);
@@ -103,7 +102,7 @@ public class UI extends ProxyObject {
         }
     }
 
-    public void recycle(){
+    public void recycle() {
         mDynamicLayoutInflater.setContext(null);
     }
 

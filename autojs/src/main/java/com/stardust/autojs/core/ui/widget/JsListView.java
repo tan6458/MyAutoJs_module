@@ -9,11 +9,10 @@ import com.stardust.autojs.core.ui.inflater.DynamicLayoutInflater;
 import com.stardust.autojs.core.ui.nativeview.NativeView;
 import com.stardust.autojs.core.ui.nativeview.ViewPrototype;
 import com.stardust.autojs.runtime.ScriptRuntime;
+import com.stardust.autojs.workground.WrapContentLinearLayoutManager;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.stardust.autojs.workground.WrapContentLinearLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -75,7 +74,7 @@ public class JsListView extends RecyclerView {
 
     public void setDataSource(Object dataSource) {
         mDataSource = dataSource;
-        if (mDataSourceAdapter != null)
+        if(mDataSourceAdapter != null)
             mDataSourceAdapter.setDataSource(dataSource);
         getAdapter().notifyDataSetChanged();
     }
@@ -109,19 +108,19 @@ public class JsListView extends RecyclerView {
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(v -> {
-                if (mOnItemTouchListener != null) {
+                if(mOnItemTouchListener != null) {
                     int pos = getAdapterPosition();
                     mOnItemTouchListener.onItemClick(JsListView.this, itemView, mDataSourceAdapter.getItem(mDataSource, pos), pos);
                 }
             });
             itemView.setOnLongClickListener(v -> {
-                if (mOnItemTouchListener == null)
+                if(mOnItemTouchListener == null)
                     return false;
                 int pos = getAdapterPosition();
                 return mOnItemTouchListener.onItemLongClick(JsListView.this, itemView, mDataSourceAdapter.getItem(mDataSource, pos), pos);
             });
             NativeView nativeView = ViewExtras.getNativeView(JsListView.this);
-            if (nativeView != null) {
+            if(nativeView != null) {
                 ViewPrototype prototype = nativeView.getViewPrototype();
                 prototype.emit("item_bind", itemView, new ItemHolder(this));
             }
@@ -137,7 +136,7 @@ public class JsListView extends RecyclerView {
             try {
                 mDynamicLayoutInflater.setInflateFlags(DynamicLayoutInflater.FLAG_IGNORES_DYNAMIC_ATTRS);
                 return new ViewHolder(mDynamicLayoutInflater.inflate(mDynamicLayoutInflater.newInflateContext(), mItemTemplate, parent, false));
-            } catch (Exception e) {
+            } catch(Exception e) {
                 mScriptRuntime.exit(e);
                 return new ViewHolder(new View(parent.getContext()));
             } finally {
@@ -155,7 +154,7 @@ public class JsListView extends RecyclerView {
                 mDynamicLayoutInflater.setInflateFlags(DynamicLayoutInflater.FLAG_JUST_DYNAMIC_ATTRS);
                 applyDynamicAttrs(mItemTemplate, holder.itemView, JsListView.this);
                 mScriptRuntime.ui.setBindingContext(oldCtx);
-            } catch (Exception e) {
+            } catch(Exception e) {
                 mScriptRuntime.exit(e);
             } finally {
                 mDynamicLayoutInflater.setInflateFlags(DynamicLayoutInflater.FLAG_DEFAULT);
@@ -164,14 +163,15 @@ public class JsListView extends RecyclerView {
 
         private void applyDynamicAttrs(Node node, View itemView, ViewGroup parent) {
             mDynamicLayoutInflater.applyAttributes(mDynamicLayoutInflater.newInflateContext(), itemView, mDynamicLayoutInflater.getAttributesMap(node), parent);
-            if (!(itemView instanceof ViewGroup))
+            if(!(itemView instanceof ViewGroup))
                 return;
             ViewGroup viewGroup = (ViewGroup) itemView;
             NodeList nodeList = node.getChildNodes();
             int j = 0;
-            for (int i = 0; i < nodeList.getLength(); i++) {
+            for(int i = 0; i < nodeList.getLength(); i++) {
                 Node child = nodeList.item(i);
-                if (child.getNodeType() != Node.ELEMENT_NODE) continue;
+                if(child.getNodeType() != Node.ELEMENT_NODE)
+                    continue;
                 applyDynamicAttrs(child, viewGroup.getChildAt(j), viewGroup);
                 j++;
             }

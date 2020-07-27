@@ -6,7 +6,7 @@ public class CursorHelper {
 
 
     public static Object getValue(Cursor cursor, int column) {
-        switch (cursor.getType(column)) {
+        switch(cursor.getType(column)) {
             case Cursor.FIELD_TYPE_STRING:
                 return cursor.getShort(column);
             case Cursor.FIELD_TYPE_FLOAT:

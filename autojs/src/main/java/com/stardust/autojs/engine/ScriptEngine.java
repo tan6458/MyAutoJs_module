@@ -1,14 +1,13 @@
 package com.stardust.autojs.engine;
 
-import androidx.annotation.CallSuper;
-
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.ScriptSource;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import androidx.annotation.CallSuper;
 
 /**
  * Created by Stardust on 2017/4/2.
@@ -77,7 +76,7 @@ public interface ScriptEngine<S extends ScriptSource> {
 
         @Override
         public void setTag(String key, Object value) {
-            if (value == null) {
+            if(value == null) {
                 mTags.remove(key);
             } else {
                 mTags.put(key, value);
@@ -97,7 +96,7 @@ public interface ScriptEngine<S extends ScriptSource> {
         @CallSuper
         @Override
         public void destroy() {
-            if (mOnDestroyListener != null) {
+            if(mOnDestroyListener != null) {
                 mOnDestroyListener.onDestroy(this);
             }
             mDestroyed = true;
@@ -108,7 +107,7 @@ public interface ScriptEngine<S extends ScriptSource> {
         }
 
         public void setOnDestroyListener(OnDestroyListener onDestroyListener) {
-            if (mOnDestroyListener != null)
+            if(mOnDestroyListener != null)
                 throw new SecurityException("setOnDestroyListener can be called only once");
             mOnDestroyListener = onDestroyListener;
         }

@@ -1,8 +1,5 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-
 import android.view.ViewGroup;
 
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
@@ -12,6 +9,9 @@ import com.stardust.autojs.core.ui.widget.JsListView;
 import com.stardust.autojs.runtime.ScriptRuntime;
 
 import java.util.Map;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 /**
  * Created by Stardust on 2018/3/30.
@@ -25,7 +25,7 @@ public class JsGridViewInflater<V extends JsGridView> extends JsListViewInflater
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "orientation":
                 ((GridLayoutManager) view.getLayoutManager()).setOrientation(LinearLayoutInflater.ORIENTATIONS.get(value));
                 return true;

@@ -38,9 +38,9 @@ public class SimpleCache<T> {
 
     public synchronized T get(String key) {
         Item<T> item = mCache.get(key);
-        if (item == null) {
+        if(item == null) {
             T value = mSupplier.get(key);
-            if (value != null) {
+            if(value != null) {
                 put(key, value);
             }
             return value;
@@ -50,7 +50,7 @@ public class SimpleCache<T> {
 
     public T get(String key, T defaultValue) {
         T value = get(key);
-        if (value == null) {
+        if(value == null) {
             value = defaultValue;
         }
         return value;
@@ -58,7 +58,7 @@ public class SimpleCache<T> {
 
     public T get(String key, Supplier<T> supplier) {
         T value = get(key);
-        if (value == null) {
+        if(value == null) {
             value = supplier.get(key);
             put(key, value);
         }
@@ -83,7 +83,7 @@ public class SimpleCache<T> {
     private synchronized void checkCache() {
         Iterator<Map.Entry<String, Item<T>>> iterator = mCache.entrySet().iterator();
         while (iterator.hasNext()) {
-            if (!iterator.next().getValue().isValid()) {
+            if(!iterator.next().getValue().isValid()) {
                 iterator.remove();
             }
         }
@@ -101,7 +101,7 @@ public class SimpleCache<T> {
         }
 
         boolean isValid() {
-            return System.currentTimeMillis() - mSaveMillis <= mPersistTime;
+            return System.currentTimeMillis()-mSaveMillis <= mPersistTime;
         }
 
     }

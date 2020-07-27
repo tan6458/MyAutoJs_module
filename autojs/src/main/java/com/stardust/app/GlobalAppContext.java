@@ -6,8 +6,9 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.RequiresApi;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Stardust on 2018/3/22.
@@ -25,7 +26,7 @@ public class GlobalAppContext {
     }
 
     public static Context get() {
-        if (sApplicationContext == null)
+        if(sApplicationContext == null)
             throw new IllegalStateException("Call GlobalAppContext.set() to set a application context");
         return sApplicationContext;
     }
@@ -44,7 +45,7 @@ public class GlobalAppContext {
     }
 
     public static void toast(final String message) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             Toast.makeText(get(), message, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -57,7 +58,7 @@ public class GlobalAppContext {
     }
 
     public static void toast(final int resId) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             Toast.makeText(get(), resId, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -70,7 +71,7 @@ public class GlobalAppContext {
     }
 
     public static void toast(final int resId, final Object... args) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             Toast.makeText(get(), getString(resId, args), Toast.LENGTH_SHORT).show();
             return;
         }

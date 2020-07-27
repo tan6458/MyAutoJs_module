@@ -40,7 +40,7 @@ public class TouchObserver implements InputEventObserver.InputEventListener {
     private void onTouch(int x, int y) {
         mTouchX = x;
         mTouchY = y;
-        if (mOnTouchEventListener != null) {
+        if(mOnTouchEventListener != null) {
             mOnTouchEventListener.onTouch(x, y);
         }
     }
@@ -52,23 +52,23 @@ public class TouchObserver implements InputEventObserver.InputEventListener {
         int type = (int) Long.parseLong(event.type, 16);
         int code = (int) Long.parseLong(event.code, 16);
         int value = (int) Long.parseLong(event.value, 16);
-        if (type != 3) {
+        if(type != 3) {
             return;
         }
-        if (code == 53) {
+        if(code == 53) {
             onTouchX(value);
             return;
         }
-        if (code == 54) {
+        if(code == 54) {
             onTouchY(value);
             return;
         }
-        if (mLastTouchX >= 0) {
+        if(mLastTouchX >= 0) {
             onTouch(mLastTouchX, mTouchY);
             mLastTouchX = -1;
             return;
         }
-        if (mLastTouchY >= 0) {
+        if(mLastTouchY >= 0) {
             onTouch(mTouchX, mLastTouchY);
             mLastTouchY = -1;
         }
@@ -79,7 +79,7 @@ public class TouchObserver implements InputEventObserver.InputEventListener {
     }
 
     private void onTouchY(int value) {
-        if (mLastTouchX > 0) {
+        if(mLastTouchX > 0) {
             onTouch(mLastTouchX, value);
             return;
         }

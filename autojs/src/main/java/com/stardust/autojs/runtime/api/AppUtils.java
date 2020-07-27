@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import androidx.annotation.Nullable;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import android.util.Log;
 
 import com.stardust.autojs.annotation.ScriptInterface;
@@ -16,6 +13,9 @@ import com.stardust.util.IntentUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 /**
  * Created by Stardust on 2017/4/2.
@@ -44,7 +44,7 @@ public class AppUtils {
             mContext.startActivity(packageManager.getLaunchIntentForPackage(packageName)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             return true;
-        } catch (Exception e) {
+        } catch(Exception e) {
             return false;
         }
 
@@ -58,7 +58,7 @@ public class AppUtils {
     @ScriptInterface
     public boolean launchApp(String appName) {
         String pkg = getPackageName(appName);
-        if (pkg == null)
+        if(pkg == null)
             return false;
         return launchPackage(pkg);
     }
@@ -67,8 +67,8 @@ public class AppUtils {
     public String getPackageName(String appName) {
         PackageManager packageManager = mContext.getPackageManager();
         List<ApplicationInfo> installedApplications = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-        for (ApplicationInfo applicationInfo : installedApplications) {
-            if (packageManager.getApplicationLabel(applicationInfo).toString().equals(appName)) {
+        for(ApplicationInfo applicationInfo : installedApplications) {
+            if(packageManager.getApplicationLabel(applicationInfo).toString().equals(appName)) {
                 return applicationInfo.packageName;
             }
         }
@@ -82,7 +82,7 @@ public class AppUtils {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             CharSequence appName = packageManager.getApplicationLabel(applicationInfo);
             return appName == null ? null : appName.toString();
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch(PackageManager.NameNotFoundException e) {
             return null;
         }
     }
@@ -99,34 +99,34 @@ public class AppUtils {
 
     @Nullable
     public Activity getCurrentActivity() {
-        Log.d("App", "getCurrentActivity: " + mCurrentActivity.get());
+        Log.d("App", "getCurrentActivity: "+mCurrentActivity.get());
         return mCurrentActivity.get();
     }
 
     @ScriptInterface
     public void uninstall(String packageName) {
-        mContext.startActivity(new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + packageName))
+        mContext.startActivity(new Intent(Intent.ACTION_DELETE, Uri.parse("package:"+packageName))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @ScriptInterface
     public void viewFile(String path) {
-        if (path == null)
+        if(path == null)
             throw new NullPointerException("path == null");
         IntentUtil.viewFile(mContext, path, mFileProviderAuthority);
     }
 
     @ScriptInterface
     public void editFile(String path) {
-        if (path == null)
+        if(path == null)
             throw new NullPointerException("path == null");
         IntentUtil.editFile(mContext, path, mFileProviderAuthority);
     }
 
     @ScriptInterface
     public void openUrl(String url) {
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://" + url;
+        if(!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://"+url;
         }
         mContext.startActivity(new Intent(Intent.ACTION_VIEW)
                 .setData(Uri.parse(url))
@@ -135,6 +135,6 @@ public class AppUtils {
 
     public void setCurrentActivity(Activity currentActivity) {
         mCurrentActivity = new WeakReference<>(currentActivity);
-        Log.d("App", "setCurrentActivity: " + currentActivity);
+        Log.d("App", "setCurrentActivity: "+currentActivity);
     }
 }

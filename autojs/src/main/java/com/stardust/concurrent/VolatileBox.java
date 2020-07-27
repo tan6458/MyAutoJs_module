@@ -1,8 +1,6 @@
 package com.stardust.concurrent;
 
 
-import java.lang.reflect.Constructor;
-
 /**
  * Created by Stardust on 2017/5/8.
  */
@@ -46,7 +44,7 @@ public class VolatileBox<T> {
         synchronized (this) {
             try {
                 this.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -57,12 +55,12 @@ public class VolatileBox<T> {
         synchronized (this) {
             try {
                 this.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 try {
                     throw exception.newInstance();
-                } catch (InstantiationException e1) {
+                } catch(InstantiationException e1) {
                     throw new RuntimeException(e1);
-                } catch (IllegalAccessException e1) {
+                } catch(IllegalAccessException e1) {
                     throw new RuntimeException(e1);
                 }
             }

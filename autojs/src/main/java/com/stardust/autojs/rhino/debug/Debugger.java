@@ -2,7 +2,6 @@ package com.stardust.autojs.rhino.debug;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.stardust.autojs.ScriptEngineService;
@@ -12,6 +11,8 @@ import com.stardust.autojs.execution.ScriptExecution;
 import org.mozilla.javascript.ContextFactory;
 
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.Nullable;
 
 public class Debugger implements DebugCallbackInternal {
 
@@ -42,7 +43,7 @@ public class Debugger implements DebugCallbackInternal {
     }
 
     public void attach(ScriptExecution execution) {
-        if(isAttached()){
+        if(isAttached()) {
             detach();
         }
         mScriptExecution = execution;
@@ -53,34 +54,34 @@ public class Debugger implements DebugCallbackInternal {
 
     @Override
     public void updateSourceText(Dim.SourceInfo sourceInfo) {
-        if (!sourceInfo.url().equals(mSourceUrl)) {
+        if(!sourceInfo.url().equals(mSourceUrl)) {
             return;
         }
         mCurrentSourceInfo = sourceInfo;
-        if(mDebugCallback != null){
+        if(mDebugCallback != null) {
             mDebugCallback.updateSourceText(sourceInfo);
         }
         DebugCallback callback = mWeakDebugCallback == null ? null : mWeakDebugCallback.get();
-        if(callback != null){
+        if(callback != null) {
             callback.updateSourceText(sourceInfo);
         }
     }
 
     @Override
     public void enterInterrupt(Dim.StackFrame lastFrame, String threadTitle, String alertMessage) {
-        Log.d(LOG_TAG, "enterInterrupt: threadName = " + threadTitle + ", url = " + lastFrame.getUrl() + ", line = " + lastFrame.getLineNumber());
+        Log.d(LOG_TAG, "enterInterrupt: threadName = "+threadTitle+", url = "+lastFrame.getUrl()+", line = "+lastFrame.getLineNumber());
         //刚启动调试时会在init脚本的第一行自动停下，此时应该让脚本继续运行
-        if (mSkipOtherFileBreakpoint && !lastFrame.getUrl().equals(mSourceUrl) && alertMessage == null) {
+        if(mSkipOtherFileBreakpoint && !lastFrame.getUrl().equals(mSourceUrl) && alertMessage == null) {
             mHandler.post(this::resume);
             return;
         }
         mSkipOtherFileBreakpoint = false;
         mCurrentSourceInfo = lastFrame.sourceInfo();
-        if(mDebugCallback != null){
+        if(mDebugCallback != null) {
             mDebugCallback.enterInterrupt(lastFrame, threadTitle, alertMessage);
         }
         DebugCallback callback = mWeakDebugCallback == null ? null : mWeakDebugCallback.get();
-        if(callback != null){
+        if(callback != null) {
             callback.enterInterrupt(lastFrame, threadTitle, alertMessage);
         }
     }
@@ -103,7 +104,7 @@ public class Debugger implements DebugCallbackInternal {
 
     public void breakpoint(int line, boolean enabled) {
         Dim.SourceInfo sourceInfo = mCurrentSourceInfo;
-        if (sourceInfo != null) {
+        if(sourceInfo != null) {
             sourceInfo.breakpoint(line, enabled);
         }
     }
@@ -137,7 +138,7 @@ public class Debugger implements DebugCallbackInternal {
     }
 
     public String eval(String expr) {
-        if (expr == null || !mDim.isAttached() || !mDim.stringIsCompilableUnit(expr)) {
+        if(expr == null || !mDim.isAttached() || !mDim.stringIsCompilableUnit(expr)) {
             return null;
         }
         mDim.contextSwitch(0);

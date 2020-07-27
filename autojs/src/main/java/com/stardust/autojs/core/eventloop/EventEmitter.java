@@ -1,8 +1,5 @@
 package com.stardust.autojs.core.eventloop;
 
-import androidx.annotation.NonNull;
-
-
 import com.stardust.autojs.core.looper.Timer;
 import com.stardust.autojs.runtime.ScriptBridges;
 import com.stardust.autojs.runtime.exception.ScriptException;
@@ -13,6 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TooManyListenersException;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/7/19.
@@ -40,8 +39,8 @@ public class EventEmitter {
         }
 
         private void ensureListenersNotAtLimit() {
-            if (mMaxListeners != 0 && mListenerWrappers.size() >= mMaxListeners) {
-                throw new ScriptException(new TooManyListenersException("max = " + mMaxListeners));
+            if(mMaxListeners != 0 && mListenerWrappers.size() >= mMaxListeners) {
+                throw new ScriptException(new TooManyListenersException("max = "+mMaxListeners));
             }
         }
 
@@ -53,12 +52,12 @@ public class EventEmitter {
             Iterator<ListenerWrapper> listenerIterator = mListenerWrappers.iterator();
             while (listenerIterator.hasNext()) {
                 ListenerWrapper listenerWrapper = listenerIterator.next();
-                if (mTimer != null) {
+                if(mTimer != null) {
                     mTimer.setImmediate(listenerWrapper.listener, args);
                 } else {
                     mBridges.callFunction(listenerWrapper.listener, EventEmitter.this, args);
                 }
-                if (listenerWrapper.isOnce) {
+                if(listenerWrapper.isOnce) {
                     mListenerWrappers.remove(listenerWrapper);
                 }
             }
@@ -86,7 +85,7 @@ public class EventEmitter {
             Iterator<ListenerWrapper> listenerIterator = mListenerWrappers.iterator();
             while (listenerIterator.hasNext()) {
                 ListenerWrapper l = listenerIterator.next();
-                if (l.listener == listener) {
+                if(l.listener == listener) {
                     listenerIterator.remove();
                     break;
                 }
@@ -113,10 +112,11 @@ public class EventEmitter {
         getListeners(eventName).add(listener, true);
         return this;
     }
+
     @NonNull
     private Listeners getListeners(String eventName) {
         Listeners listeners = mListenersMap.get(eventName);
-        if (listeners == null) {
+        if(listeners == null) {
             listeners = new Listeners();
             mListenersMap.put(eventName, listeners);
         }
@@ -135,7 +135,7 @@ public class EventEmitter {
 
     public boolean emit(String eventName, Object... args) {
         Listeners listeners = mListenersMap.get(eventName);
-        if (listeners == null || listeners.empty())
+        if(listeners == null || listeners.empty())
             return false;
         listeners.emit(args);
         return true;
@@ -147,7 +147,7 @@ public class EventEmitter {
 
     public int listenerCount(String eventName) {
         Listeners listeners = mListenersMap.get(eventName);
-        if (listeners == null)
+        if(listeners == null)
             return 0;
         return listeners.count();
     }
@@ -178,7 +178,7 @@ public class EventEmitter {
 
     public EventEmitter removeListener(String eventName, Object listener) {
         Listeners listeners = mListenersMap.get(eventName);
-        if (listeners != null)
+        if(listeners != null)
             listeners.remove(listener);
         return this;
     }

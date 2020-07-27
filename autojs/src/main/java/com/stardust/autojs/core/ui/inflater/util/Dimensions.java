@@ -30,8 +30,8 @@ public class Dimensions {
     private static final Pattern DIMENSION_PATTERN = Pattern.compile("([+-]?[0-9.]+)([a-zA-Z]*)");
 
     public static int parseToPixel(String dimension, View view, ViewGroup parent, boolean horizontal) {
-        if (dimension.endsWith("%") && parent != null) {
-            float pct = Float.parseFloat(dimension.substring(0, dimension.length() - 1)) / 100.0f;
+        if(dimension.endsWith("%") && parent != null) {
+            float pct = Float.parseFloat(dimension.substring(0, dimension.length()-1)) / 100.0f;
             return (int) (pct * (horizontal ? parent.getMeasuredWidth() : parent.getMeasuredHeight()));
         }
         return parseToIntPixel(dimension, view.getContext());
@@ -46,7 +46,7 @@ public class Dimensions {
     }
 
     public static float parseToPixel(String dimension, Context context) {
-        if (dimension.startsWith("?")) {
+        if(dimension.startsWith("?")) {
             int[] attr = {context.getResources().getIdentifier(dimension.substring(1), "attr",
                     context.getPackageName())};
             TypedArray ta = context.obtainStyledAttributes(attr);
@@ -55,8 +55,8 @@ public class Dimensions {
             return d;
         }
         Matcher m = DIMENSION_PATTERN.matcher(dimension);
-        if (!m.matches()) {
-            throw new InflateException("dimension cannot be resolved: " + dimension);
+        if(!m.matches()) {
+            throw new InflateException("dimension cannot be resolved: "+dimension);
         }
         int unit = m.groupCount() == 2 ? UNITS.get(m.group(2), TypedValue.COMPLEX_UNIT_DIP) : TypedValue.COMPLEX_UNIT_DIP;
         float value = Integer.valueOf(m.group(1));
@@ -74,12 +74,12 @@ public class Dimensions {
     public static int[] parseToIntPixelArray(View view, String value) {
         String[] split = value.split(" ");
         int[] pixels = new int[4];
-        for (int i = 0; i < split.length; i++) {
+        for(int i = 0; i < split.length; i++) {
             pixels[i] = parseToIntPixel(split[i], view);
         }
-        if (split.length == 1) {
+        if(split.length == 1) {
             pixels[1] = pixels[2] = pixels[3] = pixels[0];
-        } else if (split.length == 2) {
+        } else if(split.length == 2) {
             pixels[2] = pixels[0];
             pixels[3] = pixels[1];
         }

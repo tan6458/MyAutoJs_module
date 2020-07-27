@@ -2,7 +2,6 @@ package com.stardust.autojs.core.looper;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.CallSuper;
 
 import com.stardust.autojs.engine.RhinoJavaScriptEngine;
 import com.stardust.autojs.runtime.ScriptRuntime;
@@ -11,6 +10,8 @@ import com.stardust.concurrent.VolatileBox;
 import com.stardust.lang.ThreadCompat;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import androidx.annotation.CallSuper;
 
 /**
  * Created by Stardust on 2017/12/27.
@@ -44,9 +45,9 @@ public class TimerThread extends ThreadCompat {
         new Handler().post(mTarget);
         try {
             Looper.loop();
-        } catch (Throwable e) {
-            if (!ScriptInterruptedException.causedByInterrupted(e)) {
-                mRuntime.console.error(Thread.currentThread().toString() + ": ", e);
+        } catch(Throwable e) {
+            if(!ScriptInterruptedException.causedByInterrupted(e)) {
+                mRuntime.console.error(Thread.currentThread().toString()+": ", e);
             }
         } finally {
             onExit();
@@ -87,7 +88,7 @@ public class TimerThread extends ThreadCompat {
     }
 
     public Timer getTimer() {
-        if (mTimer == null) {
+        if(mTimer == null) {
             throw new IllegalStateException("thread is not alive");
         }
         return mTimer;
@@ -115,7 +116,7 @@ public class TimerThread extends ThreadCompat {
 
     public void waitFor() throws InterruptedException {
         synchronized (mRunningLock) {
-            if (mRunning)
+            if(mRunning)
                 return;
             mRunningLock.wait();
         }
@@ -123,6 +124,6 @@ public class TimerThread extends ThreadCompat {
 
     @Override
     public String toString() {
-        return "Thread[" + getName() + "," + getPriority() + "]";
+        return "Thread["+getName()+","+getPriority()+"]";
     }
 }

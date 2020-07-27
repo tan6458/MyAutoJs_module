@@ -13,9 +13,9 @@
         <item name="android:popupTheme" tools:ignore="NewApi">@style/ScriptTheme.PopupOverlay</item>
     </style>
 
-    <style name="ScriptTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="ScriptTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="ScriptTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="ScriptTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 
     <style name="ScriptTheme.Transparent" parent="ScriptTheme">

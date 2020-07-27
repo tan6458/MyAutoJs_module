@@ -9,7 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.content.pm.Signature;
-import androidx.annotation.Nullable;
 import android.util.Base64;
 
 import java.io.IOException;
@@ -18,6 +17,8 @@ import java.security.MessageDigest;
 import java.util.concurrent.ExecutorService;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/4/5.
@@ -40,18 +41,18 @@ public class DeveloperUtils {
         try {
             @SuppressLint("PackageManagerGetSignatures")
             PackageInfo packageInfo = getPackageInfo(context, packageName, PackageManager.GET_SIGNATURES);
-            if (packageInfo == null)
+            if(packageInfo == null)
                 return null;
             Signature[] signatures = packageInfo.signatures;
             StringBuilder builder = new StringBuilder();
-            for (Signature signature : signatures) {
+            for(Signature signature : signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 md.update(signature.toByteArray());
                 final String sha = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
                 builder.append(sha);
             }
             return builder.toString();
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -60,7 +61,7 @@ public class DeveloperUtils {
     private static PackageInfo getPackageInfo(Context context, String packageName, int flags) {
         try {
             return context.getPackageManager().getPackageInfo(packageName, flags);
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch(PackageManager.NameNotFoundException e) {
             return null;
         }
     }
@@ -75,10 +76,10 @@ public class DeveloperUtils {
 
     public static boolean checkSignature(Context context, String packageName) {
         String sha = getSignatureSHA(context, packageName);
-        if (sha == null)
+        if(sha == null)
             return false;
-        if (sha.endsWith("\n")) {
-            sha = sha.substring(0, sha.length() - 1);
+        if(sha.endsWith("\n")) {
+            sha = sha.substring(0, sha.length()-1);
         }
         return SIGNATURE.equals(sha);
     }
@@ -93,16 +94,16 @@ public class DeveloperUtils {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
             ActivityInfo[] activities = packageInfo.activities;
-            if (activities == null) {
+            if(activities == null) {
                 return false;
             }
-            for (ActivityInfo info : activities) {
-                if (c.getName().equals(info.name)) {
+            for(ActivityInfo info : activities) {
+                if(c.getName().equals(info.name)) {
                     return true;
                 }
             }
             return false;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch(PackageManager.NameNotFoundException e) {
             return false;
         }
     }
@@ -111,16 +112,16 @@ public class DeveloperUtils {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SERVICES);
             ServiceInfo[] activities = packageInfo.services;
-            if (activities == null) {
+            if(activities == null) {
                 return false;
             }
-            for (ServiceInfo info : activities) {
-                if (c.getName().equals(info.name)) {
+            for(ServiceInfo info : activities) {
+                if(c.getName().equals(info.name)) {
                     return true;
                 }
             }
             return false;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch(PackageManager.NameNotFoundException e) {
             return false;
         }
     }
@@ -129,22 +130,22 @@ public class DeveloperUtils {
         String apkPath = context.getPackageCodePath();
         try {
             ZipFile zipFile = new ZipFile(apkPath);
-            for (int i = 0; i < crc.length; i++) {
+            for(int i = 0; i < crc.length; i++) {
                 String dexFile;
-                if (i == 0) {
+                if(i == 0) {
                     dexFile = "classes.dex";
                 } else {
-                    dexFile = "classes" + (i + 1) + ".dex";
+                    dexFile = "classes"+(i+1)+".dex";
                 }
                 ZipEntry dexEntry = zipFile.getEntry(dexFile);
                 long dexEntryCrc = dexEntry.getCrc();
                 //Log.d(LOG_TAG, String.valueOf(dexEntryCrc));
-                if (dexEntryCrc != crc[i]) {
+                if(dexEntryCrc != crc[i]) {
                     return false;
                 }
             }
             return true;
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -156,9 +157,9 @@ public class DeveloperUtils {
             @Override
             public void run() {
                 Activity a = activityWeakReference.get();
-                if (a == null)
+                if(a == null)
                     return;
-                if (!checkSignature(a)) {
+                if(!checkSignature(a)) {
                     a.finish();
                     return;
                 }
@@ -174,12 +175,12 @@ public class DeveloperUtils {
     private static long[] readCrc(String crcStr) {
         String[] crcStrings = crcStr.split("\n");
         StringBuilder iHash = new StringBuilder();
-        long[] crc = new long[crcStrings.length - 1];
-        for (int i = 0; i < crc.length; i++) {
+        long[] crc = new long[crcStrings.length-1];
+        for(int i = 0; i < crc.length; i++) {
             crc[i] = Long.parseLong(crcStrings[i]);
             iHash.append(iHash(crcStrings[i]));
         }
-        if (!crcStrings[crcStrings.length - 1].equals(iHash.toString())) {
+        if(!crcStrings[crcStrings.length-1].equals(iHash.toString())) {
             return new long[crc.length];
         }
         return crc;
@@ -188,11 +189,11 @@ public class DeveloperUtils {
     private static String iHash(String data) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            for (int i = 0; i < 8; i++) {
-                data = Base64.encodeToString(md5.digest((data + SALT).getBytes()), Base64.NO_WRAP);
+            for(int i = 0; i < 8; i++) {
+                data = Base64.encodeToString(md5.digest((data+SALT).getBytes()), Base64.NO_WRAP);
             }
             return data;
-        } catch (Exception e) {
+        } catch(Exception e) {
             return null;
         }
     }

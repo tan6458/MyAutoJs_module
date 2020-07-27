@@ -43,7 +43,7 @@ public class Floaty {
     public JsResizableWindow window(BaseResizableFloatyWindow.ViewSupplier supplier) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
         JsResizableWindow window = new JsResizableWindow(supplier);
@@ -54,7 +54,7 @@ public class Floaty {
     public JsResizableWindow window(View view) {
         try {
             FloatingPermission.waitForPermissionGranted(view.getContext());
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
 
@@ -66,7 +66,7 @@ public class Floaty {
     public JsRawWindow rawWindow(RawWindow.RawFloaty floaty) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
         JsRawWindow window = new JsRawWindow(floaty);
@@ -77,7 +77,7 @@ public class Floaty {
     public JsRawWindow rawWindow(View view) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
         JsRawWindow window = new JsRawWindow((context, parent) -> view);
@@ -94,7 +94,7 @@ public class Floaty {
     }
 
     public synchronized void closeAll() {
-        for (JsWindow window : mWindows) {
+        for(JsWindow window : mWindows) {
             window.close(false);
         }
         mWindows.clear();
@@ -116,7 +116,7 @@ public class Floaty {
                 FloatyService.addWindow(mWindow);
             });
             RuntimeException exception = mWindow.waitForCreation();
-            if (exception != Exceptions.NO_EXCEPTION && exception != null) {
+            if(exception != Exceptions.NO_EXCEPTION && exception != null) {
                 throw exception;
             }
         }
@@ -154,14 +154,14 @@ public class Floaty {
         }
 
         private void runWithWindow(Runnable r) {
-            if (mWindow == null)
+            if(mWindow == null)
                 return;
-            if (Looper.myLooper() == Looper.getMainLooper()) {
+            if(Looper.myLooper() == Looper.getMainLooper()) {
                 r.run();
                 return;
             }
             mUiHandler.post(() -> {
-                if (mWindow == null)
+                if(mWindow == null)
                     return;
                 r.run();
             });
@@ -188,13 +188,13 @@ public class Floaty {
         }
 
         public void close(boolean removeFromWindows) {
-            if (removeFromWindows && !removeWindow(this)) {
+            if(removeFromWindows && !removeWindow(this)) {
                 return;
             }
             runWithWindow(() -> {
                 mWindow.close();
                 mWindow = null;
-                if (mExitOnClose) {
+                if(mExitOnClose) {
                     mRuntime.exit();
                 }
             });
@@ -218,7 +218,7 @@ public class Floaty {
                 FloatyService.addWindow(mWindow);
             });
             RuntimeException exception = mWindow.waitForCreation();
-            if (exception != Exceptions.NO_EXCEPTION && exception != null) {
+            if(exception != Exceptions.NO_EXCEPTION && exception != null) {
                 throw exception;
             }
             mWindow.setOnCloseButtonClickListener(v -> close());
@@ -255,14 +255,14 @@ public class Floaty {
 
 
         private void runWithWindow(Runnable r) {
-            if (mWindow == null)
+            if(mWindow == null)
                 return;
-            if (Looper.myLooper() == Looper.getMainLooper()) {
+            if(Looper.myLooper() == Looper.getMainLooper()) {
                 r.run();
                 return;
             }
             mUiHandler.post(() -> {
-                if (mWindow == null)
+                if(mWindow == null)
                     return;
                 r.run();
             });
@@ -297,13 +297,13 @@ public class Floaty {
         }
 
         public void close(boolean removeFromWindows) {
-            if (removeFromWindows && !removeWindow(this)) {
+            if(removeFromWindows && !removeWindow(this)) {
                 return;
             }
             runWithWindow(() -> {
                 mWindow.close();
                 mWindow = null;
-                if (mExitOnClose) {
+                if(mExitOnClose) {
                     mRuntime.exit();
                 }
             });

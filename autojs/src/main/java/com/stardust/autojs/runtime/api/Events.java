@@ -7,24 +7,21 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
-
-import androidx.annotation.RequiresApi;
-
 import android.view.KeyEvent;
 
 import com.stardust.autojs.R;
 import com.stardust.autojs.core.accessibility.AccessibilityBridge;
 import com.stardust.autojs.core.boardcast.BroadcastEmitter;
 import com.stardust.autojs.core.eventloop.EventEmitter;
+import com.stardust.autojs.core.inputevent.InputEventObserver;
+import com.stardust.autojs.core.inputevent.TouchObserver;
 import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.core.looper.MainThreadProxy;
 import com.stardust.autojs.core.looper.Timer;
 import com.stardust.autojs.runtime.ScriptRuntime;
+import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.notification.Notification;
 import com.stardust.notification.NotificationListenerService;
-import com.stardust.autojs.runtime.exception.ScriptException;
-import com.stardust.autojs.core.inputevent.InputEventObserver;
-import com.stardust.autojs.core.inputevent.TouchObserver;
 import com.stardust.util.MapBuilder;
 import com.stardust.view.accessibility.AccessibilityNotificationObserver;
 import com.stardust.view.accessibility.AccessibilityService;
@@ -35,6 +32,8 @@ import com.stardust.view.accessibility.OnKeyListener;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Stardust on 2017/7/18.
@@ -104,10 +103,10 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     }
 
     public void observeKey() {
-        if (mListeningKey)
+        if(mListeningKey)
             return;
         AccessibilityService service = getAccessibilityService();
-        if ((service.getServiceInfo().flags & AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS) == 0) {
+        if((service.getServiceInfo().flags & AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS) == 0) {
             throw new ScriptException(mContext.getString(R.string.text_should_enable_key_observing));
         }
         ensureHandler();
@@ -118,13 +117,13 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     }
 
     private void ensureHandler() {
-        if (mHandler == null) {
+        if(mHandler == null) {
             mHandler = new Handler();
         }
     }
 
     public void observeTouch() {
-        if (mTouchObserver != null)
+        if(mTouchObserver != null)
             return;
         ensureHandler();
         mLoopers.waitWhenIdle(true);
@@ -135,13 +134,13 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
 
     public void setKeyInterceptionEnabled(boolean enabled) {
         mInterceptsAllKey = enabled;
-        if (mInterceptsAllKey) {
+        if(mInterceptsAllKey) {
             ensureKeyInterceptor();
         }
     }
 
     public void setKeyInterceptionEnabled(String key, boolean enabled) {
-        if (enabled) {
+        if(enabled) {
             mInterceptedKeys.add(key);
             ensureKeyInterceptor();
         } else {
@@ -150,10 +149,10 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     }
 
     private void ensureKeyInterceptor() {
-        if (mKeyInterceptor != null)
+        if(mKeyInterceptor != null)
             return;
         mKeyInterceptor = event -> {
-            if (mInterceptsAllKey)
+            if(mInterceptsAllKey)
                 return true;
             String keyName = KeyEvent.keyCodeToString(event.getKeyCode()).substring(8).toLowerCase();
             return mInterceptedKeys.contains(keyName);
@@ -164,39 +163,39 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     private AccessibilityService getAccessibilityService() {
         mScriptRuntime.ensureAccessibilityServiceEnabled();
         AccessibilityService service = mAccessibilityBridge.getService();
-        if (service == null)
+        if(service == null)
             throw new ScriptException("AccessibilityService = null");
         return service;
     }
 
 
     public Events onKeyDown(String keyName, Object listener) {
-        on(PREFIX_KEY_DOWN + keyName, listener);
+        on(PREFIX_KEY_DOWN+keyName, listener);
         return this;
     }
 
     public Events onceKeyDown(String keyName, Object listener) {
-        once(PREFIX_KEY_DOWN + keyName, listener);
+        once(PREFIX_KEY_DOWN+keyName, listener);
         return this;
     }
 
     public Events removeAllKeyDownListeners(String keyName) {
-        removeAllListeners(PREFIX_KEY_DOWN + keyName);
+        removeAllListeners(PREFIX_KEY_DOWN+keyName);
         return this;
     }
 
     public Events onKeyUp(String keyName, Object listener) {
-        on(PREFIX_KEY_UP + keyName, listener);
+        on(PREFIX_KEY_UP+keyName, listener);
         return this;
     }
 
     public Events onceKeyUp(String keyName, Object listener) {
-        once(PREFIX_KEY_UP + keyName, listener);
+        once(PREFIX_KEY_UP+keyName, listener);
         return this;
     }
 
     public Events removeAllKeyUpListeners(String keyName) {
-        removeAllListeners(PREFIX_KEY_UP + keyName);
+        removeAllListeners(PREFIX_KEY_UP+keyName);
         return this;
     }
 
@@ -221,13 +220,13 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void observeNotification() {
         ScriptRuntime.requiresApi(18);
-        if (mListeningNotification)
+        if(mListeningNotification)
             return;
         mListeningNotification = true;
         ensureHandler();
         mLoopers.waitWhenIdle(true);
-        if (NotificationListenerService.Companion.getInstance() == null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        if(NotificationListenerService.Companion.getInstance() == null) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 mContext.startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
             }
             throw new ScriptException(mContext.getString(R.string.exception_notification_service_disabled));
@@ -236,7 +235,7 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     }
 
     public void observeToast() {
-        if (mListeningToast)
+        if(mListeningToast)
             return;
         mAccessibilityBridge.ensureServiceEnabled();
         mListeningToast = true;
@@ -247,11 +246,11 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
 
     public void observeGesture() {
         ScriptRuntime.requiresApi(Build.VERSION_CODES.O);
-        if (mListeningGesture) {
+        if(mListeningGesture) {
             return;
         }
         AccessibilityService service = getAccessibilityService();
-        if ((service.getServiceInfo().flags & AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE) == 0) {
+        if((service.getServiceInfo().flags & AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE) == 0) {
             throw new ScriptException(mContext.getString(R.string.text_should_enable_gesture_observing));
         }
         service.getGestureEventDispatcher().addListener(this);
@@ -273,34 +272,34 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
 
     public void recycle() {
         broadcast.unregister();
-        if (mListeningKey) {
+        if(mListeningKey) {
             AccessibilityService service = mAccessibilityBridge.getService();
-            if (service != null) {
+            if(service != null) {
                 service.getOnKeyObserver().removeListener(this);
                 mListeningKey = false;
             }
         }
-        if (mTouchObserver != null) {
+        if(mTouchObserver != null) {
             mTouchObserver.stop();
         }
-        if (mListeningNotification) {
+        if(mListeningNotification) {
             mAccessibilityBridge.getNotificationObserver().removeNotificationListener(this);
             mAccessibilityBridge.getNotificationObserver().removeToastListener(this);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
                     && NotificationListenerService.Companion.getInstance() != null) {
                 NotificationListenerService.Companion.getInstance().removeListener(this);
             }
         }
-        if (mKeyInterceptor != null) {
+        if(mKeyInterceptor != null) {
             AccessibilityService service = mAccessibilityBridge.getService();
-            if (service != null) {
+            if(service != null) {
                 service.getKeyInterrupterObserver().removeKeyInterrupter(mKeyInterceptor);
             }
             mKeyInterceptor = null;
         }
-        if (mListeningGesture) {
+        if(mListeningGesture) {
             AccessibilityService service = mAccessibilityBridge.getService();
-            if (service != null) {
+            if(service != null) {
                 service.getGestureEventDispatcher().removeListener(this);
             }
         }
@@ -311,11 +310,11 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
         mHandler.post(() -> {
             String keyName = KeyEvent.keyCodeToString(keyCode).substring(8).toLowerCase();
             emit(keyName, event);
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                emit(PREFIX_KEY_DOWN + keyName, event);
+            if(event.getAction() == KeyEvent.ACTION_DOWN) {
+                emit(PREFIX_KEY_DOWN+keyName, event);
                 emit("key_down", keyCode, event);
-            } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                emit(PREFIX_KEY_UP + keyName, event);
+            } else if(event.getAction() == KeyEvent.ACTION_UP) {
+                emit(PREFIX_KEY_UP+keyName, event);
                 emit("key_up", keyCode, event);
             }
             emit("key", keyCode, event);
@@ -324,7 +323,7 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
 
     @Override
     public void onTouch(final int x, final int y) {
-        if (System.currentTimeMillis() - mLastTouchEventMillis < mTouchEventTimeout) {
+        if(System.currentTimeMillis()-mLastTouchEventMillis < mTouchEventTimeout) {
             return;
         }
         mLastTouchEventMillis = System.currentTimeMillis();
@@ -345,7 +344,7 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     public void onGesture(int gestureId) {
         mHandler.post(() -> {
             String gesture = GESTURES.get(gestureId);
-            if (gesture != null) {
+            if(gesture != null) {
                 emit("gesture", gesture);
             }
         });

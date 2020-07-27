@@ -29,13 +29,13 @@ public class NativeJavaObjectWithPrototype extends NativeJavaObject {
 
     @Override
     public Object get(String name, Scriptable start) {
-        if (name.equals("__proto__")) {
+        if(name.equals("__proto__")) {
             return prototype;
         }
-        if(super.has(name, start)){
+        if(super.has(name, start)) {
             return super.get(name, start);
         }
-        if (prototype == null) {
+        if(prototype == null) {
             return Scriptable.NOT_FOUND;
         }
         return prototype.get(name, start);
@@ -43,7 +43,7 @@ public class NativeJavaObjectWithPrototype extends NativeJavaObject {
 
     @Override
     public void put(String name, Scriptable start, Object value) {
-        if (name.equals("__proto__")) {
+        if(name.equals("__proto__")) {
             prototype = (Scriptable) value;
             return;
         }

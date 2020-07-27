@@ -2,9 +2,6 @@ package com.stardust.autojs.core.accessibility;
 
 import android.os.Looper;
 import android.os.SystemClock;
-
-import androidx.annotation.NonNull;
-
 import android.util.Log;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -23,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.ACTION_ACCESSIBILITY_FOCUS;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.ACTION_ARGUMENT_COLUMN_INT;
@@ -79,7 +78,7 @@ public class UiSelector extends UiGlobalSelector {
 
     protected UiObjectCollection find(int max) {
         ensureAccessibilityServiceEnabled();
-        if ((mAccessibilityBridge.getFlags() & AccessibilityBridge.FLAG_FIND_ON_UI_THREAD) != 0
+        if((mAccessibilityBridge.getFlags() & AccessibilityBridge.FLAG_FIND_ON_UI_THREAD) != 0
                 && Looper.myLooper() != Looper.getMainLooper()) {
             VolatileBox<UiObjectCollection> result = new VolatileBox<>();
             mAccessibilityBridge.post(() -> result.setAndNotify(findImpl(max)));
@@ -98,22 +97,22 @@ public class UiSelector extends UiGlobalSelector {
     @ScriptInterface
     protected UiObjectCollection findImpl(int max) {
         List<AccessibilityNodeInfo> roots = mAccessibilityBridge.windowRoots();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "find: roots = " + roots);
-        if (roots.isEmpty()) {
+        if(BuildConfig.DEBUG)
+            Log.d(TAG, "find: roots = "+roots);
+        if(roots.isEmpty()) {
             return UiObjectCollection.Companion.getEMPTY();
         }
         List<UiObject> result = new ArrayList<>();
-        for (AccessibilityNodeInfo root : roots) {
-            if (root == null) {
+        for(AccessibilityNodeInfo root : roots) {
+            if(root == null) {
                 continue;
             }
-            if (root.getPackageName() != null && mAccessibilityBridge.getConfig().whiteListContains(root.getPackageName().toString())) {
+            if(root.getPackageName() != null && mAccessibilityBridge.getConfig().whiteListContains(root.getPackageName().toString())) {
                 Log.d(TAG, "package in white list, return null");
                 return UiObjectCollection.Companion.getEMPTY();
             }
-            result.addAll(findAndReturnList(UiObject.Companion.createRoot(root, mAllocator), max - result.size()));
-            if (result.size() >= max) {
+            result.addAll(findAndReturnList(UiObject.Companion.createRoot(root, mAllocator), max-result.size()));
+            if(result.size() >= max) {
                 break;
             }
         }
@@ -127,8 +126,8 @@ public class UiSelector extends UiGlobalSelector {
 
     // TODO: 2018/1/30 更好的实现方式。
     private String convertRegex(String regex) {
-        if (regex.startsWith("/") && regex.endsWith("/") && regex.length() > 2) {
-            return regex.substring(1, regex.length() - 1);
+        if(regex.startsWith("/") && regex.endsWith("/") && regex.length() > 2) {
+            return regex.substring(1, regex.length()-1);
         }
         return regex;
     }
@@ -164,12 +163,12 @@ public class UiSelector extends UiGlobalSelector {
         ensureNonUiThread();
         UiObjectCollection uiObjectCollection = find();
         while (uiObjectCollection.empty()) {
-            if (Thread.currentThread().isInterrupted()) {
+            if(Thread.currentThread().isInterrupted()) {
                 throw new ScriptInterruptedException();
             }
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new ScriptInterruptedException();
             }
             uiObjectCollection = find();
@@ -178,7 +177,7 @@ public class UiSelector extends UiGlobalSelector {
     }
 
     private void ensureNonUiThread() {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             // TODO: 2018/11/1 配置字符串
             throw new IllegalThreadStateException("不能在ui线程执行阻塞操作, 请在子线程或子脚本执行findOne()或untilFind()");
         }
@@ -189,15 +188,15 @@ public class UiSelector extends UiGlobalSelector {
         UiObjectCollection uiObjectCollection = find(1);
         long start = SystemClock.uptimeMillis();
         while (uiObjectCollection.empty()) {
-            if (Thread.currentThread().isInterrupted()) {
+            if(Thread.currentThread().isInterrupted()) {
                 throw new ScriptInterruptedException();
             }
-            if (timeout > 0 && SystemClock.uptimeMillis() - start > timeout) {
+            if(timeout > 0 && SystemClock.uptimeMillis()-start > timeout) {
                 return null;
             }
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new ScriptInterruptedException();
             }
             uiObjectCollection = find(1);
@@ -210,8 +209,8 @@ public class UiSelector extends UiGlobalSelector {
     }
 
     public UiObject findOnce(int index) {
-        UiObjectCollection uiObjectCollection = find(index + 1);
-        if (index >= uiObjectCollection.size()) {
+        UiObjectCollection uiObjectCollection = find(index+1);
+        if(index >= uiObjectCollection.size()) {
             return null;
         }
         return uiObjectCollection.get(index);
@@ -240,17 +239,17 @@ public class UiSelector extends UiGlobalSelector {
 
     @ScriptInterface
     public UiSelector id(@NotNull final String id) {
-        if (!id.contains(":")) {
+        if(!id.contains(":")) {
             addFilter(new Filter() {
                 @Override
                 public boolean filter(@NotNull UiObject node) {
-                    String fullId = mAccessibilityBridge.getInfoProvider().getLatestPackage() + ":id/" + id;
+                    String fullId = mAccessibilityBridge.getInfoProvider().getLatestPackage()+":id/"+id;
                     return fullId.equals(node.getViewIdResourceName());
                 }
 
                 @Override
                 public String toString() {
-                    return "id(\"" + id + "\")";
+                    return "id(\""+id+"\")";
                 }
             });
         } else {
@@ -261,18 +260,18 @@ public class UiSelector extends UiGlobalSelector {
 
     @Override
     public UiGlobalSelector idStartsWith(@NotNull String prefix) {
-        if (!prefix.contains(":")) {
+        if(!prefix.contains(":")) {
             addFilter(new Filter() {
                 @Override
                 public boolean filter(@NotNull UiObject nodeInfo) {
-                    String fullIdPrefix = mAccessibilityBridge.getInfoProvider().getLatestPackage() + ":id/" + prefix;
+                    String fullIdPrefix = mAccessibilityBridge.getInfoProvider().getLatestPackage()+":id/"+prefix;
                     String id = nodeInfo.getViewIdResourceName();
                     return id != null && id.startsWith(fullIdPrefix);
                 }
 
                 @Override
                 public String toString() {
-                    return "idStartsWith(\"" + prefix + "\")";
+                    return "idStartsWith(\""+prefix+"\")";
                 }
             });
         } else {

@@ -2,14 +2,14 @@ package com.stardust.autojs.core.ui.attribute;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-
-import androidx.core.widget.ImageViewCompat;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.util.BiMap;
 import com.stardust.util.BiMaps;
+
+import androidx.core.widget.ImageViewCompat;
 
 import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TINT_MODES;
 
@@ -60,15 +60,15 @@ public class ImageViewAttributes extends ViewAttributes {
     }
 
     private String wrapAsPath(String value) {
-        if (!value.startsWith("file://")) {
-            return "file://" + value;
+        if(!value.startsWith("file://")) {
+            return "file://"+value;
         }
         return value;
     }
 
     private String wrapAsUrl(String value) {
-        if (!value.startsWith("http://") && !value.startsWith("https://")) {
-            return "http://" + value;
+        if(!value.startsWith("http://") && !value.startsWith("https://")) {
+            return "http://"+value;
         }
         return value;
     }

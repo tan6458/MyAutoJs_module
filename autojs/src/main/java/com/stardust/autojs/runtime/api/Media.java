@@ -47,7 +47,7 @@ public class Media implements MediaScannerConnection.MediaScannerConnectionClien
 
     public void playMusic(String path, float volume, boolean looping) {
         path = mRuntime.files.path(path);
-        if (mMediaPlayer == null) {
+        if(mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayerWrapper();
         }
         mMediaPlayer.stopAndReset();
@@ -56,14 +56,14 @@ public class Media implements MediaScannerConnection.MediaScannerConnectionClien
             mMediaPlayer.setVolume(volume, volume);
             mMediaPlayer.setLooping(looping);
             mMediaPlayer.prepare();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
         mMediaPlayer.start();
     }
 
     public void musicSeekTo(int m) {
-        if (mMediaPlayer == null)
+        if(mMediaPlayer == null)
             return;
         mMediaPlayer.seekTo(m);
     }
@@ -73,32 +73,32 @@ public class Media implements MediaScannerConnection.MediaScannerConnectionClien
     }
 
     public void pauseMusic() {
-        if (mMediaPlayer == null)
+        if(mMediaPlayer == null)
             return;
         mMediaPlayer.pause();
     }
 
     public void resumeMusic() {
-        if (mMediaPlayer == null)
+        if(mMediaPlayer == null)
             return;
         mMediaPlayer.start();
     }
 
     public int getMusicDuration() {
-        if (mMediaPlayer == null) {
+        if(mMediaPlayer == null) {
             return 0;
         }
         return mMediaPlayer.getDuration();
     }
 
     public int getMusicCurrentPosition() {
-        if (mMediaPlayer == null)
+        if(mMediaPlayer == null)
             return -1;
         return mMediaPlayer.getCurrentPosition();
     }
 
     public void stopMusic() {
-        if (mMediaPlayer == null)
+        if(mMediaPlayer == null)
             return;
         mMediaPlayer.stop();
     }
@@ -110,11 +110,11 @@ public class Media implements MediaScannerConnection.MediaScannerConnectionClien
     }
 
     public void recycle() {
-        if (mScannerConnection != null) {
+        if(mScannerConnection != null) {
             mScannerConnection.disconnect();
             mScannerConnection = null;
         }
-        if (mMediaPlayer != null) {
+        if(mMediaPlayer != null) {
             mMediaPlayer.release();
         }
     }
@@ -179,13 +179,13 @@ public class Media implements MediaScannerConnection.MediaScannerConnectionClien
 
         public void stopAndReset() {
             try {
-                if (mState == STATE_START || mState == STATE_PAUSED) {
+                if(mState == STATE_START || mState == STATE_PAUSED) {
                     stop();
                 }
-                if (mState != STATE_NOT_INITIALIZED) {
+                if(mState != STATE_NOT_INITIALIZED) {
                     reset();
                 }
-            } catch (IllegalStateException ignored) {
+            } catch(IllegalStateException ignored) {
 
             }
         }

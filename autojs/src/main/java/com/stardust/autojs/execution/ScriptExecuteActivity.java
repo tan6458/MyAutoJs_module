@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -25,6 +22,8 @@ import com.stardust.autojs.script.ScriptSource;
 
 import org.mozilla.javascript.ContinuationPending;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * Created by Stardust on 2017/2/5.
  */
@@ -33,7 +32,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
 
 
     private static final String LOG_TAG = "ScriptExecuteActivity";
-    private static final String EXTRA_EXECUTION_ID = ScriptExecuteActivity.class.getName() + ".execution_id";
+    private static final String EXTRA_EXECUTION_ID = ScriptExecuteActivity.class.getName()+".execution_id";
     private Object mResult;
     private ScriptEngine mScriptEngine;
     private ScriptExecutionListener mExecutionListener;
@@ -59,12 +58,12 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int executionId = getIntent().getIntExtra(EXTRA_EXECUTION_ID, ScriptExecution.NO_ID);
-        if (executionId == ScriptExecution.NO_ID) {
+        if(executionId == ScriptExecution.NO_ID) {
             super.finish();
             return;
         }
         ScriptExecution execution = ScriptEngineService.getInstance().getScriptExecution(executionId);
-        if (execution == null || !(execution instanceof ActivityScriptExecution)) {
+        if(execution == null || !(execution instanceof ActivityScriptExecution)) {
             super.finish();
             return;
         }
@@ -86,9 +85,9 @@ public class ScriptExecuteActivity extends AppCompatActivity {
         try {
             prepare();
             doExecution();
-        } catch (ContinuationPending pending) {
+        } catch(ContinuationPending pending) {
             pending.printStackTrace();
-        } catch (Exception e) {
+        } catch(Exception e) {
             onException(e);
         }
     }
@@ -125,12 +124,12 @@ public class ScriptExecuteActivity extends AppCompatActivity {
 
     @Override
     public void finish() {
-        if (mScriptExecution == null || mExecutionListener == null) {
+        if(mScriptExecution == null || mExecutionListener == null) {
             super.finish();
             return;
         }
         Throwable exception = mScriptEngine.getUncaughtException();
-        if (exception != null) {
+        if(exception != null) {
             onException(exception);
         } else {
             mExecutionListener.onSuccess(mScriptExecution, mResult);
@@ -142,7 +141,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(LOG_TAG, "onDestroy");
-        if (mScriptEngine != null) {
+        if(mScriptEngine != null) {
             mScriptEngine.put("activity", null);
             mScriptEngine.setTag("activity", null);
             mScriptEngine.destroy();
@@ -153,7 +152,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mScriptExecution != null)
+        if(mScriptExecution != null)
             outState.putInt(EXTRA_EXECUTION_ID, mScriptExecution.getId());
         emit("save_instance_state", outState);
     }
@@ -162,7 +161,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     public void onBackPressed() {
         SimpleEvent event = new SimpleEvent();
         emit("back_pressed", event);
-        if (!event.consumed) {
+        if(!event.consumed) {
             super.onBackPressed();
         }
     }
@@ -227,7 +226,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     public void emit(String event, Object... args) {
         try {
             mEventEmitter.emit(event, (Object[]) args);
-        } catch (Exception e) {
+        } catch(Exception e) {
             mRuntime.exit(e);
         }
     }
@@ -244,7 +243,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
 
         @SuppressWarnings("unchecked")
         public ScriptEngine createEngine(Activity activity) {
-            if (mScriptEngine != null) {
+            if(mScriptEngine != null) {
                 mScriptEngine.forceStop();
             }
             mScriptEngine = mScriptEngineManager.createEngineOfSourceOrThrow(getSource(), getId());

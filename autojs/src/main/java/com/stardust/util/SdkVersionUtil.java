@@ -14,10 +14,10 @@ public class SdkVersionUtil {
     };
 
     public static String sdkIntToString(int i) {
-        if (i > 26) {
+        if(i > 26) {
             return "Unknown";
         }
-        return SDK_VERSIONS[i - 1];
+        return SDK_VERSIONS[i-1];
     }
 
 

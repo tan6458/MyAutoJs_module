@@ -53,7 +53,7 @@ public class BuildInfo {
 
     private static String generateBuildId(long buildNumber, long buildTime) {
         CRC32 crc32 = new CRC32();
-        crc32.update((buildNumber + "" + buildTime).getBytes());
-        return String.format("%08X", crc32.getValue()) + "-" + buildNumber;
+        crc32.update((buildNumber+""+buildTime).getBytes());
+        return String.format("%08X", crc32.getValue())+"-"+buildNumber;
     }
 }

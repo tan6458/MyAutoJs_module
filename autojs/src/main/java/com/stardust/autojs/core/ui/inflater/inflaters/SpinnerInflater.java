@@ -1,8 +1,5 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
@@ -15,6 +12,8 @@ import com.stardust.autojs.core.ui.inflater.util.ValueMapper;
 import com.stardust.autojs.core.ui.widget.JsSpinner;
 
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/11/29.
@@ -32,7 +31,7 @@ public class SpinnerInflater extends BaseViewInflater<JsSpinner> {
 
     @Override
     public boolean setAttr(JsSpinner view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "dropDownHorizontalOffset":
                 view.setDropDownHorizontalOffset(Dimensions.parseToIntPixel(value, view));
                 break;
@@ -84,7 +83,7 @@ public class SpinnerInflater extends BaseViewInflater<JsSpinner> {
     public ViewCreator<Spinner> getCreator() {
         return (context, attrs) -> {
             String mode = attrs.remove("android:spinnerMode");
-            if (mode == null) {
+            if(mode == null) {
                 return new JsSpinner(context);
             }
             return new JsSpinner(context, SPINNER_MODES.get(mode));

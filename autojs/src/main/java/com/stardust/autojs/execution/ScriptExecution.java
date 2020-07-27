@@ -1,10 +1,8 @@
 package com.stardust.autojs.execution;
 
 import com.stardust.autojs.engine.ScriptEngine;
-import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.script.ScriptSource;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -62,8 +60,10 @@ public interface ScriptExecution {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if(this == o)
+                return true;
+            if(o == null || getClass() != o.getClass())
+                return false;
             AbstractScriptExecution that = (AbstractScriptExecution) o;
             return mId == that.mId;
         }

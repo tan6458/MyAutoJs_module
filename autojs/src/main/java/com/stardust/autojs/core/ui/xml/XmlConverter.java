@@ -1,9 +1,5 @@
 package com.stardust.autojs.core.ui.xml;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
@@ -44,6 +40,9 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 /**
  * Created by Stardust on 2017/5/14.
@@ -128,20 +127,20 @@ public class XmlConverter {
     }
 
     private static void handleText(String nodeName, String textContent, StringBuilder layoutXml) {
-        if (textContent == null || textContent.isEmpty()) {
+        if(textContent == null || textContent.isEmpty()) {
             return;
         }
-        if (nodeName.equals("text") || nodeName.equals("button") || nodeName.equals("input"))
+        if(nodeName.equals("text") || nodeName.equals("button") || nodeName.equals("input"))
             layoutXml.append("android:text=\"").append(textContent).append("\"\n");
     }
 
     private static void handleChildren(NodeList nodes, StringBuilder layoutXml) {
-        if (nodes == null)
+        if(nodes == null)
             return;
         int len = nodes.getLength();
-        for (int i = 0; i < len; i++) {
+        for(int i = 0; i < len; i++) {
             Node node = nodes.item(i);
-            if (node.getNodeType() != Node.ELEMENT_NODE)
+            if(node.getNodeType() != Node.ELEMENT_NODE)
                 continue;
             handleNode(node, "", layoutXml);
         }
@@ -149,10 +148,10 @@ public class XmlConverter {
 
 
     private static void handleAttributes(String nodeName, NamedNodeMap attributes, StringBuilder layoutXml) {
-        if (attributes == null)
+        if(attributes == null)
             return;
         int len = attributes.getLength();
-        for (int i = 0; i < len; i++) {
+        for(int i = 0; i < len; i++) {
             Node attr = attributes.item(i);
             handleAttribute(nodeName, attr, layoutXml);
         }

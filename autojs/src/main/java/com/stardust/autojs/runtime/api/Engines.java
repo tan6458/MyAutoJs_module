@@ -50,7 +50,7 @@ public class Engines {
 
 
     public void setCurrentEngine(JavaScriptEngine engine) {
-        if (mScriptEngine != null)
+        if(mScriptEngine != null)
             throw new IllegalStateException();
         mScriptEngine = engine;
     }

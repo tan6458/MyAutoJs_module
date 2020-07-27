@@ -10,12 +10,12 @@ public class VolatileDispose<T> {
 
     public T blockedGet() {
         synchronized (this) {
-            if (mValue != null) {
+            if(mValue != null) {
                 return mValue;
             }
             try {
                 this.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -24,17 +24,17 @@ public class VolatileDispose<T> {
 
     public T blockedGetOrThrow(Class<? extends RuntimeException> exception) {
         synchronized (this) {
-            if (mValue != null) {
+            if(mValue != null) {
                 return mValue;
             }
             try {
                 this.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 try {
                     throw exception.newInstance();
-                } catch (InstantiationException e1) {
+                } catch(InstantiationException e1) {
                     throw new RuntimeException(e1);
-                } catch (IllegalAccessException e1) {
+                } catch(IllegalAccessException e1) {
                     throw new RuntimeException(e1);
                 }
             }
@@ -44,21 +44,21 @@ public class VolatileDispose<T> {
 
     public T blockedGetOrThrow(Class<? extends RuntimeException> exception, long timeout, T defaultValue) {
         synchronized (this) {
-            if (mValue != null) {
+            if(mValue != null) {
                 return mValue;
             }
             try {
                 this.wait(timeout);
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 try {
                     throw exception.newInstance();
-                } catch (InstantiationException e1) {
+                } catch(InstantiationException e1) {
                     throw new RuntimeException(e1);
-                } catch (IllegalAccessException e1) {
+                } catch(IllegalAccessException e1) {
                     throw new RuntimeException(e1);
                 }
             }
-            if (mValue == null) {
+            if(mValue == null) {
                 return defaultValue;
             }
         }

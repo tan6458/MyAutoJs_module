@@ -31,7 +31,7 @@ public class DatabaseResultSet {
 
     public static DatabaseResultSet fromCursor(Cursor cursor) {
         ArrayList<Map<String, Object>> rows = new ArrayList<>();
-        if (!cursor.moveToFirst()) {
+        if(!cursor.moveToFirst()) {
             return null;
         }
         int columnCount = cursor.getColumnCount();
@@ -46,7 +46,7 @@ public class DatabaseResultSet {
 
     private static Map<String, Object> readRowAsMap(Cursor cursor, int columnCount) {
         Map<String, Object> map = new HashMap<>();
-        for (int i = 0; i < columnCount; i++) {
+        for(int i = 0; i < columnCount; i++) {
             map.put(cursor.getColumnName(i), CursorHelper.getValue(cursor, columnCount));
         }
         return map;

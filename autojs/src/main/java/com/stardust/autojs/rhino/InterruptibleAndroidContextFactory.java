@@ -26,7 +26,7 @@ public class InterruptibleAndroidContextFactory extends AndroidContextFactory {
 
     @Override
     protected void observeInstructionCount(Context cx, int instructionCount) {
-        if (Thread.currentThread().isInterrupted() && Looper.myLooper() != Looper.getMainLooper()) {
+        if(Thread.currentThread().isInterrupted() && Looper.myLooper() != Looper.getMainLooper()) {
             throw new ScriptInterruptedException();
         }
     }
@@ -42,14 +42,14 @@ public class InterruptibleAndroidContextFactory extends AndroidContextFactory {
     protected void onContextCreated(Context cx) {
         super.onContextCreated(cx);
         int i = mContextCount.incrementAndGet();
-        Log.d(LOG_TAG, "onContextCreated: count = " + i);
+        Log.d(LOG_TAG, "onContextCreated: count = "+i);
     }
 
     @Override
     protected void onContextReleased(Context cx) {
         super.onContextReleased(cx);
         int i = mContextCount.decrementAndGet();
-        Log.d(LOG_TAG, "onContextReleased: count = " + i);
+        Log.d(LOG_TAG, "onContextReleased: count = "+i);
     }
 
 }

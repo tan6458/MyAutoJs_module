@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
-import androidx.annotation.RequiresApi;
 
 import com.stardust.app.OnActivityResultDelegate;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Stardust on 2017/5/17.
@@ -39,15 +40,15 @@ public interface ScreenCaptureRequester {
 
         public void onResult(int resultCode, Intent data) {
             mResult = data;
-            if (mCallback != null)
+            if(mCallback != null)
                 mCallback.onRequestResult(resultCode, data);
         }
 
         @Override
         public void cancel() {
-            if (mResult != null)
+            if(mResult != null)
                 return;
-            if (mCallback != null)
+            if(mCallback != null)
                 mCallback.onRequestResult(Activity.RESULT_CANCELED, null);
         }
     }

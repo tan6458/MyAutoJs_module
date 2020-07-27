@@ -60,30 +60,30 @@ public class ProjectConfig {
 
 
     public static ProjectConfig fromJson(String json) {
-        if (json == null) {
+        if(json == null) {
             return null;
         }
         ProjectConfig config = GSON.fromJson(json, ProjectConfig.class);
-        if (!isValid(config)) {
+        if(!isValid(config)) {
             return null;
         }
         return config;
     }
 
     private static boolean isValid(ProjectConfig config) {
-        if (TextUtils.isEmpty(config.getName())) {
+        if(TextUtils.isEmpty(config.getName())) {
             return false;
         }
-        if (TextUtils.isEmpty(config.getPackageName())) {
+        if(TextUtils.isEmpty(config.getPackageName())) {
             return false;
         }
-        if (TextUtils.isEmpty(config.getVersionName())) {
+        if(TextUtils.isEmpty(config.getVersionName())) {
             return false;
         }
-        if (TextUtils.isEmpty(config.getMainScriptFile())) {
+        if(TextUtils.isEmpty(config.getMainScriptFile())) {
             return false;
         }
-        if (config.getVersionCode() == -1) {
+        if(config.getVersionCode() == -1) {
             return false;
         }
         return true;
@@ -93,7 +93,7 @@ public class ProjectConfig {
     public static ProjectConfig fromAssets(Context context, String path) {
         try {
             return fromJson(PFiles.read(context.getAssets().open(path)));
-        } catch (Exception e) {
+        } catch(Exception e) {
             return null;
         }
     }
@@ -101,7 +101,7 @@ public class ProjectConfig {
     public static ProjectConfig fromFile(String path) {
         try {
             return fromJson(PFiles.read(path));
-        } catch (Exception e) {
+        } catch(Exception e) {
             return null;
         }
     }
@@ -173,18 +173,18 @@ public class ProjectConfig {
     }
 
     public List<String> getAssets() {
-        if (mAssets == null) {
+        if(mAssets == null) {
             mAssets = Collections.emptyList();
         }
         return mAssets;
     }
 
     public boolean addAsset(String assetRelativePath) {
-        if (mAssets == null) {
+        if(mAssets == null) {
             mAssets = new ArrayList<>();
         }
-        for (String asset : mAssets) {
-            if (new File(asset).equals(new File(assetRelativePath))) {
+        for(String asset : mAssets) {
+            if(new File(asset).equals(new File(assetRelativePath))) {
                 return false;
             }
         }
@@ -197,7 +197,7 @@ public class ProjectConfig {
     }
 
     public LaunchConfig getLaunchConfig() {
-        if (mLaunchConfig == null) {
+        if(mLaunchConfig == null) {
             mLaunchConfig = new LaunchConfig();
         }
         return mLaunchConfig;
@@ -233,15 +233,15 @@ public class ProjectConfig {
 
     public ScriptConfig getScriptConfig(String path) {
         ScriptConfig config = mScriptConfigs.get(path);
-        if (config == null) {
+        if(config == null) {
             config = new ScriptConfig();
         }
-        if(mFeatures.isEmpty()){
+        if(mFeatures.isEmpty()) {
             return config;
         }
         ArrayList<String> features = new ArrayList<>(config.getFeatures());
-        for (String feature : mFeatures) {
-            if (!features.contains(feature)) {
+        for(String feature : mFeatures) {
+            if(!features.contains(feature)) {
                 features.add(feature);
             }
         }

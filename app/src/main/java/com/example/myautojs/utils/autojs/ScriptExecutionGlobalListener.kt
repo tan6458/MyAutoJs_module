@@ -1,8 +1,8 @@
 package com.example.myautojs.utils.autojs
 
 import com.example.myautojs.App
-import com.stardust.app.GlobalAppContext
 import com.example.myautojs.R
+import com.stardust.app.GlobalAppContext
 import com.stardust.autojs.execution.ScriptExecution
 import com.stardust.autojs.execution.ScriptExecutionListener
 

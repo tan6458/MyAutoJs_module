@@ -24,7 +24,7 @@ public class EventDispatcher<Listener> {
     }
 
     public void dispatchEvent(Event<Listener> event) {
-        for (Listener listener : mListeners) {
+        for(Listener listener : mListeners) {
             event.notify(listener);
         }
     }

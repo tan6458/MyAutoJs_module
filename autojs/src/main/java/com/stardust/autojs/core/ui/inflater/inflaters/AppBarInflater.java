@@ -1,6 +1,5 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +11,8 @@ import com.stardust.autojs.core.ui.inflater.util.Dimensions;
 
 import java.util.Map;
 
+import androidx.annotation.Nullable;
+
 public class AppBarInflater<V extends AppBarLayout> extends BaseViewInflater<V> {
 
     public AppBarInflater(ResourceParser resourceParser) {
@@ -20,7 +21,7 @@ public class AppBarInflater<V extends AppBarLayout> extends BaseViewInflater<V> 
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        switch (attr) {
+        switch(attr) {
             case "elevation":
                 view.setTargetElevation(Dimensions.parseToPixel(value, view));
                 break;

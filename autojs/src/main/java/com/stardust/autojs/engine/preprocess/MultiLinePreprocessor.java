@@ -1,7 +1,5 @@
 package com.stardust.autojs.engine.preprocess;
 
-import androidx.annotation.VisibleForTesting;
-
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -24,35 +22,35 @@ public class MultiLinePreprocessor extends AbstractProcessor {
     @Override
     protected void handleChar(int ch) {
         boolean shouldAppend = true;
-        switch (ch) {
+        switch(ch) {
             case '"':
-                if (mState == STATE_DOUBLE_QUOTE_LITERAL) {
+                if(mState == STATE_DOUBLE_QUOTE_LITERAL) {
                     mState = mStateBeforeLiteral;
-                } else if (mState != STATE_SINGLE_QUOTE_LITERAL) {
+                } else if(mState != STATE_SINGLE_QUOTE_LITERAL) {
                     mStateBeforeLiteral = mState;
                     mState = STATE_DOUBLE_QUOTE_LITERAL;
                 }
                 break;
             case '\'':
-                if (mState == STATE_SINGLE_QUOTE_LITERAL) {
-                    if ((mStateBeforeLiteral & STATE_MULTI_LINE) != 0) {
+                if(mState == STATE_SINGLE_QUOTE_LITERAL) {
+                    if((mStateBeforeLiteral & STATE_MULTI_LINE) != 0) {
                         mNewScript.append('\\');
                     }
                     mState = mStateBeforeLiteral;
-                } else if (mState != STATE_DOUBLE_QUOTE_LITERAL) {
+                } else if(mState != STATE_DOUBLE_QUOTE_LITERAL) {
                     mStateBeforeLiteral = mState;
                     mState = STATE_SINGLE_QUOTE_LITERAL;
-                    if ((mStateBeforeLiteral & STATE_MULTI_LINE) != 0) {
+                    if((mStateBeforeLiteral & STATE_MULTI_LINE) != 0) {
                         mNewScript.append('\\');
                     }
                 }
                 break;
             case '`':
-                if (mState == 0) {
+                if(mState == 0) {
                     mState = STATE_MULTI_LINE;
                     mNewScript.append("'");
                     shouldAppend = false;
-                } else if (mState == STATE_MULTI_LINE) {
+                } else if(mState == STATE_MULTI_LINE) {
                     mState = 0;
                     mNewScript.append("'");
                     shouldAppend = false;
@@ -60,19 +58,19 @@ public class MultiLinePreprocessor extends AbstractProcessor {
                 break;
             case '\r':
             case '\n':
-                if (ch == '\n' && mLastReturnCharPosition == i - 1) {
+                if(ch == '\n' && mLastReturnCharPosition == i-1) {
                     shouldAppend = false;
                     break;
                 }
-                if (ch == '\r')
+                if(ch == '\r')
                     mLastReturnCharPosition = i;
-                if (mState == STATE_MULTI_LINE) {
+                if(mState == STATE_MULTI_LINE) {
                     mNewScript.append("\\n'+\n'");
                     shouldAppend = false;
                 }
                 break;
         }
-        if (shouldAppend) {
+        if(shouldAppend) {
             mNewScript.append((char) ch);
         }
         i++;

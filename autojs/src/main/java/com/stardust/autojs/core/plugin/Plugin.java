@@ -27,22 +27,22 @@ public class Plugin {
         try {
             ApplicationInfo applicationInfo = packageContext.getPackageManager().getApplicationInfo(packageContext.getPackageName(), PackageManager.GET_META_DATA);
             String registryClass = applicationInfo.metaData.getString(KEY_REGISTRY);
-            if (registryClass == null) {
+            if(registryClass == null) {
                 throw new PluginLoadException("no registry in metadata");
             }
             Class<?> pluginClass = Class.forName(registryClass, true, packageContext.getClassLoader());
             Method loadDefault = pluginClass.getMethod("loadDefault", Context.class, Context.class, Object.class, Object.class);
             return Plugin.create(loadDefault.invoke(null, context, packageContext, runtime, scope));
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch(PackageManager.NameNotFoundException e) {
             return null;
-        } catch (Throwable e) {
+        } catch(Throwable e) {
             e.printStackTrace();
             throw new PluginLoadException(e);
         }
     }
 
     private static Plugin create(Object pluginInstance) {
-        if (pluginInstance == null)
+        if(pluginInstance == null)
             return null;
         return new Plugin(pluginInstance);
     }
@@ -61,12 +61,12 @@ public class Plugin {
     private void findMethods(Class pluginClass) {
         try {
             mGetVersion = pluginClass.getMethod("getVersion");
-        } catch (NoSuchMethodException e) {
+        } catch(NoSuchMethodException e) {
             e.printStackTrace();
         }
         try {
             mGetScriptDir = pluginClass.getMethod("getAssetsScriptDir");
-        } catch (NoSuchMethodException e) {
+        } catch(NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
@@ -86,7 +86,7 @@ public class Plugin {
     public String getAssetsScriptDir() {
         try {
             return (String) mGetScriptDir.invoke(mPluginInstance);
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new RuntimeException(e);
         }
     }

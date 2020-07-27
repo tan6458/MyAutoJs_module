@@ -2,7 +2,6 @@ package com.stardust.util;
 
 import android.content.SharedPreferences;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class StateObserver {
     private void unregister(String key, OnStateChangedListener stateChangedListener) {
         synchronized (mKeyStateListenersMap) {
             List<OnStateChangedListener> listeners = mKeyStateListenersMap.get(key);
-            if (listeners == null) {
+            if(listeners == null) {
                 return;
             }
             listeners.remove(stateChangedListener);
@@ -61,7 +60,7 @@ public class StateObserver {
     public void setState(String key, boolean state) {
         synchronized (mKeyStateListenersMap) {
             List<OnStateChangedListener> listeners = mKeyStateListenersMap.get(key);
-            if (listeners == null || listeners.isEmpty())
+            if(listeners == null || listeners.isEmpty())
                 return;
             mSharedPreferences.edit().putBoolean(key, state).apply();
             notifyBooleanStateChanged(listeners, state);
@@ -69,20 +68,20 @@ public class StateObserver {
     }
 
     private void notifyBooleanStateChanged(List<OnStateChangedListener> listeners, boolean state) {
-        for (OnStateChangedListener listener : listeners) {
+        for(OnStateChangedListener listener : listeners) {
             listener.onStateChanged(state);
         }
     }
 
     private void initState(String key, OnStateChangedListener listener) {
-        if (mSharedPreferences.contains(key)) {
+        if(mSharedPreferences.contains(key)) {
             listener.initState(mSharedPreferences.getBoolean(key, false));
         }
     }
 
     private List<OnStateChangedListener> getListenerListOrCreateIfNotExists(String key) {
         List<OnStateChangedListener> listeners = mKeyStateListenersMap.get(key);
-        if (listeners == null) {
+        if(listeners == null) {
             listeners = new CopyOnWriteArrayList<>();
             mKeyStateListenersMap.put(key, listeners);
         }

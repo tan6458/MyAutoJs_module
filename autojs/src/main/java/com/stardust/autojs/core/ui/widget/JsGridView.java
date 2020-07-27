@@ -20,12 +20,12 @@ public class JsGridView extends JsListView {
     @Override
     protected void init() {
         super.init();
-        setLayoutManager(new GridLayoutManager(getContext(), 1){
+        setLayoutManager(new GridLayoutManager(getContext(), 1) {
             @Override
             public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
                 try {
                     super.onLayoutChildren(recycler, state);
-                } catch (IndexOutOfBoundsException e) {
+                } catch(IndexOutOfBoundsException e) {
                     getScriptRuntime().console.error(e);
                 }
             }

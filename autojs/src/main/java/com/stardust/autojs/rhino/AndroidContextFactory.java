@@ -38,7 +38,7 @@ public class AndroidContextFactory extends ShellContextFactory {
 
     @Override
     protected void observeInstructionCount(Context cx, int instructionCount) {
-        if (Thread.currentThread().isInterrupted()) {
+        if(Thread.currentThread().isInterrupted()) {
             throw new ScriptInterruptedException();
         }
     }

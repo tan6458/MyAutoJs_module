@@ -11,14 +11,35 @@ import com.stardust.autojs.engine.RhinoJavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.engine.ScriptEngineManager;
 
-import org.mozilla.javascript.*;
-import org.mozilla.javascript.debug.*;
-import org.mozilla.javascript.tools.debugger.*;
+import org.mozilla.javascript.Callable;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextAction;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.Kit;
+import org.mozilla.javascript.NativeCall;
+import org.mozilla.javascript.ObjArray;
+import org.mozilla.javascript.ScriptRuntime;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.SecurityUtilities;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.debug.DebugFrame;
+import org.mozilla.javascript.debug.DebuggableObject;
+import org.mozilla.javascript.debug.DebuggableScript;
 import org.mozilla.javascript.debug.Debugger;
+import org.mozilla.javascript.tools.debugger.ScopeProvider;
+import org.mozilla.javascript.tools.debugger.SourceProvider;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Dim or Debugger Implementation for Rhino.
@@ -231,7 +252,7 @@ public class Dim {
      * Detaches the debugger from the current ContextFactory.
      */
     public void detach() {
-        if (listener != null) {
+        if(listener != null) {
             scriptEngineService.unregisterEngineLifecycleCallback(listener);
             contextFactory = null;
             scriptEngineService = null;
@@ -251,18 +272,18 @@ public class Dim {
      */
     private FunctionSource getFunctionSource(DebuggableScript fnOrScript) {
         FunctionSource fsource = functionSource(fnOrScript);
-        if (fsource == null) {
+        if(fsource == null) {
             String url = getNormalizedUrl(fnOrScript);
             SourceInfo si = sourceInfo(url);
-            if (si == null) {
-                if (!fnOrScript.isGeneratedScript()) {
+            if(si == null) {
+                if(!fnOrScript.isGeneratedScript()) {
                     // Not eval or Function, try to load it from URL
                     String source = loadSource(url);
-                    if (source != null) {
+                    if(source != null) {
                         DebuggableScript top = fnOrScript;
-                        for (; ; ) {
+                        for(; ; ) {
                             DebuggableScript parent = top.getParent();
-                            if (parent == null) {
+                            if(parent == null) {
                                 break;
                             }
                             top = parent;
@@ -282,41 +303,41 @@ public class Dim {
     private String loadSource(String sourceUrl) {
         String source = null;
         int hash = sourceUrl.indexOf('#');
-        if (hash >= 0) {
+        if(hash >= 0) {
             sourceUrl = sourceUrl.substring(0, hash);
         }
         try {
             InputStream is;
             openStream:
             {
-                if (sourceUrl.indexOf(':') < 0) {
+                if(sourceUrl.indexOf(':') < 0) {
                     // Can be a file name
                     try {
-                        if (sourceUrl.startsWith("~/")) {
+                        if(sourceUrl.startsWith("~/")) {
                             String home = SecurityUtilities.getSystemProperty("user.home");
-                            if (home != null) {
+                            if(home != null) {
                                 String pathFromHome = sourceUrl.substring(2);
                                 File f = new File(new File(home), pathFromHome);
-                                if (f.exists()) {
+                                if(f.exists()) {
                                     is = new FileInputStream(f);
                                     break openStream;
                                 }
                             }
                         }
                         File f = new File(sourceUrl);
-                        if (f.exists()) {
+                        if(f.exists()) {
                             is = new FileInputStream(f);
                             break openStream;
                         }
-                    } catch (SecurityException ex) {
+                    } catch(SecurityException ex) {
                     }
                     // No existing file, assume missed http://
-                    if (sourceUrl.startsWith("//")) {
-                        sourceUrl = "http:" + sourceUrl;
-                    } else if (sourceUrl.startsWith("/")) {
-                        sourceUrl = "http://127.0.0.1" + sourceUrl;
+                    if(sourceUrl.startsWith("//")) {
+                        sourceUrl = "http:"+sourceUrl;
+                    } else if(sourceUrl.startsWith("/")) {
+                        sourceUrl = "http://127.0.0.1"+sourceUrl;
                     } else {
-                        sourceUrl = "http://" + sourceUrl;
+                        sourceUrl = "http://"+sourceUrl;
                     }
                 }
 
@@ -328,9 +349,9 @@ public class Dim {
             } finally {
                 is.close();
             }
-        } catch (IOException ex) {
+        } catch(IOException ex) {
             System.err.println
-                    ("Failed to load source from " + sourceUrl + ": " + ex);
+                    ("Failed to load source from "+sourceUrl+": "+ex);
         }
         return source;
     }
@@ -339,14 +360,14 @@ public class Dim {
      * Registers the given script as a top-level script in the debugger.
      */
     private void registerTopScript(DebuggableScript topScript, String source) {
-        if (!topScript.isTopLevel()) {
+        if(!topScript.isTopLevel()) {
             throw new IllegalArgumentException();
         }
         String url = getNormalizedUrl(topScript);
         DebuggableScript[] functions = getAllFunctions(topScript);
-        if (sourceProvider != null) {
+        if(sourceProvider != null) {
             final String providedSource = sourceProvider.getSource(topScript);
-            if (providedSource != null) {
+            if(providedSource != null) {
                 source = providedSource;
             }
         }
@@ -355,21 +376,21 @@ public class Dim {
 
         synchronized (urlToSourceInfo) {
             SourceInfo old = urlToSourceInfo.get(url);
-            if (old != null) {
+            if(old != null) {
                 sourceInfo.copyBreakpointsFrom(old);
             }
             urlToSourceInfo.put(url, sourceInfo);
-            for (int i = 0; i != sourceInfo.functionSourcesTop(); ++i) {
+            for(int i = 0; i != sourceInfo.functionSourcesTop(); ++i) {
                 FunctionSource fsource = sourceInfo.functionSource(i);
                 String name = fsource.name();
-                if (name.length() != 0) {
+                if(name.length() != 0) {
                     functionNames.put(name, fsource);
                 }
             }
         }
 
         synchronized (functionToSource) {
-            for (int i = 0; i != functions.length; ++i) {
+            for(int i = 0; i != functions.length; ++i) {
                 FunctionSource fsource = sourceInfo.functionSource(i);
                 functionToSource.put(functions[i], fsource);
             }
@@ -413,7 +434,7 @@ public class Dim {
      */
     private String getNormalizedUrl(DebuggableScript fnOrScript) {
         String url = fnOrScript.getSourceName();
-        if (url == null) {
+        if(url == null) {
             url = "<stdin>";
         } else {
             // Not to produce window for eval from different lines,
@@ -424,38 +445,38 @@ public class Dim {
             StringBuilder sb = null;
             int urlLength = url.length();
             int cursor = 0;
-            for (; ; ) {
+            for(; ; ) {
                 int searchStart = url.indexOf(evalSeparator, cursor);
-                if (searchStart < 0) {
+                if(searchStart < 0) {
                     break;
                 }
                 String replace = null;
-                int i = searchStart + 1;
+                int i = searchStart+1;
                 while (i != urlLength) {
                     int c = url.charAt(i);
-                    if (!('0' <= c && c <= '9')) {
+                    if(!('0' <= c && c <= '9')) {
                         break;
                     }
                     ++i;
                 }
-                if (i != searchStart + 1) {
+                if(i != searchStart+1) {
                     // i points after #[0-9]+
-                    if ("(eval)".regionMatches(0, url, i, 6)) {
-                        cursor = i + 6;
+                    if("(eval)".regionMatches(0, url, i, 6)) {
+                        cursor = i+6;
                         replace = "(eval)";
                     }
                 }
-                if (replace == null) {
+                if(replace == null) {
                     break;
                 }
-                if (sb == null) {
+                if(sb == null) {
                     sb = new StringBuilder();
                     sb.append(url.substring(0, searchStart));
                 }
                 sb.append(replace);
             }
-            if (sb != null) {
-                if (cursor != urlLength) {
+            if(sb != null) {
+                if(cursor != urlLength) {
                     sb.append(url.substring(cursor));
                 }
                 url = sb.toString();
@@ -482,7 +503,7 @@ public class Dim {
     private static void collectFunctions_r(DebuggableScript function,
                                            ObjArray array) {
         array.add(function);
-        for (int i = 0; i != function.getFunctionCount(); ++i) {
+        for(int i = 0; i != function.getFunctionCount(); ++i) {
             collectFunctions_r(function.getFunction(i), array);
         }
     }
@@ -491,7 +512,7 @@ public class Dim {
      * Clears all breakpoints.
      */
     public void clearAllBreakpoints() {
-        for (SourceInfo si : urlToSourceInfo.values()) {
+        for(SourceInfo si : urlToSourceInfo.values()) {
             si.removeAllBreakpoints();
         }
     }
@@ -509,9 +530,9 @@ public class Dim {
      */
     private void handleExceptionThrown(Context cx, Throwable ex,
                                        StackFrame frame) {
-        if (breakOnExceptions) {
+        if(breakOnExceptions) {
             ContextData cd = frame.contextData();
-            if (cd.lastProcessedException != ex) {
+            if(cd.lastProcessedException != ex) {
                 interrupted(cx, frame, ex);
                 cd.lastProcessedException = ex;
             }
@@ -554,27 +575,27 @@ public class Dim {
      */
     public String eval(String expr) {
         String result = "undefined";
-        if (expr == null) {
+        if(expr == null) {
             return result;
         }
         ContextData contextData = currentContextData();
-        if (contextData == null || frameIndex >= contextData.frameCount()) {
+        if(contextData == null || frameIndex >= contextData.frameCount()) {
             return result;
         }
         StackFrame frame = contextData.getFrame(frameIndex);
-        if (contextData.eventThreadFlag) {
+        if(contextData.eventThreadFlag) {
             Context cx = Context.getCurrentContext();
             result = do_eval(cx, frame, expr);
         } else {
             synchronized (monitor) {
-                if (insideInterruptLoop) {
+                if(insideInterruptLoop) {
                     evalRequest = expr;
                     evalFrame = frame;
                     monitor.notify();
                     do {
                         try {
                             monitor.wait();
-                        } catch (InterruptedException exc) {
+                        } catch(InterruptedException exc) {
                             Thread.currentThread().interrupt();
                             break;
                         }
@@ -654,24 +675,24 @@ public class Dim {
                                          Object id) {
         Scriptable scriptable = (Scriptable) object;
         Object result;
-        if (id instanceof String) {
+        if(id instanceof String) {
             String name = (String) id;
-            if (name.equals("this")) {
+            if(name.equals("this")) {
                 result = scriptable;
-            } else if (name.equals("__proto__")) {
+            } else if(name.equals("__proto__")) {
                 result = scriptable.getPrototype();
-            } else if (name.equals("__parent__")) {
+            } else if(name.equals("__parent__")) {
                 result = scriptable.getParentScope();
             } else {
                 result = ScriptableObject.getProperty(scriptable, name);
-                if (result == ScriptableObject.NOT_FOUND) {
+                if(result == ScriptableObject.NOT_FOUND) {
                     result = Undefined.instance;
                 }
             }
         } else {
             int index = ((Integer) id).intValue();
             result = ScriptableObject.getProperty(scriptable, index);
-            if (result == ScriptableObject.NOT_FOUND) {
+            if(result == ScriptableObject.NOT_FOUND) {
                 result = Undefined.instance;
             }
         }
@@ -682,13 +703,13 @@ public class Dim {
      * Returns an array of the property names on the given script object.
      */
     private Object[] getObjectIdsImpl(Context cx, Object object) {
-        if (!(object instanceof Scriptable) || object == Undefined.instance) {
+        if(!(object instanceof Scriptable) || object == Undefined.instance) {
             return Context.emptyArgs;
         }
 
         Object[] ids;
         Scriptable scriptable = (Scriptable) object;
-        if (scriptable instanceof DebuggableObject) {
+        if(scriptable instanceof DebuggableObject) {
             ids = ((DebuggableObject) scriptable).getAllIds();
         } else {
             ids = scriptable.getIds();
@@ -697,21 +718,21 @@ public class Dim {
         Scriptable proto = scriptable.getPrototype();
         Scriptable parent = scriptable.getParentScope();
         int extra = 0;
-        if (proto != null) {
+        if(proto != null) {
             ++extra;
         }
-        if (parent != null) {
+        if(parent != null) {
             ++extra;
         }
-        if (extra != 0) {
-            Object[] tmp = new Object[extra + ids.length];
+        if(extra != 0) {
+            Object[] tmp = new Object[extra+ids.length];
             System.arraycopy(ids, 0, tmp, extra, ids.length);
             ids = tmp;
             extra = 0;
-            if (proto != null) {
+            if(proto != null) {
                 ids[extra++] = "__proto__";
             }
-            if (parent != null) {
+            if(parent != null) {
                 ids[extra++] = "__parent__";
             }
         }
@@ -732,8 +753,8 @@ public class Dim {
 
         interruptedCheck:
         synchronized (eventThreadMonitor) {
-            if (eventThreadFlag) {
-                if (interruptedContextData != null) {
+            if(eventThreadFlag) {
+                if(interruptedContextData != null) {
                     recursiveEventThreadCall = true;
                     break interruptedCheck;
                 }
@@ -741,7 +762,7 @@ public class Dim {
                 while (interruptedContextData != null) {
                     try {
                         eventThreadMonitor.wait();
-                    } catch (InterruptedException exc) {
+                    } catch(InterruptedException exc) {
                         return;
                     }
                 }
@@ -749,57 +770,59 @@ public class Dim {
             interruptedContextData = contextData;
         }
 
-        if (recursiveEventThreadCall) {
+        if(recursiveEventThreadCall) {
             // XXX: For now the following is commented out as on Linux
             // too deep recursion of dispatchNextGuiEvent causes GUI lockout.
             // Note: it can make GUI unresponsive if long-running script
             // will be called on GUI thread while processing another interrupt
-            if (false) {
+            if(false) {
                 // Run event dispatch until gui sets a flag to exit the initial
                 // call to interrupted.
                 while (this.returnValue == -1) {
                     try {
                         callback.dispatchNextGuiEvent();
-                    } catch (InterruptedException exc) {
+                    } catch(InterruptedException exc) {
                     }
                 }
             }
             return;
         }
 
-        if (interruptedContextData == null) Kit.codeBug();
+        if(interruptedContextData == null)
+            Kit.codeBug();
 
         try {
             do {
                 int frameCount = contextData.frameCount();
-                this.frameIndex = frameCount - 1;
+                this.frameIndex = frameCount-1;
 
                 final String threadTitle = Thread.currentThread().toString();
                 final String alertMessage;
-                if (scriptException == null) {
+                if(scriptException == null) {
                     alertMessage = null;
                 } else {
                     alertMessage = scriptException.toString();
                 }
 
                 int returnValue = -1;
-                if (!eventThreadFlag) {
+                if(!eventThreadFlag) {
                     synchronized (monitor) {
-                        if (insideInterruptLoop) Kit.codeBug();
+                        if(insideInterruptLoop)
+                            Kit.codeBug();
                         this.insideInterruptLoop = true;
                         this.evalRequest = null;
                         this.returnValue = -1;
                         callback.enterInterrupt(frame, threadTitle,
                                 alertMessage);
                         try {
-                            for (; ; ) {
+                            for(; ; ) {
                                 try {
                                     monitor.wait();
-                                } catch (InterruptedException exc) {
+                                } catch(InterruptedException exc) {
                                     Thread.currentThread().interrupt();
                                     break;
                                 }
-                                if (evalRequest != null) {
+                                if(evalRequest != null) {
                                     this.evalResult = null;
                                     try {
                                         evalResult = do_eval(cx, evalFrame,
@@ -811,7 +834,7 @@ public class Dim {
                                     }
                                     continue;
                                 }
-                                if (this.returnValue != -1) {
+                                if(this.returnValue != -1) {
                                     returnValue = this.returnValue;
                                     break;
                                 }
@@ -826,12 +849,12 @@ public class Dim {
                     while (this.returnValue == -1) {
                         try {
                             callback.dispatchNextGuiEvent();
-                        } catch (InterruptedException exc) {
+                        } catch(InterruptedException exc) {
                         }
                     }
                     returnValue = this.returnValue;
                 }
-                switch (returnValue) {
+                switch(returnValue) {
                     case STEP_OVER:
                         contextData.breakNextLine = true;
                         contextData.stopAtFrameDepth = contextData.frameCount();
@@ -841,10 +864,10 @@ public class Dim {
                         contextData.stopAtFrameDepth = -1;
                         break;
                     case STEP_OUT:
-                        if (contextData.frameCount() > 1) {
+                        if(contextData.frameCount() > 1) {
                             contextData.breakNextLine = true;
                             contextData.stopAtFrameDepth
-                                    = contextData.frameCount() - 1;
+                                    = contextData.frameCount()-1;
                         }
                         break;
                 }
@@ -874,19 +897,19 @@ public class Dim {
             Callable script = (Callable) cx.compileString(expr, "", 0, null);
             Object result = script.call(cx, frame.scope, frame.thisObj,
                     ScriptRuntime.emptyArgs);
-            if (result == Undefined.instance) {
+            if(result == Undefined.instance) {
                 resultString = "";
             } else {
                 resultString = ScriptRuntime.toString(result);
             }
-        } catch (Exception exc) {
+        } catch(Exception exc) {
             resultString = exc.getMessage();
         } finally {
             cx.setGeneratingDebug(true);
             cx.setOptimizationLevel(saved_level);
             cx.setDebugger(saved_debugger, saved_data);
         }
-        if (resultString == null) {
+        if(resultString == null) {
             resultString = "null";
         }
         return resultString;
@@ -958,17 +981,17 @@ public class Dim {
          * Performs the action given by {@link #type}.
          */
         public Object run(Context cx) {
-            switch (type) {
+            switch(type) {
                 case IPROXY_COMPILE_SCRIPT:
                     cx.compileString(text, url, 1, null);
                     break;
 
                 case IPROXY_EVAL_SCRIPT: {
                     Scriptable scope = null;
-                    if (scopeProvider != null) {
+                    if(scopeProvider != null) {
                         scope = scopeProvider.getScope();
                     }
-                    if (scope == null) {
+                    if(scope == null) {
                         scope = new ImporterTopLevel(cx);
                     }
                     cx.evaluateString(scope, text, url, 1, null);
@@ -980,11 +1003,11 @@ public class Dim {
                     break;
 
                 case IPROXY_OBJECT_TO_STRING:
-                    if (object == Undefined.instance) {
+                    if(object == Undefined.instance) {
                         stringResult = "undefined";
-                    } else if (object == null) {
+                    } else if(object == null) {
                         stringResult = "null";
-                    } else if (object instanceof NativeCall) {
+                    } else if(object instanceof NativeCall) {
                         stringResult = "[object Call]";
                     } else {
                         stringResult = Context.toString(object);
@@ -1015,8 +1038,9 @@ public class Dim {
 
         @Override
         public void onEngineCreate(ScriptEngine engine) {
-            if (type != IPROXY_LISTEN) Kit.codeBug();
-            if (!(engine instanceof RhinoJavaScriptEngine) ||
+            if(type != IPROXY_LISTEN)
+                Kit.codeBug();
+            if(!(engine instanceof RhinoJavaScriptEngine) ||
                     !callback.shouldAttachDebugger((RhinoJavaScriptEngine) engine)) {
                 return;
             }
@@ -1032,7 +1056,8 @@ public class Dim {
 
         @Override
         public void onEngineRemove(ScriptEngine engine) {
-            if (type != IPROXY_LISTEN) Kit.codeBug();
+            if(type != IPROXY_LISTEN)
+                Kit.codeBug();
         }
 
         // Debugger
@@ -1041,10 +1066,11 @@ public class Dim {
          * Returns a StackFrame for the given function or script.
          */
         public DebugFrame getFrame(Context cx, DebuggableScript fnOrScript) {
-            if (type != IPROXY_DEBUG) Kit.codeBug();
+            if(type != IPROXY_DEBUG)
+                Kit.codeBug();
 
             FunctionSource item = getFunctionSource(fnOrScript);
-            if (item == null) {
+            if(item == null) {
                 // Can not debug if source is not available
                 return null;
             }
@@ -1057,9 +1083,10 @@ public class Dim {
         public void handleCompilationDone(Context cx,
                                           DebuggableScript fnOrScript,
                                           String source) {
-            if (type != IPROXY_DEBUG) Kit.codeBug();
+            if(type != IPROXY_DEBUG)
+                Kit.codeBug();
 
-            if (!fnOrScript.isTopLevel()) {
+            if(!fnOrScript.isTopLevel()) {
                 return;
             }
             registerTopScript(fnOrScript, source);
@@ -1115,7 +1142,7 @@ public class Dim {
          * Returns the stack frame with the given index.
          */
         public StackFrame getFrame(int frameNumber) {
-            int num = frameStack.size() - frameNumber - 1;
+            int num = frameStack.size()-frameNumber-1;
             return (StackFrame) frameStack.get(num);
         }
 
@@ -1193,7 +1220,7 @@ public class Dim {
             contextData.pushFrame(this);
             this.scope = scope;
             this.thisObj = thisObj;
-            if (dim.breakOnEnter) {
+            if(dim.breakOnEnter) {
                 dim.handleBreakpointHit(this, cx);
             }
         }
@@ -1204,13 +1231,13 @@ public class Dim {
         public void onLineChange(Context cx, int lineno) {
             this.lineNumber = lineno;
 
-            if (!breakpoints[lineno] && !dim.breakFlag) {
+            if(!breakpoints[lineno] && !dim.breakFlag) {
                 boolean lineBreak = contextData.breakNextLine;
-                if (lineBreak && contextData.stopAtFrameDepth >= 0) {
+                if(lineBreak && contextData.stopAtFrameDepth >= 0) {
                     lineBreak = (contextData.frameCount()
                             <= contextData.stopAtFrameDepth);
                 }
-                if (!lineBreak) {
+                if(!lineBreak) {
                     return;
                 }
                 contextData.stopAtFrameDepth = -1;
@@ -1232,7 +1259,7 @@ public class Dim {
          */
         public void onExit(Context cx, boolean byThrow,
                            Object resultOrException) {
-            if (dim.breakOnReturn && !byThrow) {
+            if(dim.breakOnReturn && !byThrow) {
                 dim.handleBreakpointHit(this, cx);
             }
             contextData.popFrame();
@@ -1320,7 +1347,8 @@ public class Dim {
          */
         private FunctionSource(SourceInfo sourceInfo, int firstLine,
                                String name) {
-            if (name == null) throw new IllegalArgumentException();
+            if(name == null)
+                throw new IllegalArgumentException();
             this.sourceInfo = sourceInfo;
             this.firstLine = firstLine;
             this.name = name;
@@ -1394,58 +1422,58 @@ public class Dim {
 
             int N = functions.length;
             int[][] lineArrays = new int[N][];
-            for (int i = 0; i != N; ++i) {
+            for(int i = 0; i != N; ++i) {
                 lineArrays[i] = functions[i].getLineNumbers();
             }
 
             int minAll = 0, maxAll = -1;
             int[] firstLines = new int[N];
-            for (int i = 0; i != N; ++i) {
+            for(int i = 0; i != N; ++i) {
                 int[] lines = lineArrays[i];
-                if (lines == null || lines.length == 0) {
+                if(lines == null || lines.length == 0) {
                     firstLines[i] = -1;
                 } else {
                     int min, max;
                     min = max = lines[0];
-                    for (int j = 1; j != lines.length; ++j) {
+                    for(int j = 1; j != lines.length; ++j) {
                         int line = lines[j];
-                        if (line < min) {
+                        if(line < min) {
                             min = line;
-                        } else if (line > max) {
+                        } else if(line > max) {
                             max = line;
                         }
                     }
                     firstLines[i] = min;
-                    if (minAll > maxAll) {
+                    if(minAll > maxAll) {
                         minAll = min;
                         maxAll = max;
                     } else {
-                        if (min < minAll) {
+                        if(min < minAll) {
                             minAll = min;
                         }
-                        if (max > maxAll) {
+                        if(max > maxAll) {
                             maxAll = max;
                         }
                     }
                 }
             }
 
-            if (minAll > maxAll) {
+            if(minAll > maxAll) {
                 // No line information
                 this.breakableLines = EMPTY_BOOLEAN_ARRAY;
                 this.breakpoints = EMPTY_BOOLEAN_ARRAY;
             } else {
-                if (minAll < 0) {
+                if(minAll < 0) {
                     // Line numbers can not be negative
                     throw new IllegalStateException(String.valueOf(minAll));
                 }
-                int linesTop = maxAll + 1;
+                int linesTop = maxAll+1;
                 this.breakableLines = new boolean[linesTop];
                 this.breakpoints = new boolean[linesTop];
-                for (int i = 0; i != N; ++i) {
+                for(int i = 0; i != N; ++i) {
                     int[] lines = lineArrays[i];
-                    if (lines != null && lines.length != 0) {
-                        for (int j = 0; j != lines.length; ++j) {
+                    if(lines != null && lines.length != 0) {
+                        for(int j = 0; j != lines.length; ++j) {
                             int line = lines[j];
                             this.breakableLines[line] = true;
                         }
@@ -1453,9 +1481,9 @@ public class Dim {
                 }
             }
             this.functionSources = new FunctionSource[N];
-            for (int i = 0; i != N; ++i) {
+            for(int i = 0; i != N; ++i) {
                 String name = functions[i].getFunctionName();
-                if (name == null) {
+                if(name == null) {
                     name = "";
                 }
                 this.functionSources[i]
@@ -1497,11 +1525,11 @@ public class Dim {
          */
         private void copyBreakpointsFrom(SourceInfo old) {
             int end = old.breakpoints.length;
-            if (end > this.breakpoints.length) {
+            if(end > this.breakpoints.length) {
                 end = this.breakpoints.length;
             }
-            for (int line = 0; line != end; ++line) {
-                if (old.breakpoints[line]) {
+            for(int line = 0; line != end; ++line) {
+                if(old.breakpoints[line]) {
                     this.breakpoints[line] = true;
                 }
             }
@@ -1520,7 +1548,7 @@ public class Dim {
          * Returns whether there is a breakpoint set on the given line.
          */
         public boolean breakpoint(int line) {
-            if (!breakableLine(line)) {
+            if(!breakableLine(line)) {
                 throw new IllegalArgumentException(String.valueOf(line));
             }
             return line < this.breakpoints.length && this.breakpoints[line];
@@ -1530,12 +1558,12 @@ public class Dim {
          * Sets or clears the breakpoint flag for the given line.
          */
         public boolean breakpoint(int line, boolean value) {
-            if (!breakableLine(line)) {
+            if(!breakableLine(line)) {
                 return false;
             }
             boolean changed;
             synchronized (breakpoints) {
-                if (breakpoints[line] != value) {
+                if(breakpoints[line] != value) {
                     breakpoints[line] = value;
                     changed = true;
                 } else {
@@ -1550,7 +1578,7 @@ public class Dim {
          */
         public void removeAllBreakpoints() {
             synchronized (breakpoints) {
-                for (int line = 0; line != breakpoints.length; ++line) {
+                for(int line = 0; line != breakpoints.length; ++line) {
                     breakpoints[line] = false;
                 }
             }

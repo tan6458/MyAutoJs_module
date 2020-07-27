@@ -24,21 +24,21 @@ public class Files {
     // FIXME: 2018/10/16 is not correct in sub-directory?
     public String path(String relativePath) {
         String cwd = cwd();
-        if (cwd == null || relativePath == null || relativePath.startsWith("/"))
+        if(cwd == null || relativePath == null || relativePath.startsWith("/"))
             return relativePath;
         File f = new File(cwd);
         String[] paths = relativePath.split("/");
-        for (String path : paths) {
-            if (path.equals("."))
+        for(String path : paths) {
+            if(path.equals("."))
                 continue;
-            if (path.equals("..")) {
+            if(path.equals("..")) {
                 f = f.getParentFile();
                 continue;
             }
             f = new File(f, path);
         }
         String path = f.getPath();
-        return relativePath.endsWith(File.separator) ? path + "/" : path;
+        return relativePath.endsWith(File.separator) ? path+"/" : path;
     }
 
     public String cwd() {
@@ -93,7 +93,7 @@ public class Files {
     public String readAssets(String path, String encoding) {
         try {
             return PFiles.read(mRuntime.getUiHandler().getContext().getAssets().open(path), encoding);
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }

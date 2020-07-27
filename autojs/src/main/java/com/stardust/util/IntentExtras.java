@@ -41,7 +41,7 @@ public class IntentExtras implements Serializable {
 
     public static IntentExtras fromIntentAndRelease(Intent intent) {
         int id = intent.getIntExtra(EXTRA_ID, -1);
-        if (id < 0) {
+        if(id < 0) {
             return null;
         }
         return fromIdAndRelease(id);
@@ -49,7 +49,7 @@ public class IntentExtras implements Serializable {
 
     public static IntentExtras fromIdAndRelease(int id) {
         Map<String, Object> map = extraStore.get(id);
-        if (map == null) {
+        if(map == null) {
             return null;
         }
         extraStore.remove(id);
@@ -58,7 +58,7 @@ public class IntentExtras implements Serializable {
 
     public static IntentExtras fromId(int id) {
         Map<String, Object> map = extraStore.get(id);
-        if (map == null) {
+        if(map == null) {
             return null;
         }
         return new IntentExtras(id, map);
@@ -67,7 +67,7 @@ public class IntentExtras implements Serializable {
 
     public static IntentExtras fromIntent(Intent intent) {
         int id = intent.getIntExtra(EXTRA_ID, -1);
-        if (id < 0) {
+        if(id < 0) {
             return null;
         }
         return fromId(id);

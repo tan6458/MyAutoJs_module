@@ -2,12 +2,8 @@ package com.stardust.util;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.Surface;
-
-import static java.lang.System.out;
 
 /**
  * Created by Stardust on 2017/4/26.
@@ -22,7 +18,7 @@ public class ScreenMetrics {
     private static Display display;
 
     public static void initIfNeeded(Activity activity) {
-        if (initialized)
+        if(initialized)
             return;
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
@@ -46,7 +42,7 @@ public class ScreenMetrics {
     }
 
     public static int getOrientationAwareScreenWidth(int orientation) {
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             return getDeviceScreenHeight();
         } else {
             return getDeviceScreenWidth();
@@ -54,7 +50,7 @@ public class ScreenMetrics {
     }
 
     public static int getOrientationAwareScreenHeight(int orientation) {
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             return getDeviceScreenWidth();
         } else {
             return getDeviceScreenHeight();
@@ -62,25 +58,25 @@ public class ScreenMetrics {
     }
 
     public static int scaleX(int x, int width) {
-        if (width == 0 || !initialized)
+        if(width == 0 || !initialized)
             return x;
         return x * deviceScreenWidth / width;
     }
 
     public static int scaleY(int y, int height) {
-        if (height == 0 || !initialized)
+        if(height == 0 || !initialized)
             return y;
         return y * deviceScreenHeight / height;
     }
 
     public static int rescaleX(int x, int width) {
-        if (width == 0 || !initialized)
+        if(width == 0 || !initialized)
             return x;
         return x * width / deviceScreenWidth;
     }
 
     public static int rescaleY(int y, int height) {
-        if (height == 0 || !initialized)
+        if(height == 0 || !initialized)
             return y;
         return y * height / deviceScreenHeight;
     }

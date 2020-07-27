@@ -1,9 +1,9 @@
 package com.stardust.autojs.execution;
 
+import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.engine.ScriptEngineManager;
-import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.script.JavaScriptSource;
 
 /**
@@ -30,7 +30,7 @@ public class LoopedBasedJavaScriptExecution extends RunnableScriptExecution {
             @Override
             public boolean shouldQuit() {
                 times--;
-                if (times > 0) {
+                if(times > 0) {
                     sleep(interval);
                     javaScriptEngine.execute(getSource());
                     return false;

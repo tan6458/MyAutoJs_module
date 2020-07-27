@@ -11,9 +11,6 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-
-import androidx.annotation.RequiresApi;
-
 import android.util.Base64;
 import android.view.Gravity;
 
@@ -44,9 +41,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Stardust on 2017/5/20.
@@ -78,14 +75,14 @@ public class Images {
     public ScriptPromiseAdapter requestScreenCapture(int orientation) {
         ScriptRuntime.requiresApi(21);
         ScriptPromiseAdapter promiseAdapter = new ScriptPromiseAdapter();
-        if (mScreenCapturer != null) {
+        if(mScreenCapturer != null) {
             mScreenCapturer.setOrientation(orientation);
             promiseAdapter.resolve(true);
             return promiseAdapter;
         }
         Looper servantLooper = mScriptRuntime.loopers.getServantLooper();
         mScreenCaptureRequester.setOnActivityResultCallback((result, data) -> {
-            if (result == Activity.RESULT_OK) {
+            if(result == Activity.RESULT_OK) {
                 mScreenCapturer = new ScreenCapturer(mContext, data, orientation, ScreenMetrics.getDeviceScreenDensity(),
                         new Handler(servantLooper));
                 promiseAdapter.resolve(true);
@@ -100,15 +97,15 @@ public class Images {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public synchronized ImageWrapper captureScreen() {
         ScriptRuntime.requiresApi(21);
-        if (mScreenCapturer == null) {
+        if(mScreenCapturer == null) {
             throw new SecurityException("No screen capture permission");
         }
         Image capture = mScreenCapturer.capture();
-        if (capture == mPreCapture && mPreCaptureImage != null) {
+        if(capture == mPreCapture && mPreCaptureImage != null) {
             return mPreCaptureImage;
         }
         mPreCapture = capture;
-        if (mPreCaptureImage != null) {
+        if(mPreCaptureImage != null) {
             mPreCaptureImage.recycle();
         }
         mPreCaptureImage = ImageWrapper.ofImage(capture);
@@ -119,7 +116,7 @@ public class Images {
     public boolean captureScreen(String path) {
         path = mScriptRuntime.files.path(path);
         ImageWrapper image = captureScreen();
-        if (image != null) {
+        if(image != null) {
             image.saveTo(path);
             return true;
         }
@@ -132,47 +129,47 @@ public class Images {
 
     public boolean save(ImageWrapper image, String path, String format, int quality) throws IOException {
         Bitmap.CompressFormat compressFormat = parseImageFormat(format);
-        if (compressFormat == null)
-            throw new IllegalArgumentException("unknown format " + format);
+        if(compressFormat == null)
+            throw new IllegalArgumentException("unknown format "+format);
         Bitmap bitmap = image.getBitmap();
         FileOutputStream outputStream = new FileOutputStream(mScriptRuntime.files.path(path));
         return bitmap.compress(compressFormat, quality, outputStream);
     }
 
     public static int pixel(ImageWrapper image, int x, int y) {
-        if (image == null) {
+        if(image == null) {
             throw new NullPointerException("image = null");
         }
         return image.pixel(x, y);
     }
 
     public static ImageWrapper concat(ImageWrapper img1, ImageWrapper img2, int direction) {
-        if (!Arrays.asList(Gravity.LEFT, Gravity.RIGHT, Gravity.TOP, Gravity.BOTTOM).contains(direction)) {
-            throw new IllegalArgumentException("unknown direction " + direction);
+        if(!Arrays.asList(Gravity.LEFT, Gravity.RIGHT, Gravity.TOP, Gravity.BOTTOM).contains(direction)) {
+            throw new IllegalArgumentException("unknown direction "+direction);
         }
         int width;
         int height;
-        if (direction == Gravity.LEFT || direction == Gravity.TOP) {
+        if(direction == Gravity.LEFT || direction == Gravity.TOP) {
             ImageWrapper tmp = img1;
             img1 = img2;
             img2 = tmp;
         }
-        if (direction == Gravity.LEFT || direction == Gravity.RIGHT) {
-            width = img1.getWidth() + img2.getWidth();
+        if(direction == Gravity.LEFT || direction == Gravity.RIGHT) {
+            width = img1.getWidth()+img2.getWidth();
             height = Math.max(img1.getHeight(), img2.getHeight());
         } else {
             width = Math.max(img1.getWidth(), img2.getHeight());
-            height = img1.getHeight() + img2.getHeight();
+            height = img1.getHeight()+img2.getHeight();
         }
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        if (direction == Gravity.LEFT || direction == Gravity.RIGHT) {
-            canvas.drawBitmap(img1.getBitmap(), 0, (height - img1.getHeight()) / 2, paint);
-            canvas.drawBitmap(img2.getBitmap(), img1.getWidth(), (height - img2.getHeight()) / 2, paint);
+        if(direction == Gravity.LEFT || direction == Gravity.RIGHT) {
+            canvas.drawBitmap(img1.getBitmap(), 0, (height-img1.getHeight()) / 2, paint);
+            canvas.drawBitmap(img2.getBitmap(), img1.getWidth(), (height-img2.getHeight()) / 2, paint);
         } else {
-            canvas.drawBitmap(img1.getBitmap(), (width - img1.getWidth()) / 2, 0, paint);
-            canvas.drawBitmap(img2.getBitmap(), (width - img2.getWidth()) / 2, img1.getHeight(), paint);
+            canvas.drawBitmap(img1.getBitmap(), (width-img1.getWidth()) / 2, 0, paint);
+            canvas.drawBitmap(img2.getBitmap(), (width-img2.getWidth()) / 2, img1.getHeight(), paint);
         }
         return ImageWrapper.ofBitmap(bitmap);
     }
@@ -203,8 +200,8 @@ public class Images {
 
     public byte[] toBytes(ImageWrapper wrapper, String format, int quality) {
         Bitmap.CompressFormat compressFormat = parseImageFormat(format);
-        if (compressFormat == null)
-            throw new IllegalArgumentException("unknown format " + format);
+        if(compressFormat == null)
+            throw new IllegalArgumentException("unknown format "+format);
         Bitmap bitmap = wrapper.getBitmap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(compressFormat, quality, outputStream);
@@ -216,7 +213,7 @@ public class Images {
     }
 
     private Bitmap.CompressFormat parseImageFormat(String format) {
-        switch (format) {
+        switch(format) {
             case "png":
                 return Bitmap.CompressFormat.PNG;
             case "jpeg":
@@ -237,7 +234,7 @@ public class Images {
             InputStream input = connection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(input);
             return ImageWrapper.ofBitmap(bitmap);
-        } catch (IOException e) {
+        } catch(IOException e) {
             return null;
         }
     }
@@ -245,13 +242,13 @@ public class Images {
     public static void saveBitmap(Bitmap bitmap, String path) {
         try {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(path));
-        } catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             throw new UncheckedIOException(e);
         }
     }
 
     public static Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
-        if (origin == null) {
+        if(origin == null) {
             return null;
         }
         int height = origin.getHeight();
@@ -264,7 +261,7 @@ public class Images {
     }
 
     public void releaseScreenCapturer() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mScreenCapturer != null) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mScreenCapturer != null) {
             mScreenCapturer.release();
         }
     }
@@ -283,25 +280,25 @@ public class Images {
 
     public Point findImage(ImageWrapper image, ImageWrapper template, float weakThreshold, float threshold, Rect rect, int maxLevel) {
         initOpenCvIfNeeded();
-        if (image == null)
+        if(image == null)
             throw new NullPointerException("image = null");
-        if (template == null)
+        if(template == null)
             throw new NullPointerException("template = null");
         Mat src = image.getMat();
-        if (rect != null) {
+        if(rect != null) {
             src = new Mat(src, rect);
         }
         org.opencv.core.Point point = TemplateMatching.fastTemplateMatching(src, template.getMat(), TemplateMatching.MATCHING_METHOD_DEFAULT,
                 weakThreshold, threshold, maxLevel);
-        if (point != null) {
-            if (rect != null) {
+        if(point != null) {
+            if(rect != null) {
                 point.x += rect.x;
                 point.y += rect.y;
             }
             point.x = mScreenMetrics.scaleX((int) point.x);
             point.y = mScreenMetrics.scaleX((int) point.y);
         }
-        if (src != image.getMat()) {
+        if(src != image.getMat()) {
             OpenCVHelper.release(src);
         }
         return point;
@@ -309,26 +306,26 @@ public class Images {
 
     public List<TemplateMatching.Match> matchTemplate(ImageWrapper image, ImageWrapper template, float weakThreshold, float threshold, Rect rect, int maxLevel, int limit) {
         initOpenCvIfNeeded();
-        if (image == null)
+        if(image == null)
             throw new NullPointerException("image = null");
-        if (template == null)
+        if(template == null)
             throw new NullPointerException("template = null");
         Mat src = image.getMat();
-        if (rect != null) {
+        if(rect != null) {
             src = new Mat(src, rect);
         }
         List<TemplateMatching.Match> result = TemplateMatching.fastTemplateMatching(src, template.getMat(), Imgproc.TM_CCOEFF_NORMED,
                 weakThreshold, threshold, maxLevel, limit);
-        for (TemplateMatching.Match match : result) {
+        for(TemplateMatching.Match match : result) {
             Point point = match.point;
-            if (rect != null) {
+            if(rect != null) {
                 point.x += rect.x;
                 point.y += rect.y;
             }
             point.x = mScreenMetrics.scaleX((int) point.x);
             point.y = mScreenMetrics.scaleX((int) point.y);
         }
-        if (src != image.getMat()) {
+        if(src != image.getMat()) {
             OpenCVHelper.release(src);
         }
         return result;
@@ -343,13 +340,13 @@ public class Images {
     }
 
     public void initOpenCvIfNeeded() {
-        if (mOpenCvInitialized || OpenCVHelper.isInitialized()) {
+        if(mOpenCvInitialized || OpenCVHelper.isInitialized()) {
             return;
         }
         Activity currentActivity = mScriptRuntime.app.getCurrentActivity();
         Context context = currentActivity == null ? mContext : currentActivity;
         mScriptRuntime.console.info("opencv initializing");
-        if (Looper.myLooper() == Looper.getMainLooper()) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
             OpenCVHelper.initIfNeeded(context, () -> {
                 mOpenCvInitialized = true;
                 mScriptRuntime.console.info("opencv initialized");

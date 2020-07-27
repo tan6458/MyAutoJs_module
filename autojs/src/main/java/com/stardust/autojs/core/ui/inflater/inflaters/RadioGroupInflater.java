@@ -22,7 +22,7 @@ public class RadioGroupInflater<V extends RadioGroup> extends LinearLayoutInflat
 
     @Override
     public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
-        if (attr.equals("checkedButton")) {
+        if(attr.equals("checkedButton")) {
             mCheckedButton = Ids.parse(value);
             return true;
         } else {
@@ -32,7 +32,7 @@ public class RadioGroupInflater<V extends RadioGroup> extends LinearLayoutInflat
 
     @Override
     public void applyPendingAttributesOfChildren(V view) {
-        if (mCheckedButton != null) {
+        if(mCheckedButton != null) {
             view.check(mCheckedButton);
             mCheckedButton = null;
         }

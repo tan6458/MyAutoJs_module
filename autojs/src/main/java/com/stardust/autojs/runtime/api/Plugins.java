@@ -24,20 +24,20 @@ public class Plugins {
         try {
             Context packageContext = mContext.createPackageContext(packageName, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
             Plugin plugin = Plugin.load(mContext, packageContext, mRuntime, mRuntime.getTopLevelScope());
-            if (plugin == null) {
+            if(plugin == null) {
                 return null;
             }
             File scriptCacheDir = getScriptCacheDir(packageName);
             PFiles.copyAssetDir(packageContext.getAssets(), plugin.getAssetsScriptDir(), scriptCacheDir.getPath(), null);
             plugin.setMainScriptPath(new File(scriptCacheDir, "index.js").getPath());
             return plugin;
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new Plugin.PluginLoadException(e);
         }
     }
 
     private File getScriptCacheDir(String packageName) {
-        File dir = new File(mPluginCacheDir, packageName + "/");
+        File dir = new File(mPluginCacheDir, packageName+"/");
         dir.mkdirs();
         return dir;
     }

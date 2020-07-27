@@ -1,18 +1,11 @@
 package com.stardust.autojs.core.opencv;
 
 import android.content.Context;
+import android.os.Looper;
+
+import org.opencv.android.OpenCVLoader;
 
 import androidx.annotation.Nullable;
-
-import android.os.Looper;
-import android.util.Log;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.stardust.app.DialogUtils;
-
-import org.opencv.android.InstallCallbackInterface;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 
 
 /**
@@ -33,13 +26,13 @@ public class OpenCVHelper {
     }
 
     public static void release(@Nullable MatOfPoint mat) {
-        if (mat == null)
+        if(mat == null)
             return;
         mat.release();
     }
 
     public static void release(@Nullable Mat mat) {
-        if (mat == null)
+        if(mat == null)
             return;
         mat.release();
     }
@@ -49,12 +42,12 @@ public class OpenCVHelper {
     }
 
     public synchronized static void initIfNeeded(Context context, InitializeCallback callback) {
-        if (sInitialized) {
+        if(sInitialized) {
             callback.onInitFinish();
             return;
         }
         sInitialized = true;
-        if (Looper.getMainLooper() == Looper.myLooper()) {
+        if(Looper.getMainLooper() == Looper.myLooper()) {
             new Thread(() -> {
                 OpenCVLoader.initDebug();
                 callback.onInitFinish();

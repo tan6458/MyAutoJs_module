@@ -57,7 +57,7 @@ public class JsBeautifier {
                 enterContext();
                 Object beautifiedCode = mJsBeautifyFunction.call(mScriptContext, mScriptable, mScriptable, new Object[]{code});
                 mView.post(() -> callback.onSuccess(beautifiedCode.toString()));
-            } catch (Exception e) {
+            } catch(Exception e) {
                 mView.post(() -> callback.onException(e));
             } finally {
                 exitContext();
@@ -66,20 +66,20 @@ public class JsBeautifier {
     }
 
     private void exitContext() {
-        if (mScriptContext != null) {
+        if(mScriptContext != null) {
             org.mozilla.javascript.Context.exit();
             mScriptContext = null;
         }
     }
 
     private void enterContext() {
-        if (mScriptContext != null) {
+        if(mScriptContext != null) {
             return;
         }
         mScriptContext = org.mozilla.javascript.Context.enter();
         mScriptContext.setLanguageVersion(org.mozilla.javascript.Context.VERSION_1_8);
         mScriptContext.setOptimizationLevel(-1);
-        if (mScriptable == null) {
+        if(mScriptable == null) {
             ImporterTopLevel importerTopLevel = new ImporterTopLevel();
             importerTopLevel.initStandardObjects(mScriptContext, false);
             mScriptable = importerTopLevel;
@@ -97,7 +97,7 @@ public class JsBeautifier {
         mExecutor.execute(() -> {
             try {
                 prepareIfNeeded();
-            } catch (Exception e) {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
         });
@@ -105,7 +105,7 @@ public class JsBeautifier {
 
 
     private void prepareIfNeeded() {
-        if (mJsBeautifyFunction != null)
+        if(mJsBeautifyFunction != null)
             return;
         compile();
     }
@@ -115,13 +115,13 @@ public class JsBeautifier {
             enterContext();
             InputStream is = mContext.getAssets().open(mBeautifyJsPath);
             mJsBeautifyFunction = (Function) mScriptContext.evaluateString(mScriptable, PFiles.read(is), "<js_beautify>", 1, null);
-        } catch (IOException e) {
+        } catch(IOException e) {
             exitContext();
             throw new UncheckedIOException(e);
         }
     }
 
-    public void shutdown(){
+    public void shutdown() {
         mExecutor.shutdownNow();
         mView = null;
     }

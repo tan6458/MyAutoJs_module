@@ -1,13 +1,12 @@
 package com.stardust.pio;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/10/19.
@@ -41,7 +40,7 @@ public class PFile extends File {
 
 
     private void init() {
-        if (isDirectory()) {
+        if(isDirectory()) {
             mSimplifiedName = getName();
         } else {
             mSimplifiedName = PFiles.getNameWithoutExtension(getName());
@@ -53,7 +52,7 @@ public class PFile extends File {
     @NonNull
     public PFile renameTo(String newName) {
         PFile newFile = new PFile(getParent(), newName);
-        if (renameTo(newFile)) {
+        if(renameTo(newFile)) {
             return newFile;
         } else {
             return this;
@@ -63,8 +62,8 @@ public class PFile extends File {
     @NonNull
     public PFile renameWithoutExt(String newName) {
         PFile newFile = isDirectory() ? new PFile(getParent(), newName) :
-                new PFile(getParent(), newName + "." + getExtension());
-        if (renameTo(newFile)) {
+                new PFile(getParent(), newName+"."+getExtension());
+        if(renameTo(newFile)) {
             return newFile;
         } else {
             return this;
@@ -72,7 +71,7 @@ public class PFile extends File {
     }
 
     public String getExtension() {
-        if (mExtension == null) {
+        if(mExtension == null) {
             mExtension = PFiles.getExtension(getName());
         }
         return mExtension;
@@ -85,7 +84,7 @@ public class PFile extends File {
     @Override
     public PFile getParentFile() {
         String p = this.getParent();
-        if (p == null)
+        if(p == null)
             return null;
         return new PFile(p);
     }
@@ -93,10 +92,11 @@ public class PFile extends File {
     @Override
     public PFile[] listFiles() {
         String ss[] = list();
-        if (ss == null) return null;
+        if(ss == null)
+            return null;
         ArrayList<PFile> files = new ArrayList<>();
-        for (int i = 0; i < ss.length; i++) {
-            if (!ss[i].startsWith(".")) {
+        for(int i = 0; i < ss.length; i++) {
+            if(!ss[i].startsWith(".")) {
                 files.add(new PFile(this, ss[i]));
             }
         }
@@ -106,10 +106,11 @@ public class PFile extends File {
     @Override
     public PFile[] listFiles(FilenameFilter filter) {
         String ss[] = list();
-        if (ss == null) return null;
+        if(ss == null)
+            return null;
         ArrayList<PFile> files = new ArrayList<>();
-        for (String s : ss)
-            if (!s.startsWith(".") && (filter == null || filter.accept(this, s)))
+        for(String s : ss)
+            if(!s.startsWith(".") && (filter == null || filter.accept(this, s)))
                 files.add(new PFile(this, s));
         return files.toArray(new PFile[files.size()]);
     }
@@ -117,11 +118,12 @@ public class PFile extends File {
     @Override
     public PFile[] listFiles(FileFilter filter) {
         String ss[] = list();
-        if (ss == null) return null;
+        if(ss == null)
+            return null;
         ArrayList<PFile> files = new ArrayList<>();
-        for (String s : ss) {
+        for(String s : ss) {
             PFile f = new PFile(this, s);
-            if (!f.isHidden() && (filter == null || filter.accept(f)))
+            if(!f.isHidden() && (filter == null || filter.accept(f)))
                 files.add(f);
         }
         return files.toArray(new PFile[files.size()]);

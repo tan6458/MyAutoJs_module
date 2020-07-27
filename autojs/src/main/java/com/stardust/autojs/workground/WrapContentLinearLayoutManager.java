@@ -29,7 +29,7 @@ public class WrapContentLinearLayoutManager extends LinearLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler, state);
-        } catch (IndexOutOfBoundsException e) {
+        } catch(IndexOutOfBoundsException e) {
             Log.e("LinearLayoutManager", "Android bug ", e);
         }
     }

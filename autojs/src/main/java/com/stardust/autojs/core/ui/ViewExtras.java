@@ -22,8 +22,8 @@ public class ViewExtras {
     public static ViewExtras get(View view) {
         ViewExtras extras;
         Object tag = view.getTag(R.id.view_tag_view_extras);
-        Log.d(LOG_TAG, "view = " + view + ", tag = " + tag);
-        if (tag instanceof ViewExtras) {
+        Log.d(LOG_TAG, "view = "+view+", tag = "+tag);
+        if(tag instanceof ViewExtras) {
             extras = (ViewExtras) tag;
         } else {
             extras = new ViewExtras();
@@ -36,7 +36,7 @@ public class ViewExtras {
     public static ViewAttributes getViewAttributes(View view, ResourceParser parser) {
         ViewExtras extras = get(view);
         ViewAttributes attributes = extras.getViewAttributes();
-        if (attributes == null) {
+        if(attributes == null) {
             attributes = ViewAttributesFactory.create(parser, view);
             extras.setViewAttributes(attributes);
         }
@@ -47,7 +47,7 @@ public class ViewExtras {
     public static NativeView getNativeView(Scriptable scope, View view, Class<?> staticType, ScriptRuntime runtime) {
         ViewExtras extras = get(view);
         NativeView nativeView = extras.getNativeView();
-        if (nativeView == null) {
+        if(nativeView == null) {
             nativeView = new NativeView(scope, view, staticType, runtime);
             extras.setNativeView(nativeView);
         }

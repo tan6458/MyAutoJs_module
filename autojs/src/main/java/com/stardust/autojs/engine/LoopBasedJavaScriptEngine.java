@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.MessageQueue;
-import android.util.Log;
 
 import com.stardust.autojs.core.looper.LooperHelper;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;
-import com.stardust.util.Callback;
 
 import org.mozilla.javascript.ContinuationPending;
 
@@ -44,11 +41,11 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
         Runnable r = () -> {
             try {
                 Object o = LoopBasedJavaScriptEngine.super.execute((JavaScriptSource) source);
-                if (callback != null)
+                if(callback != null)
                     callback.onResult(o);
-            } catch (ContinuationPending ignored) {
-            } catch (Exception e) {
-                if (callback == null) {
+            } catch(ContinuationPending ignored) {
+            } catch(Exception e) {
+                if(callback == null) {
                     throw e;
                 } else {
                     callback.onException(e);
@@ -58,14 +55,14 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
 
         };
         mHandler.post(r);
-        if (!mLooping && Looper.myLooper() != Looper.getMainLooper()) {
+        if(!mLooping && Looper.myLooper() != Looper.getMainLooper()) {
             mLooping = true;
             while (true) {
                 try {
                     Looper.loop();
-                } catch (ContinuationPending ignored) {
+                } catch(ContinuationPending ignored) {
                     continue;
-                } catch (Throwable t) {
+                } catch(Throwable t) {
                     mLooping = false;
                     throw t;
                 }
@@ -78,7 +75,7 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
     public void forceStop() {
         LooperHelper.quitForThread(getThread());
         Activity activity = (Activity) getTag("activity");
-        if (activity != null) {
+        if(activity != null) {
             activity.finish();
         }
         super.forceStop();

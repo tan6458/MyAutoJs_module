@@ -1,6 +1,12 @@
 package com.stardust.pio;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,20 +36,20 @@ public class PReadableTextFile implements Closeable, PFileInterface {
         mPath = path;
         try {
             mFileInputStream = new FileInputStream(path);
-        } catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             throw new UncheckedIOException(e);
         }
     }
 
 
     private void ensureBufferReader() {
-        if (mBufferedReader == null) {
+        if(mBufferedReader == null) {
             try {
-                if (mBufferingSize == -1)
+                if(mBufferingSize == -1)
                     mBufferedReader = new BufferedReader(new InputStreamReader(mFileInputStream, mEncoding));
                 else
                     mBufferedReader = new BufferedReader(new InputStreamReader(mFileInputStream, mEncoding), mBufferingSize);
-            } catch (UnsupportedEncodingException e) {
+            } catch(UnsupportedEncodingException e) {
                 throw new UncheckedIOException(e);
             }
 
@@ -55,7 +61,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
             byte[] data = new byte[mFileInputStream.available()];
             mFileInputStream.read(data);
             return new String(data, mEncoding);
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -66,7 +72,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
             char[] chars = new char[size];
             int len = mBufferedReader.read(chars);
             return new String(chars, 0, len);
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -75,7 +81,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
         ensureBufferReader();
         try {
             return mBufferedReader.readLine();
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -88,7 +94,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
                 lines.add(mBufferedReader.readLine());
             }
             return lines.toArray(new String[lines.size()]);
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -96,12 +102,12 @@ public class PReadableTextFile implements Closeable, PFileInterface {
     @Override
     public void close() {
         try {
-            if (mBufferedReader != null) {
+            if(mBufferedReader != null) {
                 mBufferedReader.close();
             } else {
                 mFileInputStream.close();
             }
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }

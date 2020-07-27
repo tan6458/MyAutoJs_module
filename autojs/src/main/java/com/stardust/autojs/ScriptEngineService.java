@@ -1,7 +1,7 @@
 package com.stardust.autojs;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
+import android.util.Log;
 
 import com.stardust.autojs.engine.JavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
@@ -30,6 +30,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import androidx.annotation.Nullable;
+
 import static com.stardust.autojs.runtime.exception.ScriptInterruptedException.causedByInterrupted;
 
 /**
@@ -43,14 +45,15 @@ public class ScriptEngineService {
     private static final ScriptExecutionListener GLOBAL_LISTENER = new SimpleScriptExecutionListener() {
         @Override
         public void onStart(ScriptExecution execution) {
-            if (execution.getEngine() instanceof JavaScriptEngine) {
+            if(execution.getEngine() instanceof JavaScriptEngine) {
                 ((JavaScriptEngine) execution.getEngine()).getRuntime().console.setTitle(execution.getSource().getName());
             }
             EVENT_BUS.post(new ScriptExecutionEvent(ScriptExecutionEvent.ON_START, execution.getSource().toString()));
         }
-
+        //停止脚本会回调
         @Override
         public void onSuccess(ScriptExecution execution, Object result) {
+//            Log.i("tan6458", "执行脚本成功:"+execution.getSource().getName());
             onFinish(execution);
         }
 
@@ -63,21 +66,21 @@ public class ScriptEngineService {
             e.printStackTrace();
             onFinish(execution);
             String message = null;
-            if (!causedByInterrupted(e)) {
+            if(!causedByInterrupted(e)) {
                 message = e.getMessage();
-                if (execution.getEngine() instanceof JavaScriptEngine) {
+                if(execution.getEngine() instanceof JavaScriptEngine) {
                     ((JavaScriptEngine) execution.getEngine()).getRuntime().console.error(e);
                 }
             }
-            if (execution.getEngine() instanceof JavaScriptEngine) {
+            if(execution.getEngine() instanceof JavaScriptEngine) {
                 JavaScriptEngine engine = (JavaScriptEngine) execution.getEngine();
                 Throwable uncaughtException = engine.getUncaughtException();
-                if (uncaughtException != null) {
+                if(uncaughtException != null) {
                     engine.getRuntime().console.error(uncaughtException);
                     message = uncaughtException.getMessage();
                 }
             }
-            if (message != null) {
+            if(message != null) {
                 EVENT_BUS.post(new ScriptExecutionEvent(ScriptExecutionEvent.ON_EXCEPTION, message));
             }
         }
@@ -140,20 +143,20 @@ public class ScriptEngineService {
     }
 
     private ScriptExecution executeInternal(ScriptExecutionTask task) {
-        if (task.getListener() != null) {
+        if(task.getListener() != null) {
             task.setExecutionListener(new ScriptExecutionObserver.Wrapper(mScriptExecutionObserver, task.getListener()));
         } else {
             task.setExecutionListener(mScriptExecutionObserver);
         }
         ScriptSource source = task.getSource();
-        if (source instanceof JavaScriptSource) {
+        if(source instanceof JavaScriptSource) {
             int mode = ((JavaScriptSource) source).getExecutionMode();
-            if ((mode & JavaScriptSource.EXECUTION_MODE_UI) != 0) {
+            if((mode & JavaScriptSource.EXECUTION_MODE_UI) != 0) {
                 return ScriptExecuteActivity.execute(mContext, mScriptEngineManager, task);
             }
         }
         RunnableScriptExecution r;
-        if (source instanceof JavaScriptSource) {
+        if(source instanceof JavaScriptSource) {
             r = new LoopedBasedJavaScriptExecution(mScriptEngineManager, task);
         } else {
             r = new RunnableScriptExecution(mScriptEngineManager, task);
@@ -172,10 +175,10 @@ public class ScriptEngineService {
 
     @Subscribe
     public void onScriptExecution(ScriptExecutionEvent event) {
-        if (event.getCode() == ScriptExecutionEvent.ON_START) {
-            mGlobalConsole.verbose(mContext.getString(R.string.text_start_running) + "[" + event.getMessage() + "]");
-        } else if (event.getCode() == ScriptExecutionEvent.ON_EXCEPTION) {
-            mUiHandler.toast(mContext.getString(R.string.text_error) + ": " + event.getMessage());
+        if(event.getCode() == ScriptExecutionEvent.ON_START) {
+            mGlobalConsole.verbose(mContext.getString(R.string.text_start_running)+"["+event.getMessage()+"]");
+        } else if(event.getCode() == ScriptExecutionEvent.ON_EXCEPTION) {
+            mUiHandler.toast(mContext.getString(R.string.text_error)+": "+event.getMessage());
         }
     }
 
@@ -186,7 +189,7 @@ public class ScriptEngineService {
 
     public void stopAllAndToast() {
         int n = stopAll();
-        if (n > 0)
+        if(n > 0)
             mUiHandler.toast(String.format(mContext.getString(R.string.text_already_stop_n_scripts), n));
     }
 
@@ -200,14 +203,14 @@ public class ScriptEngineService {
 
     @Nullable
     public ScriptExecution getScriptExecution(int id) {
-        if (id == ScriptExecution.NO_ID) {
+        if(id == ScriptExecution.NO_ID) {
             return null;
         }
         return mScriptExecutions.get(id);
     }
 
     public static void setInstance(ScriptEngineService service) {
-        if (sInstance != null) {
+        if(sInstance != null) {
             throw new IllegalStateException();
         }
         sInstance = service;
@@ -225,7 +228,7 @@ public class ScriptEngineService {
         @Override
         public void onEngineCreate(ScriptEngine engine) {
             synchronized (mEngineLifecycleCallbacks) {
-                for (ScriptEngineManager.EngineLifecycleCallback callback : mEngineLifecycleCallbacks) {
+                for(ScriptEngineManager.EngineLifecycleCallback callback : mEngineLifecycleCallbacks) {
                     callback.onEngineCreate(engine);
                 }
             }
@@ -234,7 +237,7 @@ public class ScriptEngineService {
         @Override
         public void onEngineRemove(ScriptEngine engine) {
             synchronized (mEngineLifecycleCallbacks) {
-                for (ScriptEngineManager.EngineLifecycleCallback callback : mEngineLifecycleCallbacks) {
+                for(ScriptEngineManager.EngineLifecycleCallback callback : mEngineLifecycleCallbacks) {
                     callback.onEngineRemove(engine);
                 }
             }

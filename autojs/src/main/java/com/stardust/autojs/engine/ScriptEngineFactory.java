@@ -1,13 +1,13 @@
 package com.stardust.autojs.engine;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.stardust.autojs.script.ScriptSource;
 import com.stardust.util.Supplier;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/8/2.
@@ -39,7 +39,7 @@ public class ScriptEngineFactory {
     }
 
     protected void putProperties(ScriptEngine engine) {
-        for (Map.Entry<String, Object> variable : mGlobalVariableMap.entrySet()) {
+        for(Map.Entry<String, Object> variable : mGlobalVariableMap.entrySet()) {
             engine.put(variable.getKey(), variable.getValue());
         }
     }
@@ -48,7 +48,7 @@ public class ScriptEngineFactory {
     @Nullable
     public ScriptEngine createEngine(String name) {
         Supplier<ScriptEngine> s = mEngines.get(name);
-        if (s == null) {
+        if(s == null) {
             return null;
         }
         ScriptEngine engine = s.get();
@@ -65,16 +65,16 @@ public class ScriptEngineFactory {
     @NonNull
     public ScriptEngine createEngineByNameOrThrow(String name) {
         ScriptEngine engine = createEngine(name);
-        if (engine == null)
-            throw new EngineNotFoundException("name: " + name);
+        if(engine == null)
+            throw new EngineNotFoundException("name: "+name);
         return engine;
     }
 
     @NonNull
     public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source) {
         ScriptEngine engine = createEngineOfSource(source);
-        if (engine == null)
-            throw new EngineNotFoundException("source: " + source.toString());
+        if(engine == null)
+            throw new EngineNotFoundException("source: "+source.toString());
         return engine;
     }
 

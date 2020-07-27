@@ -1,9 +1,6 @@
 package com.stardust.autojs.core.floaty;
 
 import android.content.Context;
-
-import androidx.annotation.Nullable;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -17,8 +14,8 @@ import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.ResizableFloaty;
 import com.stardust.enhancedfloaty.ResizableFloatyWindow;
 import com.stardust.enhancedfloaty.WindowBridge;
-import com.stardust.enhancedfloaty.gesture.DragGesture;
-import com.stardust.enhancedfloaty.gesture.ResizeGesture;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/12/5.
@@ -55,17 +52,17 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
         return new WindowBridge.DefaultImpl(params, getWindowManager(), getWindowView()) {
             @Override
             public int getX() {
-                return super.getX() + mOffset;
+                return super.getX()+mOffset;
             }
 
             @Override
             public int getY() {
-                return super.getY() + mOffset;
+                return super.getY()+mOffset;
             }
 
             @Override
             public void updatePosition(int x, int y) {
-                super.updatePosition(x - mOffset, y - mOffset);
+                super.updatePosition(x-mOffset, y-mOffset);
             }
         };
     }
@@ -74,7 +71,7 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
     public void onCreate(FloatyService service, WindowManager manager) {
         try {
             super.onCreate(service, manager);
-        } catch (RuntimeException e) {
+        } catch(RuntimeException e) {
             mInflateException.setAndNotify(e);
             return;
         }
@@ -86,7 +83,7 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
     }
 
     public void setAdjustEnabled(boolean enabled) {
-        if (!enabled) {
+        if(!enabled) {
             getMoveCursor().setVisibility(View.GONE);
             getResizer().setVisibility(View.GONE);
             mCloseButton.setVisibility(View.GONE);

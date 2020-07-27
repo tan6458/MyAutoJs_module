@@ -1,8 +1,8 @@
 package com.stardust.autojs.core.record.inputevent;
 
-import androidx.annotation.NonNull;
-
 import com.stardust.autojs.core.inputevent.InputEventObserver;
+
+import androidx.annotation.NonNull;
 
 import static com.stardust.util.ScreenMetrics.getDeviceScreenHeight;
 import static com.stardust.util.ScreenMetrics.getDeviceScreenWidth;
@@ -28,29 +28,29 @@ public class InputEventToSendEventJsRecorder extends InputEventRecorder {
 
     @Override
     public void recordInputEvent(@NonNull InputEventObserver.InputEvent event) {
-        if (mLastEventTime == 0) {
+        if(mLastEventTime == 0) {
             mLastEventTime = event.time;
-        } else if (event.time - mLastEventTime > 0.03) {
-            mCode.append("sh.usleep(").append((long) (1000000 * (event.time - mLastEventTime))).append(");\n");
+        } else if(event.time-mLastEventTime > 0.03) {
+            mCode.append("sh.usleep(").append((long) (1000000 * (event.time-mLastEventTime))).append(");\n");
             mLastEventTime = event.time;
         }
         int device = parseDeviceNumber(event.device);
         int type = (int) Long.parseLong(event.type, 16);
         int code = (int) Long.parseLong(event.code, 16);
         int value = (int) Long.parseLong(event.value, 16);
-        if (type == 3) {
-            if (code == 53) {
+        if(type == 3) {
+            if(code == 53) {
                 onTouchX(device, value);
                 return;
             }
-            if (code == 54) {
+            if(code == 54) {
                 onTouchY(device, value);
                 return;
             }
         }
         checkLastTouch();
         mCode.append("sh.SendEvent(");
-        if (device != mTouchDevice) {
+        if(device != mTouchDevice) {
             mCode.append(device).append(", ");
         }
         mCode.append(type).append(", ")
@@ -59,11 +59,11 @@ public class InputEventToSendEventJsRecorder extends InputEventRecorder {
     }
 
     private void checkLastTouch() {
-        if (mLastTouchX >= 0) {
+        if(mLastTouchX >= 0) {
             mCode.append("sh.TouchX(").append(mLastTouchX).append(");\n");
             mLastTouchX = -1;
         }
-        if (mLastTouchY >= 0) {
+        if(mLastTouchY >= 0) {
             mCode.append("sh.TouchY(").append(mLastTouchY).append(");\n");
             mLastTouchY = -1;
         }
@@ -71,17 +71,17 @@ public class InputEventToSendEventJsRecorder extends InputEventRecorder {
 
 
     private void onTouchX(int device, int value) {
-        if (mTouchDevice == -1) {
+        if(mTouchDevice == -1) {
             setTouchDevice(device);
         }
         mLastTouchX = value;
     }
 
     private void onTouchY(int device, int value) {
-        if (mTouchDevice == -1) {
+        if(mTouchDevice == -1) {
             setTouchDevice(device);
         }
-        if (mLastTouchX >= 0) {
+        if(mLastTouchX >= 0) {
             mCode.append("sh.Touch(")
                     .append(mLastTouchX).append(", ")
                     .append(value).append(");\n");

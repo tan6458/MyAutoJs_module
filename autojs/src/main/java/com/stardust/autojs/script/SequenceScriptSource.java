@@ -1,12 +1,12 @@
 package com.stardust.autojs.script;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.stardust.io.ConcatReader;
 
 import java.io.Reader;
 import java.io.StringReader;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/4/2.
@@ -33,15 +33,15 @@ public class SequenceScriptSource extends JavaScriptSource {
     }
 
     private void concatScriptsIfNeeded() {
-        if (mScript != null)
+        if(mScript != null)
             return;
-        mScript = mFirstScriptSource.getScript() + mSecondScriptSource.getScript();
+        mScript = mFirstScriptSource.getScript()+mSecondScriptSource.getScript();
     }
 
     @Nullable
     @Override
     public Reader getScriptReader() {
-        if (mScript != null)
+        if(mScript != null)
             return new StringReader(mScript);
         return new ConcatReader(mFirstScriptSource.getNonNullScriptReader(), mSecondScriptSource.getNonNullScriptReader());
     }

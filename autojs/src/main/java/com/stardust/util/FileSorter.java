@@ -20,7 +20,7 @@ public class FileSorter {
 
         @Override
         public int compare(File o1, File o2) {
-            if (o1.isDirectory() != o2.isDirectory())
+            if(o1.isDirectory() != o2.isDirectory())
                 return o1.isDirectory() ? Integer.MIN_VALUE : Integer.MAX_VALUE;
             return -collator.compare(o1.getName(), o2.getName());
         }
@@ -50,7 +50,7 @@ public class FileSorter {
     };
 
     public static void sort(File[] files, final Comparator<File> comparator, boolean ascending) {
-        if (ascending) {
+        if(ascending) {
             Arrays.sort(files, comparator);
         } else {
             Arrays.sort(files, new Comparator<File>() {
@@ -67,7 +67,7 @@ public class FileSorter {
     }
 
     public static void sort(List<? extends File> files, final Comparator<File> comparator, boolean ascending) {
-        if (ascending) {
+        if(ascending) {
             Collections.sort(files, comparator);
         } else {
             Collections.sort(files, new Comparator<File>() {

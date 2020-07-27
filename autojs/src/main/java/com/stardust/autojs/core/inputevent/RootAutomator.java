@@ -2,7 +2,6 @@ package com.stardust.autojs.core.inputevent;
 
 import android.content.Context;
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.ViewConfiguration;
@@ -16,7 +15,22 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.stardust.autojs.core.inputevent.InputEventCodes.*;
+import androidx.annotation.Nullable;
+
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_X;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_Y;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_SLOT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TOUCH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TRACKING_ID;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_WIDTH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.BTN_TOUCH;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.DOWN;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_ABS;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_KEY;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_SYN;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.SYN_MT_REPORT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.SYN_REPORT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.UP;
 
 /**
  * Created by Stardust on 2017/7/16.
@@ -45,14 +59,14 @@ public class RootAutomator implements Shell.Callback {
 
     public RootAutomator(Context context, String inputDevice, boolean waitForReady) throws IOException {
         mContext = context;
-        if (inputDevice == null) {
+        if(inputDevice == null) {
             mInputDevice = RootAutomatorEngine.getDeviceNameOrPath(mContext, InputDevices.getTouchDeviceName());
         } else {
             mInputDevice = inputDevice;
         }
         mShell = new Shell(true);
         mShell.setCallback(this);
-        if (waitForReady) {
+        if(waitForReady) {
             waitForReady();
         }
     }
@@ -64,20 +78,20 @@ public class RootAutomator implements Shell.Callback {
     }
 
     private void sendEventInternal(int type, int code, int value) {
-        mShell.exec(type + " " + code + " " + value);
+        mShell.exec(type+" "+code+" "+value);
     }
 
     private void waitForReady() throws IOException {
-        if (mReady) {
+        if(mReady) {
             return;
         }
         synchronized (mReadyLock) {
-            if (mReady) {
+            if(mReady) {
                 return;
             }
             try {
                 mReadyLock.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 exit();
                 throw new ScriptInterruptedException();
             }
@@ -90,7 +104,7 @@ public class RootAutomator implements Shell.Callback {
     }
 
     public void setScreenMetrics(int width, int height) {
-        if (mScreenMetrics == null) {
+        if(mScreenMetrics == null) {
             mScreenMetrics = new ScreenMetrics();
         }
         mScreenMetrics.setScreenMetrics(width, height);
@@ -101,7 +115,7 @@ public class RootAutomator implements Shell.Callback {
     }
 
     private int scaleX(int x) {
-        if (mScreenMetrics == null)
+        if(mScreenMetrics == null)
             return x;
         return mScreenMetrics.scaleX(x);
     }
@@ -119,7 +133,7 @@ public class RootAutomator implements Shell.Callback {
     }
 
     private int scaleY(int y) {
-        if (mScreenMetrics == null)
+        if(mScreenMetrics == null)
             return y;
         return mScreenMetrics.scaleY(y);
 
@@ -138,9 +152,9 @@ public class RootAutomator implements Shell.Callback {
         long now = SystemClock.uptimeMillis();
         touchDown(x1, y1, id);
         long startTime = now;
-        long endTime = startTime + duration;
+        long endTime = startTime+duration;
         while (now < endTime) {
-            long elapsedTime = now - startTime;
+            long elapsedTime = now-startTime;
             float alpha = (float) elapsedTime / duration;
             touchMove((int) lerp(x1, x2, alpha), (int) lerp(y1, y2, alpha), id);
             now = SystemClock.uptimeMillis();
@@ -167,15 +181,15 @@ public class RootAutomator implements Shell.Callback {
     }
 
     public void longPress(int x, int y, int id) throws IOException {
-        press(x, y, ViewConfiguration.getLongPressTimeout() + 200, id);
+        press(x, y, ViewConfiguration.getLongPressTimeout()+200, id);
     }
 
     public void longPress(int x, int y) throws IOException {
-        press(x, y, ViewConfiguration.getLongPressTimeout() + 200, getDefaultId());
+        press(x, y, ViewConfiguration.getLongPressTimeout()+200, getDefaultId());
     }
 
     public void touchDown(int x, int y, int id) throws IOException {
-        if (mSlotIdMap.size() == 0) {
+        if(mSlotIdMap.size() == 0) {
             touchDown0(x, y, id);
             return;
         }
@@ -210,7 +224,7 @@ public class RootAutomator implements Shell.Callback {
     public void touchUp(int id) throws IOException {
         int slotId;
         int i = mSlotIdMap.indexOfKey(id);
-        if (i < 0) {
+        if(i < 0) {
             slotId = 0;
         } else {
             slotId = mSlotIdMap.valueAt(i);
@@ -218,7 +232,7 @@ public class RootAutomator implements Shell.Callback {
         }
         sendEvent(EV_ABS, ABS_MT_SLOT, slotId);
         sendEvent(EV_ABS, ABS_MT_TRACKING_ID, 0xffffffff);
-        if (mSlotIdMap.size() == 0) {
+        if(mSlotIdMap.size() == 0) {
             sendEvent(EV_KEY, BTN_TOUCH, UP);
             //sendEvent(EV_KEY, BTN_TOOL_FINGER, 0x00000000);
         }
@@ -253,14 +267,14 @@ public class RootAutomator implements Shell.Callback {
     private void sleep(long duration) throws IOException {
         try {
             Thread.sleep(duration);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             exit();
             throw new ScriptInterruptedException();
         }
     }
 
     private static float lerp(float a, float b, float alpha) {
-        return (b - a) * alpha + a;
+        return (b-a) * alpha+a;
     }
 
     public void exit() throws IOException {
@@ -288,8 +302,8 @@ public class RootAutomator implements Shell.Callback {
     public void onInitialized() {
         String path = RootAutomatorEngine.getExecutablePath(mContext);
         String deviceNameOrPath = RootAutomatorEngine.getDeviceNameOrPath(mContext, InputDevices.getTouchDeviceName());
-        Log.d(LOG_TAG, "deviceNameOrPath: " + deviceNameOrPath);
-        mShell.exec("chmod 777 " + path);
+        Log.d(LOG_TAG, "deviceNameOrPath: "+deviceNameOrPath);
+        mShell.exec("chmod 777 "+path);
         String command = String.format(Locale.getDefault(), "%s -d %s -sw %d -sh %d", path, deviceNameOrPath,
                 ScreenMetrics.getDeviceScreenWidth(), ScreenMetrics.getDeviceScreenHeight());
         mShell.exec(command);

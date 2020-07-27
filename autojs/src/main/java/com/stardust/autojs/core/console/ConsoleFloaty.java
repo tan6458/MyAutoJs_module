@@ -2,18 +2,19 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import androidx.annotation.Nullable;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.stardust.autojs.R;
 import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.ResizableExpandableFloaty;
 import com.stardust.enhancedfloaty.ResizableExpandableFloatyWindow;
 import com.stardust.util.ScreenMetrics;
 import com.stardust.util.ViewUtil;
-import com.stardust.autojs.R;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/4/20.
@@ -53,7 +54,7 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
     }
 
     private void ensureContextWrapper(Context context) {
-        if (mContextWrapper == null) {
+        if(mContextWrapper == null) {
             mContextWrapper = new ContextThemeWrapper(context, R.style.ConsoleTheme);
         }
     }
@@ -80,7 +81,7 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
 
     private void initConsoleTitle(View view) {
         mTitleView = view.findViewById(R.id.title);
-        if (mTitle != null) {
+        if(mTitle != null) {
             mTitleView.setText(mTitle);
         }
     }
@@ -99,7 +100,7 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
     private void setWindowOperationIconListeners(View view, final ResizableExpandableFloatyWindow window) {
         view.findViewById(R.id.close).setOnClickListener(v -> window.close());
         view.findViewById(R.id.move_or_resize).setOnClickListener(v -> {
-            if (mMoveCursor.getVisibility() == View.VISIBLE) {
+            if(mMoveCursor.getVisibility() == View.VISIBLE) {
                 mMoveCursor.setVisibility(View.GONE);
                 mResizer.setVisibility(View.GONE);
             } else {
@@ -126,7 +127,7 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
 
     public void setTitle(final CharSequence title) {
         mTitle = title;
-        if (mTitleView != null) {
+        if(mTitleView != null) {
             mTitleView.post(() -> mTitleView.setText(title));
         }
     }

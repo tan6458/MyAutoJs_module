@@ -134,10 +134,10 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
 
     @Override
     public boolean setAttr(V view, String attrName, String value, ViewGroup parent, Map<String, String> attrs) {
-        if (super.setAttr(view, attrName, value, parent, attrs)) {
+        if(super.setAttr(view, attrName, value, parent, attrs)) {
             return true;
         }
-        switch (attrName) {
+        switch(attrName) {
             case "autoLink":
                 view.setAutoLinkMask(AUTO_LINK_MASKS.get(value));
                 break;
@@ -151,9 +151,9 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
                 view.setCursorVisible(Boolean.valueOf(value));
                 break;
             case "digit":
-                if (value.equals("true")) {
+                if(value.equals("true")) {
                     view.setKeyListener(DigitsKeyListener.getInstance());
-                } else if (!value.equals("false")) {
+                } else if(!value.equals("false")) {
                     view.setKeyListener(DigitsKeyListener.getInstance(value));
                 }
                 break;
@@ -178,13 +178,13 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
             case "editorExtras":
                 Exceptions.unsupports(view, attrName, value);
             case "elegantTextHeight":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setElegantTextHeight(Boolean.valueOf(value));
                 }
                 break;
             case "ellipsize":
                 TextUtils.TruncateAt e = ELLIPSIZE.get(value);
-                if (e != null) {
+                if(e != null) {
                     view.setEllipsize(e);
                 }
                 break;
@@ -195,7 +195,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
                 mFontFamily = value;
                 break;
             case "fontFeatureSettings":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setFontFeatureSettings(value);
                 }
                 break;
@@ -209,7 +209,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
                 view.setHint(Strings.parse(view, value));
                 break;
             case "hyphenationFrequency":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     view.setHyphenationFrequency(HYPHENATION_FREQUENCY.get(value));
                 }
                 break;
@@ -231,7 +231,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
                 view.setInputType(INPUT_TYPES.split(value));
                 break;
             case "letterSpacing":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view.setLetterSpacing(Float.valueOf(value));
                 }
                 break;
@@ -281,12 +281,12 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
                 view.setInputType(INPUT_TYPE_NUMERIC.split(value) | InputType.TYPE_CLASS_NUMBER);
                 break;
             case "password":
-                if (value.equals("true")) {
+                if(value.equals("true")) {
                     view.setInputType(view.getInputType() | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 break;
             case "phoneNumber":
-                if (value.equals("true")) {
+                if(value.equals("true")) {
                     view.setInputType(view.getInputType() | InputType.TYPE_TEXT_VARIATION_PHONETIC);
                 }
                 break;
@@ -318,7 +318,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
                 view.setAllCaps(Boolean.valueOf(value));
                 break;
             case "textAppearance":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     view.setTextAppearance(Res.parseStyle(view, value));
                 }
                 break;
@@ -369,7 +369,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
     }
 
     private void setKeyListener(V view) {
-        if (mCapitalize != null) {
+        if(mCapitalize != null) {
             view.setKeyListener(TextKeyListener.getInstance(mAutoText, mCapitalize));
         }
         mCapitalize = null;
@@ -400,26 +400,26 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
     }
 
     private void setLineSpacing(V view) {
-        if (mLineSpacingExtra != null) {
+        if(mLineSpacingExtra != null) {
             view.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier == null ? 1 : mLineSpacingMultiplier);
-        } else if (mLineSpacingMultiplier != null) {
+        } else if(mLineSpacingMultiplier != null) {
             view.setLineSpacing(0, mLineSpacingMultiplier);
         }
         mLineSpacingMultiplier = mLineSpacingExtra = null;
     }
 
     private void setTypeface(V view) {
-        if (mFontFamily != null) {
+        if(mFontFamily != null) {
             //ignore typeface as android does
             mTypeface = mFontFamily;
         }
-        if (mTypeface != null) {
-            if (mTextStyle != null) {
+        if(mTypeface != null) {
+            if(mTextStyle != null) {
                 view.setTypeface(Typeface.create(mTypeface, mTextStyle));
             } else {
                 view.setTypeface(Typeface.create(mTypeface, view.getTypeface().getStyle()));
             }
-        } else if (mTextStyle != null) {
+        } else if(mTextStyle != null) {
             view.setTypeface(view.getTypeface(), mTextStyle);
         }
         mTypeface = mFontFamily = null;

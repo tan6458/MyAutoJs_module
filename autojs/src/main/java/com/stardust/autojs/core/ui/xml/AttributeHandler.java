@@ -1,7 +1,5 @@
 package com.stardust.autojs.core.ui.xml;
 
-import android.util.Log;
-
 import org.w3c.dom.Node;
 
 import java.util.HashMap;
@@ -23,7 +21,7 @@ public interface AttributeHandler {
         @Override
         public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
             AttributeHandler handler = mHandlerMap.get(attr.getNodeName());
-            if (handler == null)
+            if(handler == null)
                 handler = mDefaultHandler;
             return handler != null && handler.handle(nodeName, attr, layoutXml);
         }
@@ -46,7 +44,7 @@ public interface AttributeHandler {
 
         @Override
         public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
-            if (!attr.getNodeName().equals("style")) {
+            if(!attr.getNodeName().equals("style")) {
                 layoutXml.append("android:");
             }
             layoutXml.append(mapAttrName(nodeName, attr.getNodeName()))
@@ -61,7 +59,7 @@ public interface AttributeHandler {
 
         public MappedAttributeHandler mapValue(String attrName, String oldValue, String newValue) {
             Map<String, String> valueMap = mAttrValueMap.get(attrName);
-            if (valueMap == null) {
+            if(valueMap == null) {
                 valueMap = new HashMap<>();
                 mAttrValueMap.put(attrName, valueMap);
             }
@@ -72,14 +70,14 @@ public interface AttributeHandler {
 
         private String mapAttrName(String nodeName, String attrName) {
             String mappedAttrName = mAttrNameMap.get(attrName);
-            if (mappedAttrName == null)
+            if(mappedAttrName == null)
                 return attrName;
             return mappedAttrName;
         }
 
         private String mapAttrValue(String nodeName, String attrName, String value) {
             Map<String, String> valueMap = mAttrValueMap.get(attrName);
-            if (valueMap == null)
+            if(valueMap == null)
                 return value;
             String mappedValue = valueMap.get(value);
             return mappedValue == null ? value : mappedValue;
@@ -111,14 +109,14 @@ public interface AttributeHandler {
         }
 
         static String convertToAndroidDimen(String dimen) {
-            if (dimen.equals("*")) {
+            if(dimen.equals("*")) {
                 return "match_parent";
             }
-            if (dimen.equals("auto")) {
+            if(dimen.equals("auto")) {
                 return "wrap_content";
             }
-            if (Character.isDigit(dimen.charAt(dimen.length() - 1))) {
-                return dimen + "dp";
+            if(Character.isDigit(dimen.charAt(dimen.length()-1))) {
+                return dimen+"dp";
             }
             return dimen;
         }
@@ -128,9 +126,9 @@ public interface AttributeHandler {
 
         @Override
         public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
-            if (attr.getNodeValue().equals("true")) {
+            if(attr.getNodeValue().equals("true")) {
                 layoutXml.append("android:orientation=\"vertical\"\n");
-            } else if (attr.getNodeValue().equals("false")) {
+            } else if(attr.getNodeValue().equals("false")) {
                 layoutXml.append("android:orientation=\"horizontal\"\n");
             } else {
                 return false;
@@ -151,11 +149,11 @@ public interface AttributeHandler {
         public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
             String[] intervals = attr.getNodeValue().split("[ ,]");
             String[] dimens = new String[intervals.length];
-            for (int i = 0; i < intervals.length; i++) {
+            for(int i = 0; i < intervals.length; i++) {
                 dimens[i] = DimenHandler.convertToAndroidDimen(intervals[i]);
             }
             String left, top, right, bottom;
-            switch (dimens.length) {
+            switch(dimens.length) {
                 case 1:
                     left = top = right = bottom = dimens[0];
                     break;

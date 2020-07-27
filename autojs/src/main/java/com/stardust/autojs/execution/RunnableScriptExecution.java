@@ -8,8 +8,6 @@ import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.autojs.script.ScriptSource;
 import com.stardust.lang.ThreadCompat;
 
-import org.mozilla.javascript.ContinuationPending;
-
 /**
  * Created by Stardust on 2017/5/1.
  */
@@ -27,7 +25,7 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
 
     @Override
     public void run() {
-        ThreadCompat.currentThread().setName("ScriptThread-" + getId() + "[" + getSource() + "]");
+        ThreadCompat.currentThread().setName("ScriptThread-"+getId()+"["+getSource()+"]");
         execute();
     }
 
@@ -42,13 +40,13 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
             prepare(engine);
             Object r = doExecution(engine);
             Throwable uncaughtException = engine.getUncaughtException();
-            if (uncaughtException != null) {
+            if(uncaughtException != null) {
                 onException(engine, uncaughtException);
                 return null;
             }
             getListener().onSuccess(this, r);
             return r;
-        } catch (Throwable e) {
+        } catch(Throwable e) {
             onException(engine, e);
             return null;
         } finally {
@@ -58,7 +56,7 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
     }
 
     protected void onException(ScriptEngine engine, Throwable e) {
-        Log.w(TAG, "onException: engine = " + engine, e);
+        Log.w(TAG, "onException: engine = "+engine, e);
         getListener().onException(this, e);
     }
 
@@ -74,13 +72,13 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
         Object result = null;
         long delay = getConfig().getDelay();
         int times = getConfig().getLoopTimes();
-        if (times == 0) {
+        if(times == 0) {
             times = Integer.MAX_VALUE;
         }
         long interval = getConfig().getInterval();
         sleep(delay);
         ScriptSource source = getSource();
-        for (int i = 0; i < times; i++) {
+        for(int i = 0; i < times; i++) {
             result = execute(engine, source);
             sleep(interval);
         }
@@ -93,12 +91,12 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
     }
 
     protected void sleep(long i) {
-        if (i <= 0) {
+        if(i <= 0) {
             return;
         }
         try {
             Thread.sleep(i);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
     }

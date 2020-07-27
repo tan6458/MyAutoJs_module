@@ -2,8 +2,6 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.stardust.autojs.R;
@@ -23,6 +21,9 @@ import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/5/2.
@@ -128,10 +129,10 @@ public class ConsoleImpl extends AbstractConsole {
         synchronized (mLogEntries) {
             mLogEntries.add(logEntry);
         }
-        if (mGlobalConsole != null) {
+        if(mGlobalConsole != null) {
             mGlobalConsole.println(level, charSequence);
         }
-        if (mLogListener != null && mLogListener.get() != null) {
+        if(mLogListener != null && mLogListener.get() != null) {
             mLogListener.get().onNewLog(logEntry);
         }
         return null;
@@ -149,17 +150,17 @@ public class ConsoleImpl extends AbstractConsole {
         synchronized (mLogEntries) {
             mLogEntries.clear();
         }
-        if (mLogListener != null && mLogListener.get() != null) {
+        if(mLogListener != null && mLogListener.get() != null) {
             mLogListener.get().onLogClear();
         }
     }
 
     @Override
     public void show() {
-        if (mShown) {
+        if(mShown) {
             return;
         }
-        if (!FloatingPermission.canDrawOverlays(mUiHandler.getContext())) {
+        if(!FloatingPermission.canDrawOverlays(mUiHandler.getContext())) {
             FloatingPermission.manageDrawOverlays(mUiHandler.getContext());
             mUiHandler.toast(R.string.text_no_floating_window_permission);
             return;
@@ -169,18 +170,18 @@ public class ConsoleImpl extends AbstractConsole {
             try {
                 FloatyService.addWindow(mFloatyWindow);
                 // SecurityException: https://github.com/hyb1996-guest/AutoJsIssueReport/issues/4781
-            } catch (WindowManager.BadTokenException | SecurityException e) {
+            } catch(WindowManager.BadTokenException | SecurityException e) {
                 e.printStackTrace();
                 mUiHandler.toast(R.string.text_no_floating_window_permission);
             }
         });
         synchronized (WINDOW_SHOW_LOCK) {
-            if (mShown) {
+            if(mShown) {
                 return;
             }
             try {
                 WINDOW_SHOW_LOCK.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -195,11 +196,11 @@ public class ConsoleImpl extends AbstractConsole {
     public void hide() {
         mUiHandler.post(() -> {
             synchronized (WINDOW_SHOW_LOCK) {
-                if (!mShown)
+                if(!mShown)
                     return;
                 try {
                     mFloatyWindow.close();
-                } catch (IllegalArgumentException ignored) {
+                } catch(IllegalArgumentException ignored) {
 
                 }
                 mShown = false;
@@ -209,9 +210,9 @@ public class ConsoleImpl extends AbstractConsole {
 
 
     public void setSize(int w, int h) {
-        if (mShown) {
+        if(mShown) {
             mUiHandler.post(() -> {
-                if (mShown) {
+                if(mShown) {
                     ViewUtil.setViewMeasure(mConsoleFloaty.getExpandedView(), w, h);
                 }
             });
@@ -221,9 +222,9 @@ public class ConsoleImpl extends AbstractConsole {
     public void setPosition(int x, int y) {
         mX = x;
         mY = y;
-        if (mShown) {
+        if(mShown) {
             mUiHandler.post(() -> {
-                if (mShown)
+                if(mShown)
                     mFloatyWindow.getWindowBridge().updatePosition(x, y);
             });
         }
@@ -231,8 +232,8 @@ public class ConsoleImpl extends AbstractConsole {
 
     @ScriptInterface
     public String rawInput() {
-        if (mConsoleView == null || mConsoleView.get() == null) {
-            if (!mShown) {
+        if(mConsoleView == null || mConsoleView.get() == null) {
+            if(!mShown) {
                 show();
             }
             waitForConsoleView();
@@ -240,7 +241,7 @@ public class ConsoleImpl extends AbstractConsole {
         mConsoleView.get().showEditText();
         try {
             return mInput.take();
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new ScriptInterruptedException();
         }
     }
@@ -249,7 +250,7 @@ public class ConsoleImpl extends AbstractConsole {
         synchronized (this) {
             try {
                 this.wait();
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 throw new ScriptInterruptedException();
             }
         }
@@ -272,21 +273,21 @@ public class ConsoleImpl extends AbstractConsole {
 
     @Override
     public void error(@Nullable Object data, Object... options) {
-        if (data instanceof Throwable) {
+        if(data instanceof Throwable) {
             data = getStackTrace((Throwable) data);
         }
-        if (options != null && options.length > 0) {
+        if(options != null && options.length > 0) {
             StringBuilder sb = new StringBuilder(data == null ? "" : data.toString());
             ArrayList<Object> newOptions = new ArrayList<>();
-            for (Object option : options) {
-                if (option instanceof Throwable) {
+            for(Object option : options) {
+                if(option instanceof Throwable) {
                     sb.append(getStackTrace((Throwable) option)).append(" ");
                 } else {
                     newOptions.add(option);
                 }
             }
             data = sb.toString();
-            if (newOptions.isEmpty()) {
+            if(newOptions.isEmpty()) {
                 super.error(data, newOptions.toArray());
             } else {
                 super.error(data);

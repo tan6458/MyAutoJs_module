@@ -16,10 +16,10 @@ public class EventFormatException extends RuntimeException {
     }
 
     public EventFormatException(String eventStr, Exception e) {
-        super("eventStr=" + eventStr, e);
+        super("eventStr="+eventStr, e);
     }
 
     public EventFormatException(String eventStr) {
-        super("eventStr=" + eventStr);
+        super("eventStr="+eventStr);
     }
 }

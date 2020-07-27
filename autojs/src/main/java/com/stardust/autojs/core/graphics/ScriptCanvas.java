@@ -13,12 +13,12 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Build;
 
+import com.stardust.autojs.core.image.ImageWrapper;
+import com.stardust.autojs.runtime.ScriptRuntime;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
-import com.stardust.autojs.core.image.ImageWrapper;
-import com.stardust.autojs.runtime.ScriptRuntime;
 
 /**
  * Created by Stardust on 2018/3/22.
@@ -447,12 +447,12 @@ public class ScriptCanvas {
     }
 
     public void drawImage(@NonNull ImageWrapper image, float left, float top, float width, float height, @Nullable Paint paint) {
-        mCanvas.drawBitmap(image.getBitmap(), null, new RectF(left, top, left + width, top + height), paint);
+        mCanvas.drawBitmap(image.getBitmap(), null, new RectF(left, top, left+width, top+height), paint);
     }
 
     public void drawImage(@NonNull ImageWrapper image, int sx, int sy, int swidth, int sheight, float left, float top, float width, float height, @Nullable Paint paint) {
-        mCanvas.drawBitmap(image.getBitmap(), new Rect(sx, sy, sx + swidth, sy + sheight),
-                new RectF(left, top, left + width, top + height), paint);
+        mCanvas.drawBitmap(image.getBitmap(), new Rect(sx, sy, sx+swidth, sy+sheight),
+                new RectF(left, top, left+width, top+height), paint);
     }
 
     public void drawImage(@NonNull ImageWrapper image, @Nullable Rect src, @NonNull RectF dst, @Nullable Paint paint) {

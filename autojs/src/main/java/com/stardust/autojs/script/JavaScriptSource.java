@@ -2,9 +2,6 @@ package com.stardust.autojs.script;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.stardust.autojs.rhino.TokenStream;
 import com.stardust.util.MapBuilder;
 
@@ -13,6 +10,9 @@ import org.mozilla.javascript.Token;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/8/2.
@@ -51,19 +51,19 @@ public abstract class JavaScriptSource extends ScriptSource {
     @NonNull
     public Reader getNonNullScriptReader() {
         Reader reader = getScriptReader();
-        if (reader == null) {
+        if(reader == null) {
             return new StringReader(getScript());
         }
         return reader;
     }
 
     public String toString() {
-        return getName() + ".js";
+        return getName()+".js";
     }
 
 
     public int getExecutionMode() {
-        if (mExecutionMode == -1) {
+        if(mExecutionMode == -1) {
             mExecutionMode = parseExecutionMode();
         }
         return mExecutionMode;
@@ -77,20 +77,20 @@ public abstract class JavaScriptSource extends ScriptSource {
         try {
             while (count <= PARSING_MAX_TOKEN && (token = ts.getToken()) != Token.EOF) {
                 count++;
-                if (token == Token.EOL || token == Token.COMMENT) {
+                if(token == Token.EOL || token == Token.COMMENT) {
                     continue;
                 }
-                if (token == Token.STRING && ts.getTokenLength() > 2) {
-                    String tokenString = script.substring(ts.getTokenBeg() + 1, ts.getTokenEnd() - 1);
-                    if (ts.getToken() != Token.SEMI) {
+                if(token == Token.STRING && ts.getTokenLength() > 2) {
+                    String tokenString = script.substring(ts.getTokenBeg()+1, ts.getTokenEnd()-1);
+                    if(ts.getToken() != Token.SEMI) {
                         break;
                     }
-                    Log.d(LOG_TAG, "string = " + tokenString);
+                    Log.d(LOG_TAG, "string = "+tokenString);
                     return parseExecutionMode(tokenString.split(" "));
                 }
                 break;
             }
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
             return EXECUTION_MODE_NORMAL;
         }
@@ -100,9 +100,9 @@ public abstract class JavaScriptSource extends ScriptSource {
 
     private int parseExecutionMode(String[] modeStrings) {
         int mode = 0;
-        for (String modeString : modeStrings) {
+        for(String modeString : modeStrings) {
             Integer i = EXECUTION_MODES.get(modeString);
-            if (i != null) {
+            if(i != null) {
                 mode |= i;
             }
         }
