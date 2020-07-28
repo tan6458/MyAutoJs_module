@@ -42,6 +42,20 @@
             </intent-filter>
         </service>
 
+        <!--全局无障碍监听-->
+        <service
+            android:name=".GlobalAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/envelope_service_config" />
+        </service>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.myautojs.fileprovider"

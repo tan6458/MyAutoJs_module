@@ -16,7 +16,7 @@ import java.io.File;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MyActivity extends AppCompatActivity {
-    public static final String Js_autoSkip = "自动跳过1";
+    public static final String Js_autoSkip = "微信抢红包";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MyActivity extends AppCompatActivity {
             public void run() {
                 try {
                     try {
-                        String path = Environment.getExternalStorageDirectory()+"/脚本/"+name+".js";//脚本文件
+                        String path = Environment.getExternalStorageDirectory()+"/脚本/彪奔工具箱/"+name+".js";//脚本文件
                         JavaScriptFileSource source = new JavaScriptFileSource(name, new File(path));//脚本别名
                         ExecutionConfig config = new ExecutionConfig();
                         //execute是脚本执行对象

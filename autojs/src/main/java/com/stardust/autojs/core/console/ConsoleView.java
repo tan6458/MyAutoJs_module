@@ -16,6 +16,8 @@ import com.stardust.enhancedfloaty.ResizableExpandableFloatyWindow;
 import com.stardust.util.MapBuilder;
 import com.stardust.util.SparseArrayEntries;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -162,16 +164,17 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
         });
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
+    private static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView;
         }
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
+        @NotNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.console_view_item, parent, false));
