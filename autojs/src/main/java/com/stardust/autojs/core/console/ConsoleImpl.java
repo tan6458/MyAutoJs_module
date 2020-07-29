@@ -258,7 +258,7 @@ public class ConsoleImpl extends AbstractConsole {
 
     @ScriptInterface
     public String rawInput(Object data, Object... param) {
-        log(data, param);
+        logB(data, param);
         return rawInput();
     }
 

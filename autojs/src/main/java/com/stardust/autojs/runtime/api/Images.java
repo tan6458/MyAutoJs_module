@@ -345,18 +345,18 @@ public class Images {
         }
         Activity currentActivity = mScriptRuntime.app.getCurrentActivity();
         Context context = currentActivity == null ? mContext : currentActivity;
-        mScriptRuntime.console.info("opencv initializing");
+        mScriptRuntime.console.success("opencv initializing");
         if(Looper.myLooper() == Looper.getMainLooper()) {
             OpenCVHelper.initIfNeeded(context, () -> {
                 mOpenCvInitialized = true;
-                mScriptRuntime.console.info("opencv initialized");
+                mScriptRuntime.console.success("opencv initialized");
             });
         } else {
             VolatileDispose<Boolean> result = new VolatileDispose<>();
             OpenCVHelper.initIfNeeded(context, () -> {
                 mOpenCvInitialized = true;
                 result.setAndNotify(true);
-                mScriptRuntime.console.info("opencv initialized");
+                mScriptRuntime.console.success("opencv initialized");
             });
             result.blockedGet();
         }

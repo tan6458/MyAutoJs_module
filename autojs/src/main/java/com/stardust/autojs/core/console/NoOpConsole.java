@@ -10,12 +10,12 @@ import androidx.annotation.Nullable;
 
 public class NoOpConsole implements Console {
     @Override
-    public void verbose(@Nullable Object data, Object... options) {
+    public void log(@Nullable Object data, Object... options) {
 
     }
 
     @Override
-    public void log(@Nullable Object data, Object... options) {
+    public void logB(@Nullable Object data, Object... options) {
 
     }
 
@@ -25,7 +25,7 @@ public class NoOpConsole implements Console {
     }
 
     @Override
-    public void info(@Nullable Object data, Object... options) {
+    public void success(@Nullable Object data, Object... options) {
 
     }
 

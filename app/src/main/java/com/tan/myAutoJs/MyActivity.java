@@ -102,7 +102,7 @@ public class MyActivity extends AppCompatActivity {
     }
 
     private void log(String str) {
-        App.autoJs.getGlobalConsole().info(str);
+        App.autoJs.getGlobalConsole().success(str);
     }
 
 

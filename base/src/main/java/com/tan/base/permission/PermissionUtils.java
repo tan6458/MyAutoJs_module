@@ -24,8 +24,10 @@ public  class PermissionUtils {
 
 
     //检查无障碍服务
-    public static boolean checkAccAccessibilityOpen(Activity context) {
-        boolean b = isAccessibilityOpen(context);
+    //传入服务路径名
+    //例如 "com.tan.toolbox/com.tan.toolbox.listener.GlobalAccessibilityService"
+    public static boolean checkAccAccessibilityOpen(Activity context,String name) {
+        boolean b = isAccessibilityOpen(context,name);
         Log.i("tan6458", b ? "当前无障碍服务已打开" : "当前无障碍服务已关闭");
         if(!b) {
             Toast.makeText(context, "请启动无障碍服务 ", Toast.LENGTH_LONG).show();
@@ -34,7 +36,7 @@ public  class PermissionUtils {
         return b;
     }
 
-    private static boolean isAccessibilityOpen(Context context) {
+    private static boolean isAccessibilityOpen(Context context,String name) {
         TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
         String curServer = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
         if(curServer != null) {
@@ -42,7 +44,7 @@ public  class PermissionUtils {
             mStringColonSplitter.setString(curServer);
             while (mStringColonSplitter.hasNext()) {
                 String accessibilityService = mStringColonSplitter.next();
-                if(accessibilityService.contains("com.tan.app.toolbox/com.tan.app.toolbox.listener.GlobalAccessibilityService")) {
+                if(accessibilityService.contains(name)) {
                     return true;
                 }
             }

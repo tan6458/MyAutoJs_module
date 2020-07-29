@@ -1,7 +1,6 @@
 package com.stardust.autojs;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.stardust.autojs.engine.JavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
@@ -176,8 +175,9 @@ public class ScriptEngineService {
     @Subscribe
     public void onScriptExecution(ScriptExecutionEvent event) {
         if(event.getCode() == ScriptExecutionEvent.ON_START) {
-            mGlobalConsole.verbose(mContext.getString(R.string.text_start_running)+"["+event.getMessage()+"]");
+            mGlobalConsole.success("开始脚本["+event.getMessage()+"]");
         } else if(event.getCode() == ScriptExecutionEvent.ON_EXCEPTION) {
+            mGlobalConsole.error(mContext.getString(R.string.text_error)+": "+event.getMessage());
             mUiHandler.toast(mContext.getString(R.string.text_error)+": "+event.getMessage());
         }
     }

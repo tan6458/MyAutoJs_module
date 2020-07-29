@@ -11,16 +11,16 @@ import androidx.annotation.Nullable;
 public interface Console {
 
     @ScriptInterface
-    void verbose(@Nullable Object data, Object... options);
+    void log(@Nullable Object data, Object... options);
 
     @ScriptInterface
-    void log(@Nullable Object data, Object... options);
+    void logB(@Nullable Object data, Object... options);
 
     @ScriptInterface
     void print(int level, Object data, Object... options);
 
     @ScriptInterface
-    void info(@Nullable Object data, Object... options);
+    void success(@Nullable Object data, Object... options);
 
     @ScriptInterface
     void warn(@Nullable Object data, Object... options);
