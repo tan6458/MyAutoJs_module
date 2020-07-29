@@ -18,7 +18,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".App"
+        android:name="com.tan.myAutoJs.App"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -26,7 +26,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".MyActivity">
+        <activity android:name="com.tan.myAutoJs.MyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +37,7 @@
 
         <!--全局无障碍监听-->
         <service
-            android:name=".GlobalAccessibilityService"
+            android:name="com.tan.myAutoJs.GlobalAccessibilityService"
             android:enabled="true"
             android:exported="true"
             android:label="@string/app_name"

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--通用-->
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="blue_title_bar">#0a9dcd</color>
+    <color name="blue_deep">#0881a9</color>
+    <color name="blue_colorAccentLight">#0881a9</color>
+    <color name="transparent">#00000000</color>
+    <!--【背景】-->
+    <color name="gray_back_fd">#fdfdfd</color>
+    <color name="gray_back_ee">#eee</color>
+    <color name="gray_back_e7">#e7e7e7</color>
+    <color name="gray_back_e6">#E6EBEC</color>
+    <color name="gray_back_e3">#e3e3e3</color>
+    <color name="gray_back_66">#666</color>
+    <!--【字体】-->
+    <color name="gray_font_header">#fff</color>
+    <color name="gray_font_xiulian_content">#999</color>
+    <color name="gray_font_list_info999">#999</color>
+    <color name="gray_font_date">#9B9B9B</color>
+    <color name="gray_font_xiulian_title">#9B9B9B</color>
+    <color name="gray_font_9b">#9B9B9B</color>
+    <color name="gray_font_list666">#666</color>
+    <color name="gray_font_title333">#333</color>
+    <color name="gray_font_54">#545454</color>
+</resources>

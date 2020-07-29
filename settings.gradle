@@ -1,2 +1,3 @@
 include ':app',':autojs'
 rootProject.name='MyAutoJs'
+include ':base'
