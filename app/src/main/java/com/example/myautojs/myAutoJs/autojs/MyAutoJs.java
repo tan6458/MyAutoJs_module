@@ -1,11 +1,11 @@
-package com.example.myautojs.utils.autojs;
+package com.example.myautojs.myAutoJs.autojs;
 
 import android.app.Application;
 
 import com.example.myautojs.App;
 import com.example.myautojs.MyActivity;
 import com.example.myautojs.R;
-import com.example.myautojs.utils.Pref;
+import com.example.myautojs.myAutoJs.Pref;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.AutoJs;
 import com.stardust.autojs.engine.ScriptEngine;

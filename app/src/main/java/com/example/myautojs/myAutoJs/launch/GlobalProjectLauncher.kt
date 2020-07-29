@@ -1,4 +1,4 @@
-package com.example.myautojs.utils.launch
+package com.example.myautojs.myAutoJs.launch
 
 import android.annotation.SuppressLint
 import com.stardust.app.GlobalAppContext

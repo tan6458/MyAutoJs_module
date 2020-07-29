@@ -1,4 +1,4 @@
-package com.example.myautojs.utils.autojs;
+package com.example.myautojs.myAutoJs.autojs;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.example.myautojs.base.permission;
+package com.tan.app.base.permission;
 
 /**
  * @className: RequestPermissionRationalListener

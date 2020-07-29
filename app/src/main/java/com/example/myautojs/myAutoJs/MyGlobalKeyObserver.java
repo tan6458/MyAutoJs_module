@@ -1,4 +1,4 @@
-package com.example.myautojs;
+package com.example.myautojs.myAutoJs;
 
 import android.view.KeyEvent;
 

@@ -1,4 +1,4 @@
-package com.example.myautojs.utils.autojs
+package com.example.myautojs.myAutoJs.autojs
 
 import com.example.myautojs.App
 import com.example.myautojs.R

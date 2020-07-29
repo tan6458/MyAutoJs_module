@@ -1,9 +1,9 @@
-package com.example.myautojs.utils.autojs
+package com.example.myautojs.myAutoJs.autojs
 
 import android.util.Log
 import android.view.KeyEvent
 import com.example.myautojs.App
-import com.example.myautojs.utils.Pref
+import com.example.myautojs.myAutoJs.Pref
 import com.stardust.app.GlobalAppContext
 import com.stardust.autojs.core.inputevent.InputEventObserver
 import com.stardust.autojs.core.inputevent.ShellKeyObserver

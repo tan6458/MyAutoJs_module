@@ -1,4 +1,4 @@
-package com.example.myautojs.utils.launch
+package com.example.myautojs.myAutoJs.launch
 
 import android.app.Activity
 import android.content.Context
@@ -9,7 +9,7 @@ import android.text.TextUtils
 import com.example.myautojs.App
 import com.example.myautojs.BuildConfig
 
-import com.example.myautojs.utils.Pref
+import com.example.myautojs.myAutoJs.Pref
 import com.stardust.autojs.engine.encryption.ScriptEncryption
 import com.stardust.autojs.execution.ExecutionConfig
 import com.stardust.autojs.execution.ScriptExecution

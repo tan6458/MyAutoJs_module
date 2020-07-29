@@ -1,4 +1,4 @@
-package com.example.myautojs.base;
+package com.tan.app.base;
 
 public class StringUtils {
     public static boolean notEmpty(String s) {

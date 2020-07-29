@@ -1,4 +1,4 @@
-package com.example.myautojs.utils;
+package com.example.myautojs.myAutoJs;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

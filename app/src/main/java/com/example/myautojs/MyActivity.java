@@ -1,19 +1,17 @@
 package com.example.myautojs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.myautojs.base.permission.EasyPermission;
-import com.example.myautojs.base.permission.GrantResult;
-import com.example.myautojs.base.permission.Permission;
-import com.example.myautojs.base.permission.PermissionRequestListener;
-import com.example.myautojs.base.permission.PermissionUtils;
+import com.tan.app.base.permission.EasyPermission;
+import com.tan.app.base.permission.GrantResult;
+import com.tan.app.base.permission.Permission;
+import com.tan.app.base.permission.PermissionRequestListener;
+import com.tan.app.base.permission.PermissionUtils;
 import com.stardust.autojs.core.console.ConsoleView;
-import com.stardust.autojs.engine.JavaScriptEngine;
 import com.stardust.autojs.execution.ExecutionConfig;
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.JavaScriptFileSource;
@@ -23,10 +21,11 @@ import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.myautojs.base.permission.GrantResult.GRANT;
+import static com.tan.app.base.permission.GrantResult.GRANT;
 
 public class MyActivity extends AppCompatActivity {
-    public static final String Js_autoSkip = "微信抢红包";
+    public static final String Js_autoSkip = "心跳";
+//    public static final String Js_autoSkip = "微信抢红包";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,6 @@ public class MyActivity extends AppCompatActivity {
                         }
                         if(b) {
                             Log.i("tan6458", "已获取全部权限:");
-
                         } else {
                             Log.i("tan6458", "未获取全部权限:");
                             Toast.makeText(getApplication(),"请赋予全部权限", Toast.LENGTH_SHORT).show();
