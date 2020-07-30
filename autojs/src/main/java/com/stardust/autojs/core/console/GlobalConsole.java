@@ -26,8 +26,7 @@ public class GlobalConsole extends ConsoleImpl {
 
     @Override
     public String println(int level, CharSequence charSequence) {
-        String log = String.format(Locale.getDefault(), "%s/%s: %s",
-                DATE_FORMAT.format(new Date()), getLevelChar(level), charSequence.toString());
+        String log = String.format(Locale.getDefault(), "%s/%s: %s", DATE_FORMAT.format(new Date()), getLevelChar(level), charSequence.toString());
         LOGGER.log(toLog4jLevel(level), log);
         android.util.Log.d(LOG_tAG, log);
         super.println(level, log);

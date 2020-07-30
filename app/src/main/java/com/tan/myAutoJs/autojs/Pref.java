@@ -3,6 +3,7 @@ package com.tan.myAutoJs.autojs;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.myautojs.R;
 import com.stardust.app.GlobalAppContext;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,15 +45,15 @@ public final class Pref {
     }
 
     public static final boolean shouldEnableAccessibilityServiceByRoot() {
-        return getPreferences().getBoolean(getString(-1900208), false);
+        return getPreferences().getBoolean(getString(R.string.key_enable_accessibility_service_by_root), false);
     }
 
     public static final boolean shouldHideLogs() {
-        return getPreferences().getBoolean(getString(-1900036), false);
+        return getPreferences().getBoolean(getString(R.string.key_dont_show_main_activity), false);
     }
 
     public static final boolean shouldStopAllScriptsWhenVolumeUp() {
-        return getPreferences().getBoolean(getString(-1900124), true);
+        return getPreferences().getBoolean(getString(R.string.key_use_volume_control_running), true);
     }
 
     private Pref() {

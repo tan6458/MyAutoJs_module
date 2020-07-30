@@ -25,7 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import static com.tan.base.permission.GrantResult.GRANT;
 
 public class MyActivity extends AppCompatActivity {
-    public static final String Js_autoSkip = "心跳";
+    public static final String Js_autoSkip = "自动解锁";
+//    public static final String Js_autoSkip = "心跳";
 //    public static final String Js_autoSkip = "微信抢红包";
 
     @Override
@@ -62,7 +63,7 @@ public class MyActivity extends AppCompatActivity {
                 });
 
         //无障碍权限,监听通知和点击
-        PermissionUtils.checkAccAccessibilityOpen(this);
+        PermissionUtils.checkAccAccessibilityOpen(this,"com.tan.myautojs/com.tan.myautojs.GlobalAccessibilityService");
     }
 
 

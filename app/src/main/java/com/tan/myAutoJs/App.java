@@ -14,8 +14,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         GlobalAppContext.set(this);
-        accessibilityService = new AccessibilityService();
         autoJs = new MyAutoJs(this);
-
+        accessibilityService = new AccessibilityService();
     }
 }
