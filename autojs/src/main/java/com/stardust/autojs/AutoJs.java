@@ -59,7 +59,6 @@ public abstract class AutoJs {
     private final ScriptEngineService mScriptEngineService;
     private final GlobalConsole mGlobalConsole;
 
-
     protected AutoJs(final Application application) {
         mContext = application.getApplicationContext();
         mApplication = application;
@@ -67,11 +66,18 @@ public abstract class AutoJs {
         mUiHandler = new UiHandler(mContext);
         mAppUtils = createAppUtils(mContext);
         mGlobalConsole = createGlobalConsole();
+
         mNotificationObserver = new AccessibilityNotificationObserver(mContext);
         mActivityInfoProvider = new ActivityInfoProvider(mContext);
         mScriptEngineService = buildScriptEngineService();
         ScriptEngineService.setInstance(mScriptEngineService);
         init();
+    }
+
+    public void setLogCallBack(LogCallBack logCallBack) {
+        if(logCallBack!=null) {
+            mGlobalConsole.setLogCallBack( logCallBack);
+        }
     }
 
     protected AppUtils createAppUtils(Context context) {
@@ -263,5 +269,9 @@ public abstract class AutoJs {
                 ScreenCaptureRequestActivity.request(mContext, mCallback);
             }
         }
+    }
+
+    public interface LogCallBack {
+        void onLog(int level, String msg);
     }
 }

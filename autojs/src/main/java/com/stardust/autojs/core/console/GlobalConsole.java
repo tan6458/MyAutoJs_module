@@ -1,5 +1,6 @@
 package com.stardust.autojs.core.console;
 
+import com.stardust.autojs.AutoJs;
 import com.stardust.util.UiHandler;
 
 import org.apache.log4j.Level;
@@ -19,13 +20,21 @@ public class GlobalConsole extends ConsoleImpl {
     private static final String LOG_tAG = "GlobalConsole";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault());
     private static final Logger LOGGER = Logger.getLogger(GlobalConsole.class);
+    private AutoJs.LogCallBack logCallBack;
 
     public GlobalConsole(UiHandler uiHandler) {
         super(uiHandler);
     }
 
+    public void setLogCallBack(AutoJs.LogCallBack logCallBack) {
+        this.logCallBack = logCallBack;
+    }
+
     @Override
     public String println(int level, CharSequence charSequence) {
+        if(logCallBack!=null) {
+           logCallBack.onLog(level,charSequence.toString());
+        }
         String log = String.format(Locale.getDefault(), "%s/%s: %s", DATE_FORMAT.format(new Date()), getLevelChar(level), charSequence.toString());
         LOGGER.log(toLog4jLevel(level), log);
         android.util.Log.d(LOG_tAG, log);
