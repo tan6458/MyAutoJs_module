@@ -4,9 +4,12 @@ import android.app.Application;
 import android.util.Log;
 
 import com.stardust.autojs.AutoJs;
+import com.tan.base.keeplive.DaemonHolder;
+import com.tan.base.keeplive.DaemonUtil;
 import com.tan.myAutoJs.autojs.MyAutoJs;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.view.accessibility.AccessibilityService;
+import com.tan.myAutoJs.utils.HeartBeatService;
 
 public class App extends Application {
     public static MyAutoJs autoJs;//全局js
@@ -25,5 +28,9 @@ public class App extends Application {
                 Log.i("tan6458", "收到js通信:"+msg);
             }
         });
+        //启动保活
+        Log.d("tan6458", "onCreate() 【" + DaemonUtil.getProcessName(this) + "】");
+        DaemonHolder.init(this, HeartBeatService.class);
+        DaemonHolder.startService();
     }
 }
