@@ -30,12 +30,12 @@ public class HeartBeatService extends AbsHeartBeatService {
 
     @Override
     public long getHeartBeatMillis() {
-        return 2000;
-//        return 30 * 1000;
+//        return 2000;
+        return 30 * 1000;
     }
 
     @Override
     public void onHeartBeat() {
-        Log.d(TAG, "onHeartBeat()");
+        Log.d(TAG, "每30s心跳--onHeartBeat()");
     }
 }
